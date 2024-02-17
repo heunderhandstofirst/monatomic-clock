@@ -1,27 +1,13 @@
 /* eslint-disable no-undef, no-unused, no-unused-vars */
 /* eslint-disable no-undef, no-unused, no-unused-vars,no-loop-func */
 
-function altOXO(k, CircCent) {
-  altTowerabc = createGraphics(windowHeight * 0.3, windowHeight * 0.3);
-  letterWidth = windowHeight / 4;
-  // letterWidth = windowHeight / 3.5;
-  towerCenter = 1 * windowHeight * 0.15;
-  Ymid = windowHeight * 0.5;
-
-  var thisSideBG = getThisSideBackGround(k);
-
-  altTowerabc.stroke(255);
-  altTowerabc.strokeWeight(5);
-  altTowerabc.noFill();
-  altTowerabc.background(thisSideBG);
-
-  drawOXOgrid(Ymid, towerCenter, letterWidth, altTowerabc, CircCent);
-  formCircles(letterWidth, towerCenter, altTowerabc, CircCent);
-
+function initialize0HS(k) {
+  altTowerabc = createGraphics(windowWidth * 0.18,windowWidth * 0.18);
+  altTowerabc.background(getThisSideBackGround(k));
   return altTowerabc;
 }
 
-function drawOXOgrid(Ymida, TC7, LW7, altTower, CircCent) {
+function drawOXOgrid(Ymida,  LW7, altTower, midYWH, midXWH, TC7) {
   altTower.push();
   altTower.stroke(255);
   altTower.strokeWeight(windowHeight / 375);
@@ -41,9 +27,8 @@ function drawOXOgrid(Ymida, TC7, LW7, altTower, CircCent) {
   altTower.pop();
 }
 
-function altDarkenTheArcs(lW1, TC1, altTower, CircCent) {
+function altDarkenTheArcs(lW1,  altTower, CircCent, TC1) {
   altTower.stroke(0);
-  // altTower.stroke(0, 0, 200);
   altTower.strokeWeight(lW1 / 24);
   altTower.strokeCap(ROUND);
   var cs = lW1 * 1.05;
@@ -55,44 +40,46 @@ function altDarkenTheArcs(lW1, TC1, altTower, CircCent) {
   }
 }
 
-function AltColorTheArc(LW5, TC5, AC3, altTowerXY, CircCent) {
-  // const cs = LW5 * 1.05;
+function AltColorTheArc(LW5,  AC3, altTowerXY, CircCent, TC5) {
   const cs = LW5 * 1.1;
   altTowerXY.strokeCap(SQUARE);
   altTowerXY.noFill();
-  altTowerXY.strokeWeight(windowHeight / 48);
   altTowerXY.strokeWeight(windowHeight / 40);
 
   for (var j = 0; j < 4; j++) {
     var bbb = int(AC3[j]);
-    // bbb = 96;
     altTowerXY.stroke(color("hsla(" + bbb + ", 100%, 50%, 1)"));
 
     var ss1 = (j * PI) / 2 + PI / 4;
     var ss2 = ss1 + PI / 2;
-    // TC5 = TC5 * (1 + random() * 0.05);
     altTowerXY.arc(TC5, CircCent * windowHeight, cs, cs, ss1, ss2);
   }
 }
 
-function formCircles(LW3, TC1, altTower, CircCent) {
+function formCircles(LW3, altTower, CircCent, TC1, bckGrnd) {
+  
   altTower.noFill();
-  // altTower.fill(random(250));
-
+  altTower.push()
+    altTower.stroke(getThisSideBackGround(bckGrnd));
+    altTower.strokeWeight(LW3/3.5);
+    altTower.ellipse(TC1, CircCent * windowHeight, 1.1 * LW3);
+  altTower.pop()
+  
   altTower.ellipse(TC1, CircCent * windowHeight, 0.9 * LW3);
   altTower.strokeWeight(LW3 / 10);
-  altTower.stroke(255, 255, 255);
+  altTower.stroke(255);
 
   altTower.ellipse(TC1, CircCent * windowHeight, 0.9 * LW3);
   altTower.stroke(0, 0, 0);
+  altTower.stroke(getThisSideBackGround(bckGrnd));
+
   altTower.ellipse(TC1, CircCent * windowHeight, 0.95 * LW3);
-  altTower.stroke(255, 255, 255);
+  altTower.stroke(255);
   altTower.ellipse(TC1, CircCent * windowHeight, 0.99 * LW3);
 }
 
-function altWhiteX(LW2, TC2, altTower, CircCent, bckGrnd) {
-  var CLAW = (0.8 * LW2) / 2;
-  CLAW = (0.9 * LW2) / 2;
+function altWhiteX(LW2,  altTower, CircCent, bckGrnd, TC2) {
+  var CLAW = (0.9 * LW2) / 2;
   var cadWH = CircCent * windowHeight;
 
   var bbb = getThisSideBackGround(bckGrnd);
@@ -101,25 +88,19 @@ function altWhiteX(LW2, TC2, altTower, CircCent, bckGrnd) {
     altTower.strokeWeight(LW2 / (10 + i * 10));
     altTower.line(TC2 - CLAW, cadWH - CLAW, TC2 + CLAW, cadWH + CLAW);
     altTower.line(TC2 + CLAW, cadWH - CLAW, TC2 - CLAW, cadWH + CLAW);
-    altTower.stroke(0);
     altTower.strokeWeight(LW2 / 12);
-    // altTower.fill(250, 0, 0);
-    altTower.stroke(random(250), 0, 0);
     altTower.stroke(bbb);
-    // altTower.stroke(250, 250, 100);
-    // altTower.ellipse(TC2, cadWH, 1.2 * LW2);
     altTower.ellipse(TC2, cadWH, 1.29 * LW2);
   }
 }
 
-function changeXcolors(XC) {
-  var ttt = random([0, 1, 2, 3, 4, 5, 6]);
-  XC[ttt] = int(noisyColor(XC[ttt]));
+function changeXcolors2(XC) {
+for (var k=0;k<5;k++){
+  for (var n=0;n<7;n++){   
+    XC[0][k][n] =int( noisyCOLOR(XC[0][k][n], -5+(10*(n%2))))
+    XC[1][k][n]=(XC[0][k][n]+180)%360
+  }
 }
-
-function changeAcolors(AC5) {
-  var ttt = random([0, 1, 2, 3, 4, 5, 6, 7]);
-  AC5[ttt] = noisyColor(AC5[ttt]);
 }
 
 function getThisSideBackGround(k) {

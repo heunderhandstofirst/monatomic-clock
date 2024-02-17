@@ -1,16 +1,11 @@
 /* eslint-disable no-undef, no-unused, no-unused-vars */
 
-function createTheEye(GherkinX, rotation, whirlFlag) {
+function createTheEye(GherkinX, rotation,  iris) {
   var GmidX = windowWidth / 8;
-  var innerCir = windowWidth / 12;
   var GherkinY = windowHeight / 2;
-  innerCir = windowHeight / 6;
-  // = createGraphics(windowWidth / 4, windowHeight);
-  // var lll = 500 + innerCir * 0.51 * 2.36;
-  // lll = 430;
-  // line(lll, -1000, lll, 1000);
-  // lll = lll + windowHeight / 2;
-  // line(lll, -1000, lll, 1000);
+  var innerCir = windowHeight / 6;
+  for (var i = 0; i < 32; i++) iris[i] = (iris[i]+2)%360;
+    
 
   stroke(245, 164, 66);
   strokeWeight(2);
@@ -60,21 +55,21 @@ function createTheEye(GherkinX, rotation, whirlFlag) {
 
     var Xpod = 1.3 * innerCir * sin(NewAngle) + GmidX + GherkinX;
     var Ypod = 1.3 * innerCir * cos(NewAngle) + windowHeight / 2;
-    var whirl = (j + whirlFlag) % 32;
     strokeWeight(windowWidth / 160);
-    stroke(7.5 * whirl, 20, 255 - 7 * whirl);
-    line(Xpod - lineLen, Ypod, Xpod + lineLen, Ypod);
-
-    strokeWeight(windowWidth / 320);
+    stroke(color("hsla(" + iris[j] + ", 100%, 50%, 1)"));
     stroke(250);
+    
+ line(Xpod - lineLen, Ypod, Xpod + lineLen, Ypod);
+
+    strokeWeight(windowWidth / 200);
+    stroke(250);
+    stroke(color("hsla(" + iris[j] + ", 100%, 50%, 1)"));
     line(Xpod - lineLen, Ypod, Xpod + lineLen, Ypod);
   }
 
   /////////////  Inverted VEE
-  // = createGraphics(windowWidth / 4, windowHeight);
-  // GherkinY =GherkinY = windowHeight / 2;
   strokeCap(ROUND);
-  strokeWeight(windowWidth / 200);
+  strokeWeight(windowWidth / 600);
   stroke(250, 250, 250);
   noFill();
   for (k = 0; k < 2; k++) {

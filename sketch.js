@@ -8,7 +8,6 @@ let pcs; // SCHWEPPES
 let mts; // MARTINI
 let drs; // BRITEX
 let lndnS; // LONDON
-// let sfs; // STAR FERRY
 let dss; // DIM SUM
 let hhs; // HIHO
 let hcs; // HELMS
@@ -30,7 +29,6 @@ let bre; // BUNNY RABBIT EARS
 let mbs; // MALIBU PIER
 
 let SwitchSign;
-// console.log("Line number 12");
 const backgroundImageURL = "images/background.png";
 const downTown60PIC = "images/P3K.png";
 const letterURLs = [
@@ -116,19 +114,12 @@ HelmsSlogans[4] = ["DAILY AT YOUR DOOR", 2, [253, 48, 3]];
 
 const wpNumber1 = "images/WPnumLet3.png";
 
-const McSorleyURL = "images/McS32.png";
-const McSorleyURL2 = "images/McS33.png";
-let McSorleytext;
-let McSorleytext2;
 
 function preload() {
   LittleHelms = loadImage(helmLittleURL);
   wpNumberone = loadImage(wpNumber1);
   BWtext = loadImage("images/BWorangeLetters.png");
 
-  McSorleytext = loadImage(McSorleyURL);
-  McSorleytext2 = loadImage(McSorleyURL2);
-  McSsigns = [loadImage(McSorleyURL), loadImage(McSorleyURL2)];
   dtSunRis = loadImage(downTown60PIC);
   StagFoto = loadImage("images/StagTransparent.png");
   OregonFoto = loadImage("images/StateOutline.png");
@@ -202,7 +193,7 @@ function setup() {
 
   // Create a walker object
   wps = new WallauerSign();
-  cs = new CitgoSign();
+  cs = new CitgoSign2();
   hf = new HerculesFloor();
   bcs = new BondSign();
   pcs = new SchweppesSign();
@@ -275,7 +266,7 @@ function setup() {
 }
 
 function draw() {
-  frameRate(25);
+
   var signTime = [hour(), minute(), second(), 60, 300];
   // signTime[0] = 6;
   // signTime[1] = 53 + (signTime[1] % 2);
@@ -283,55 +274,41 @@ function draw() {
   var Hsecs = signTime[1] * 60 + signTime[2];
   var W1 = int(Hsecs / signTime[4]); // signTime 4 =  number of seconds to show each sign
   WhichSign = W1 % 12;
-  // WhichSign = 60 % 12;
   SwitchSign = WhichSign !== PreviousSign;
   if (SwitchSign) NewSign = true;
   PreviousSign = WhichSign;
 
   clear();
   background(5, 5, 5);
-  // noCursor();
-  // WhichSign = 22;
 
-  // signTime[1] = 45 + (int(M1) % 5);
-  // console.log("ST: ", signTime);
-  // console.log(window.redirectFired);
   if (signTime[1] === 5) window.redirectFired = false;
   every6Hours = 1 === signTime[0] % 4 && signTime[1] === 57;
-  // every6Hours = signTime[1] % 5 === 1;
-  // every6Hours = signTime[1] === 57;
   if (signTime[1] === 59) window.redirectFired = false;
-
-  /////////////////////////////////////////////////////////////
-  // if (signTime[1] === 5) window.redirectFired = false;
-  // every6Hours = 4 === signTime[0] % 12 && signTime[1] === 57;
-  //////////////////////////////////////////////////////////////
-
   if (every6Hours && signTime[2] < 3) WhichSign = 50;
 
-  if (signTime[0] % 12 === 5 && signTime[1] === 17) {
-    WhichSign = 17;
-    frameRate(10);
-  }
-  if (signTime[0] % 12 === 3 && signTime[1] === 5) WhichSign = 21; // TUSCON
-  if (signTime[0] % 12 < 99 && signTime[1] === 18) WhichSign = 22; // MANHATTAN BRIDGE
+  if (signTime[0] % 12 === 5 && signTime[1] === 8) WhichSign = 12; // HEINZ 
   if (signTime[0] % 12 === 11 && signTime[1] === 13) WhichSign = 13; // OYSTER HOUSE
   if (signTime[0] % 12 === 6 && signTime[1] === 6) WhichSign = 14; // URTH
   if (signTime[0] % 12 === 6 && signTime[1] === 54) WhichSign = 15; // McSORLEYS
   if (signTime[0] % 12 === 10 && signTime[1] === 34) WhichSign = 16; // FARMACIA
+  if (signTime[0] % 12 === 5 && signTime[1] === 17) WhichSign = 17;  // HERCULES
   if (signTime[0] % 12 === 10 && signTime[1] === 31) WhichSign = 18; // LINCOLN
   if (signTime[0] % 12 === 8 && signTime[1] === 10) WhichSign = 19; // MONDRIAN
+  if (signTime[0] % 12 === 7 && signTime[1] === 3) WhichSign = 20; // RABBIT EARS
+  if (signTime[0] % 12 === 3 && signTime[1] === 5) WhichSign = 21; // TUSCON
+  if (signTime[0] % 12 < 99 && signTime[1] === 18) WhichSign = 22; // MANHATTAN BRIDGE
   if (signTime[0] % 12 === 7 && signTime[1] === 29) WhichSign = 23; // BRITEX
   if (signTime[1] === 11) WhichSign = 24; // MTA JFK
   if (signTime[0] % 2 === 1 && signTime[1] === 11) WhichSign = 25; // LEONARD'S DONUTS
   if (signTime[0] % 12 === 7 && signTime[1] === 25) WhichSign = 26; // OREGON STAG
   if (signTime[0] % 12 === 8 && signTime[1] === 28) WhichSign = 27; // MALIBU
-  if (signTime[0] % 12 === 7 && signTime[1] === 3) WhichSign = 28; // RABBIT EARS
-  if (signTime[0] % 12 === 5 && signTime[1] === 8) WhichSign = 29; // HEINZ
-
-  // if (WhichSign === 15) mcss.render(signTime); // McSorley
-  // if (signTime[1] % 2 === 1) WhichSign = 13;
-// WhichSign=23
+ 
+//////////////////////////////////////////////////////////////////////////
+WhichSign=(4*signTime[1]%7)+int(signTime[2]/15) 
+WhichSign=24
+frameRate(25);
+if (WhichSign===17) frameRate(10)
+//////////////////////////////////////////////////////////////////////////
   if (WhichSign === 13) {
     if (OysterReset) {
       OysterGroundZero = true;
@@ -342,44 +319,40 @@ function draw() {
     OysterReset = true;
   }
 
+  if (WhichSign === 0) wps.render(signTime); // WALLAUER
   if (WhichSign === 1) {
     cs.increment();
-    frameRate(10);
+    // frameRate(10)
     cs.render(signTime); //CITGO
   }
-  if (WhichSign === 0) wps.render(signTime); // WALLAUER
-  if (WhichSign === 2) bcs.render(signTime); //BOND
-  if (WhichSign === 3) pcs.render(signTime); //SCHWEPPES
-  if (WhichSign === 4) mts.render(signTime); // MARTINI
-  if (WhichSign === 5) lndnS.render(signTime); // LONDON
-  if (WhichSign === 6) dss.render(signTime); // DIM SUM
-  if (WhichSign === 7) hhs.render(signTime); // HIHO
-  if (WhichSign === 8) hcs.render(signTime); // HELMS
-  if (WhichSign === 9) phs.render(signTime); // PADRE
-  if (WhichSign === 10) bws.render(signTime); //  BEST WESTERN
-  if (WhichSign === 11) tps.render(signTime); // TEST PATTERN
-  if (WhichSign === 13) uoh.render(signTime); // UNION OYSTER HOUSE
-  if (WhichSign === 15) mcss.render(signTime); // McSorley
-  if (WhichSign === 16) fars.render(signTime); // FARMACIA
-  if (WhichSign === 17) hf.render(signTime); // HERCULES
-  if (WhichSign === 18) lhws.render(signTime); // LINCOLN
+  if (WhichSign === 2) bcs.render(signTime);    // BOND
+  if (WhichSign === 3) pcs.render(signTime);    // SCHWEPPES
+  if (WhichSign === 4) mts.render(signTime);    // MARTINI
+  if (WhichSign === 5) lndnS.render(signTime);  // LONDON
+  if (WhichSign === 6) dss.render(signTime);    // DIM SUM
+  if (WhichSign === 7) hhs.render(signTime);    // HIHO
+  if (WhichSign === 8) hcs.render(signTime);    // HELMS
+  if (WhichSign === 9) phs.render(signTime);    // PADRE
+  if (WhichSign === 10) bws.render(signTime);   // BEST WESTERN
+  if (WhichSign === 11) tps.render(signTime);   // TEST PATTERN
+  if (WhichSign === 12) hnz.render(signTime);   // HEINZ BOTTLE
+  if (WhichSign === 13) uoh.render(signTime);   // UNION OYSTER HOUSE
+  if (WhichSign === 14) urth.render(signTime);  // URTH
+  if (WhichSign === 15) mcss.render(signTime);  // McSorley
+  if (WhichSign === 16) fars.render(signTime);  // FARMACIA
+  if (WhichSign === 17) hf.render(signTime);    // HERCULES
+  if (WhichSign === 18) lhws.render(signTime);  // LINCOLN
   if (WhichSign === 19) mndrn.render(signTime); // MONDRIAN
-  if (WhichSign === 21) tcx.render(signTime); // TUSCON CACTUS
-  if (WhichSign === 22) mbx.render(signTime); // MANHATTAN BRIDGE
-  if (WhichSign === 23) drs.render(signTime); // BRITEX FABRICS
-  if (WhichSign === 24) MTA.render(signTime); // JFK SUBWAY
-  if (WhichSign === 25) don.render(signTime); // LEONARD'S DONUTS
-  if (WhichSign === 26) wst.render(signTime); // OREGON WHITE STAG
-  if (WhichSign === 27) mbs.render(signTime); // MALIBU
-  if (WhichSign === 28) bre.render(signTime); // STEAMBOAT RABBIT EARS
-  if (WhichSign === 29) hnz.render(signTime); // HEINZ BOTTLE
-
-  if (WhichSign === 14) {
-    frameRate(22);
-    urth.render(signTime);
-  }
+  if (WhichSign === 20) bre.render(signTime);   // STEAMBOAT RABBIT EARS
+  if (WhichSign === 21) tcx.render(signTime);   // TUSCON CACTUS
+  if (WhichSign === 22) mbx.render(signTime);   // MANHATTAN BRIDGE
+  if (WhichSign === 23) drs.render(signTime);   // BRITEX FABRICS
+  if (WhichSign === 24) MTA.render(signTime);   // JFK SUBWAY
+  if (WhichSign === 25) don.render(signTime);   // LEONARD'S DONUTS
+  if (WhichSign === 26) wst.render(signTime);   // OREGON WHITE STAG
+  if (WhichSign === 27) mbs.render(signTime);   // MALIBU
+   
   if (WhichSign > 48 && !window.redirectFired) {
-    // console.log(WhichSign, signTime);
     window.redirectFired = true;
     document.location = "https://q4v86.csb.app/";
   }
@@ -422,7 +395,6 @@ function noisyColor2(currentValue) {
   return (359 + cV1) % 359;
 }
 function noisyColor3(currentValue) {
-  // var ppp = random(5) - 2.5;
   var cV1 = currentValue - 2 + random(6);
   return (359 + cV1) % 359;
 }
@@ -447,4 +419,33 @@ function argsXscalar(scalar, ...args) {
 }
 function kULR() {
   return [random(255), random(255), random(255)];
+}
+function newNeon2(unit,cycles, n,outColor,inColor,wig,swK){
+  const lnCycles=log(cycles*cycles)
+  const pct=log(max(1,n*n))/lnCycles
+  var wiggle=[(1-wig)+random(wig*2),(1-wig)+random(wig*2),(1-wig)+random(wig*2)]
+  var SW=unit*(cycles-n)*swK*.01
+  strokeWeight(SW)
+  var rInOutDelta=wiggle[0]*(inColor[0]-outColor[0])
+  var gInOutDelta=wiggle[1]*(inColor[1]-outColor[1])
+  var bInOutDelta=wiggle[2]*(inColor[2]-outColor[2])
+  var activeColor=[outColor[0]+rInOutDelta*pct,outColor[1]+gInOutDelta*pct,outColor[2]+bInOutDelta*pct]
+  stroke(activeColor)
+  var iDontKnow=[activeColor,SW]
+  return iDontKnow
+
+}
+function newNeon3(unit,cycles, n,outColor,inColor,wig,swK){
+  const lnCycles=log(cycles*cycles)
+  const pct=log(max(1,n*n))/lnCycles
+  var wiggle=(1-wig)+random(wig*2)
+  var SW=unit*(cycles-n)*swK*.01
+  strokeWeight(SW)
+  var InOutDelta=wiggle*(inColor-outColor)
+  
+  activeColor=outColor+InOutDelta*pct
+  stroke(activeColor)
+  var iDontKnow=[activeColor,SW]
+  return iDontKnow
+
 }

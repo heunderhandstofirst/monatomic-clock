@@ -1,31 +1,40 @@
 /* eslint-disable no-undef, no-unused, no-unused-vars */
 class AleSign {
   constructor() {
-    this.step = 15;
-    this.windowDim = [windowWidth, windowHeight];
+    // this.windowDim = [windowWidth, windowHeight];
     this.Ocenter = [windowWidth / 2, windowHeight / 2];
 
     var hhh = 0.95 * min(0.7 * windowWidth, windowHeight);
-    this.Xlen = this.windowDim[0] / 50;
-    this.frame = [
-      hhh / 0.7,
-      hhh,
+    this.Xlen = windowWidth / 50;
+    this.frame = [hhh / 0.7, hhh,
       (windowWidth - hhh / 0.7) / 2,
-      (windowHeight - hhh) / 2
-    ]; //  THIS IS THE 10 x 7 RECTANGLE with Edging
+      (windowHeight - hhh) / 2   ]; //  THIS IS THE 10 x 7 RECTANGLE with Edging
 
-    var scale = (0.95 * this.frame[0]) / McSorleytext.width;
-    this.newDim = [McSorleytext.width * scale, McSorleytext.height * scale];
+    var Sign1= loadImage("images/McS32.png")
+    var Sign2= loadImage("images/McS34.png")
+    var Sign4= loadImage("images/McS36.png")
+    var Sign3= loadImage("images/McS37.png")
+    // this.McSsigns = [ loadImage("images/McS32.png"), loadImage("images/McS34.png")];
+    this.McSsigns = [Sign1, Sign2, Sign3, Sign4];
+
+    this.signDisplayWidth=this.frame[0]*.95
+    this.signDisplayHeight=this.signDisplayWidth/9.2734
+    
+  
+    this.scale = (0.95 * this.frame[0]) / this.McSsigns[0].width;
+    this.ppp=this.McSsigns[0].height
+    this.signWH = [this.McSsigns[0].width * this.scale, this.McSsigns[0].height * this.scale];
+    
     this.signOffset = [
-      (this.windowDim[0] - this.newDim[0]) / 2,
-      this.windowDim[1] / 16
+      (windowWidth - this.signWH[0]) / 2,
+      windowHeight / 16
     ];
 
-    this.bottomBrick = this.signOffset[1] + this.newDim[1] * 1.1;
+    this.bottomBrick = this.signOffset[1] + this.signWH[1] * 1.1;
     this.McSbrickFacade = McSbricks(
       this.Xlen,
       this.bottomBrick,
-      this.windowDim[0]
+      windowWidth
     );
     this.chainWind = makeChainWindow(this.frame, 0.32, 0.165 / 0.7, 36, 24, 50);
     this.chainDoor = makeChainWindow(this.frame, 0.06, 0.172 / 0.7, 6, 28, 100);
@@ -33,24 +42,81 @@ class AleSign {
     this.slatsGrid = makeBottomSlats(this.frame);
     this.door = makeDoor(this.frame);
     this.mat = makeDoorMat(this.frame);
+
   }
 
   render(signTime) {
-    this.step = this.step + 1;
-    // backGrid(this.frame, this.Ocenter);
+
+    var xxx = 0 + round((.2 * mouseX) / windowWidth, 2);
+    var yyy =0 + round((1 * mouseY) / windowHeight, 2);
+
+    // backGrid(this.frame, this.Ocenter) //  DO NOT ERASE ......  USEFUL FOR SCREEN PLACEMENT
     strokeWeight(this.frame[0] / 200);
     glassBack(this.frame);
     var topBotLine = getTop(this.frame, [-0.2, 0.15 / 0.7]);
-    image(this.McSbrickFacade, 0, topBotLine[1] - this.McSbrickFacade.height);
-    placeMcSsign(this.signOffset, this.newDim, this.step, topBotLine);
+    var brickFacadeHeight=topBotLine[1] - this.McSbrickFacade.height
+    image(this.McSbrickFacade, 0, brickFacadeHeight);
+   
+    var Y = getTop(this.frame, [.06 / 0.7, .06 / 0.7]);
+
+    image(this.McSsigns[Date.now()%4],this.signOffset[0],Y[0],this.signDisplayWidth,this.signDisplayHeight)
     displayDrinks(this.frame);
     dividedGlass(this.frame);
-    slidingGate(this.frame, this.newDim, this.signOffset);
+    slidingGate(this.frame, this.signWH, this.signOffset);
     displayChain(this.chainWind, this.frame);
     displaySlats(this.slatsGrid, this.frame);
     displayDoor(this.door, this.frame, this.chainDoor, this.mat);
+    
+    // textSize(25)
+    // fill(255)
+    // strokeWeight(15)
+    // // line(-100,brickFacadeHeight,5000,brickFacadeHeight)
+    // stroke(200,200,0)
+    // // line(-100,this.McSbrickFacade.height,5000,this.McSbrickFacade.height)
+    // // text("x: "+xxx, 50,800)
+    // // text("y: "+yyy, 50,850)
+    // // text("brickFacadeH: "+brickFacadeHeight, 50,900)
+    // strokeWeight(10)
   }
 }
+
+function displayRRR( frame,McSign,LFT,xxx,yyy) {
+  var Y = getTop(frame, [.07 / 0.7, .06 / 0.7]);
+  var LRline = getLeftRite(frame, [.7, .8]);
+push()
+fill(111,111,0)
+  rect(LFT,Y[0],LRline[1],Y[1])
+  pop()
+  // image(McSign, LFT, chainLink[0]);
+  // image(chainWindow, LRline[1], chainLink[0]);
+}
+
+
+function displayMIC( frame,McSign,LFT,xxx,yyy) {
+  var chainLink = getTop(frame, [.07 / 0.7, .8 / 0.7]);
+  var LRline = getLeftRite(frame, [0.09, 0.59]);
+// push()
+// fill(111,111,0)
+//   rect(LRline[0],chainLink[0],LRline[1],chainLink[1])
+//   pop()
+  image(McSign, LFT, chainLink[0]);
+  // image(chainWindow, LRline[1], chainLink[0]);
+}
+
+
+function placeMcSsign(signOffset, newDim,  PCT, McSsigns) {
+  var topLine = PCT[1] - newDim[1];
+  push();
+  stroke(20);
+  strokeWeight(newDim[1] / 10);
+  noFill();
+  fill(200,0,0)
+  // rect(signOffset[0], topLine, newDim[0], newDim[1] * 1.01);
+  rect(signOffset[0], signOffset[1], newDim[0], newDim[1] /11);
+  
+  // line( -100, topLine + newDim[1] * 1.01, newDim[0] * 2,  topLine + newDim[1] * 1.01  );
+  pop();
+ }
 
 function makeDoorMat(frame) {
   var matLR = getLeftRite(frame, [0.5, 0.585]);
@@ -364,22 +430,7 @@ function getLeftRite(frame, PCT) {
   return temp;
 }
 
-function placeMcSsign(signOffset, newDim, step, PCT) {
-  var topLine = PCT[1] - newDim[1];
-  push();
-  stroke(20);
-  strokeWeight(newDim[1] / 10);
-  noFill();
-  rect(signOffset[0], topLine, newDim[0], newDim[1] * 1.01);
-  line(
-    -100,
-    topLine + newDim[1] * 1.01,
-    newDim[0] * 2,
-    topLine + newDim[1] * 1.01
-  );
-  pop();
-  image(McSsigns[step % 2], signOffset[0], topLine, newDim[0], newDim[1]);
-}
+
 function McSbricks(Xlen, bottomBrick, WW) {
   McSgrid = createGraphics(windowWidth * 1.2, Xlen * 10);
   var bCT = 5 + WW / Xlen;

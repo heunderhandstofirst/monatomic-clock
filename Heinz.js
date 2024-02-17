@@ -18,20 +18,7 @@ class HeinzSign {
         line(this.unit*18.79, this.unit*2.03, this.unit*12.94, this.unit*4.86)
 
       }
-      newNeon(cycles, n,outColor,inColor,wig,x,y){
-        const lnCycles=log(cycles*cycles)
-        const pct=log(max(1,n*n))/lnCycles
-        var wiggle=[(1-wig)+random(wig*2),(1-wig)+random(wig*2),(1-wig)+random(wig*2)]
-        var SW=this.unit*(cycles-n)*x*.01
-        strokeWeight(SW)
-        var rInOutDelta=wiggle[0]*(inColor[0]-outColor[0])
-        var gInOutDelta=wiggle[1]*(inColor[1]-outColor[1])
-        var bInOutDelta=wiggle[2]*(inColor[2]-outColor[2])
-        var activeColor=[outColor[0]+rInOutDelta*pct,outColor[1]+gInOutDelta*pct,outColor[2]+bInOutDelta*pct]
-        stroke(activeColor)
-        return [activeColor,SW]
 
-      }
       catsupLabel(xxx,yyy){
         push()
         rotate(PI/-1.51)
@@ -45,11 +32,24 @@ class HeinzSign {
         image(HeinzLabel,0,this.unit*0,this.unit*.5,this.unit*3.27)
         pop()
       }
-      bottleLineDrips(x, y){
-        // var wiggle=[]
-        // for(var p=0;p<20;p++){
-        //   wiggle[p]=this.unit*((-.1+random(.2))*(1/p)*(1/p))
-        // }
+      ketchupInTheAir(x,y){
+        var dripSeconds=int((Date.now() % 1000)/150)
+        push()
+        translate(this.unit*5.39,this.unit*7.89)   
+        for (var t=0;t<50;t++){ 
+          var newN=newNeon2(this.unit,50,t,[0,0,0],[255,0,0],.1,.6)                
+          var kMax = (t > 45) ? 2 : 1;
+          for (var k=0;k<kMax;k++){
+            var dColor=newN[0]
+            if(t>46)dColor=[240+random(15),240+random(15),0]  
+            stroke(dColor)
+            for (var b=dripSeconds;b<5;b++)
+              line(this.unit*(random(.1)), this.unit*((.3*b)+random(.03)),  this.unit*(.3+random(.1)), this.unit*((.3*b)+.1+random(.03)))
+          }
+        }
+        pop()
+      }
+      bottleLineDrips(x, y){  //  THIS IS THE BIG BOTTLE AT THE TOP. IT IS THE BULK OF THE BOTTLE BUT NOT THE OPENING AND THE LIP
         const abc=[[11, 19.3],[10.8,19.1],[10.6,18.7],[10.41,18.26],[10.22,17.77],[10,17.37],[9.8,16.94],[9.59,16.54],[9.35,16.14],[9.2,15.72],[8.9,15.34],[8.65,14.86],[8.4,14.47],[8.1,14.1],[8.33,12.92],[8.5,11.72],[8.68,10.77],[8.76,9.95],[8.76,9.38],[8.83,8.95],[10.6,18.8]]
         const lightGap=this.unit*.15
         var nTime = int((second())%20)
@@ -60,9 +60,9 @@ class HeinzSign {
                 var ddd = abc[n][0]+vLineLR
                 var eee =abc[n][1]-vLineLR
                 var yBar=this.unit*3 +(.184  *n*this.unit)
-                this.newNeon(50,t,[0,0,0],[255,0,0],.1,.6,y)
-                var kMax=1
-                if(t>45)kMax=2
+                yBar=yBar+this.unit*(-.01+random(.02))
+                newNeon2(this.unit,50,t,[0,0,0],[255,0,0],.1,.6)
+                var kMax = (t > 45) ? 2 : 1;
                 for (var k=0;k<kMax;k++){
                   line(this.unit*abc[n][1],yBar,(this.unit*eee)+lightGap,yBar)
                   line(this.unit*abc[n][0],yBar,(this.unit*ddd)-lightGap,yBar)
@@ -71,7 +71,7 @@ class HeinzSign {
               }
             }
         }
-        bottleOpening(x,y){
+        bottleOpening(x,y){  
           var crv = this.unit / 23.5;
           var dripSeconds=Date.now() % 10000
           const xLeft=[5.4, 6, 5.7, 6.3, 5.9, 6.1]
@@ -80,18 +80,16 @@ class HeinzSign {
           for (var t=0;t<50;t++){ 
             push()
               translate(this.unit*.69,this.unit*6.3)   
-              var kMax=1
-                
-              if(t>45)kMax=2
+              var kMax = (t > 45) ? 2 : 1;
               for (var k=0;k<kMax;k++){
-                var newN=this.newNeon(50,t,[0,0,0],[255,0,0],.1,.6,y)
+                var newN=newNeon2(this.unit,50,t,[0,0,0],[255,0,0],.1,.6)
                 var dColor=newN[0]
-                if(t>48)dColor=[240+random(15),240+random(15),0]  
+                if(t>46)dColor=[240+random(15),240+random(15),0]  
                 var dripSeconds=int((Date.now() % 1000)/150)
-                for (var r=0;r<6;r++){
-                softRECT(this.unit, xLeft[r], r*.2, xRite[r], (r+random())*.2, crv, newN[1], dColor);}
+                for (var r=0;r<6;r++)   // THIS IS THE LIP ONLY.  IT DOES NOT INCLUDE THE OVAL OPENING NOR THE AIRBORNE DRIPS
+                softRECT(this.unit, xLeft[r], r*.2, xRite[r], (r+(.8+.4*random()))*.2, crv, newN[1], dColor);
                 
-                if(t>48)dColor=[240+random(15),240+random(15),0]  
+                if(t>46)dColor=[240+random(15),240+random(15),0]  
                 stroke(dColor)
                 var nn=[4.8, 4.8, 4.8, 4.8, 4.8, 4.8, 5]
                 var pp=[5,5.1,5.2,5.3,5.4,5.5, 5.6]
@@ -103,37 +101,21 @@ class HeinzSign {
           }
         }
 
-          ketchupInTheAir(x,y){
-            var dripSeconds=int((Date.now() % 1000)/150)
-            push()
-            translate(this.unit*5.39,this.unit*7.89)   
-            for (var t=0;t<50;t++){ 
-              var newN=this.newNeon(50,t,[0,0,0],[255,0,0],.1,.6,y)                
-              var kMax=1
-              if(t>45)kMax=2
-              for (var k=0;k<kMax;k++){
-                var dColor=newN[0]
-                if(t>48)dColor=[240+random(15),240+random(15),0]  
-                stroke(dColor)
-                for (var b=dripSeconds;b<5;b++){
-                  line(this.unit*(random(.2)), this.unit*((.3*b)+random(.1)),
-                  this.unit*(.3+random(.2)), this.unit*((.3*b)+.1+random(.1)))}
-              }
-            }
-            pop()
-          }
+         
           newShellLineDrips(x, y){
             var nTime = int((second())%20)  
             for (var t=0;t<50;t++){
-              var newN=this.newNeon(50,t,[0,0,0],[255,0,0],.1,.5,y)
-              var kMax=1
-              if(t>45)kMax=2
+              var newN=newNeon2(this.unit,50,t,[0,0,0],[255,0,0],.1,.5)
+              var kMax = (t > 45) ? 2 : 1;
               for (var k=0;k<kMax;k++) {
                 var dColor=newN[0]
-                if(t>47)dColor=[240+random(15),240+random(15),0]  
+                strokeWeight(newN[1])
+                if(t>46)dColor=[240+random(15),240+random(15),0]  
                 stroke(dColor)
                 for (var n= 0 ;n<nTime; n++){
                   var yBar =this.unit*14.38-(.2*this.unit*n)
+                  yBar=yBar+this.unit*(-.01+random(.02))
+                
                   line(this.unit*1.69,yBar,this.unit*18.03,yBar)
                 }
               }

@@ -198,10 +198,7 @@ class verticalWhiteLinesIgnore {
       const x = ((i * 2 + 1) * this.width) / (this.NumberOfLights * 2);
       const y = this.height * 0.7;
       const color = [25, 25, 40]; //this.LightColors[i];
-      this.bulbs.push(
-        // new Bulb(x, y, color, width / this.NumberOfLights, 0.6 * this.height)
-        new WhiteStripe(x, y, color, width, this.height)
-      );
+      this.bulbs.push(new WhiteStripe(x, y, color, width, this.height));
     }
   }
 

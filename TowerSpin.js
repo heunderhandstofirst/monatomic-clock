@@ -1,54 +1,66 @@
 /* eslint-disable no-undef, no-unused, no-unused-vars */
-function spinTower(start2, newColorX) {
+//
+// REFER TO "OXO TWIRL" TAB IN BUNNY MACRO .XLSX
+//
+function spinTower( newColorX,WH, xMID, WW) {
   const angle51 = 45 - (atan(12.5 / 15) * 180) / PI;
-  const boxRadius = windowHeight * 0.195256241898; // sqrt(.125*.125   +  .15 * .15)
-  const towerRadius = windowHeight * sqrt(0.15 * 0.15 + 0.15 * 0.15);
+  // const boxRadius = windowHeight * 0.195256241898; // sqrt(.125*.125   +  .15 * .15)
+  // const towerRadius = windowHeight * sqrt(0.15 * 0.15 + 0.15 * 0.15);
 
-  var fourMinutePct = (millis() - start2) / 120000; //  240000
+  const boxRadius = WH * 0.195256241898; // sqrt(.125*.125   +  .15 * .15)
+  const towerRadius = WH * sqrt(0.15 * 0.15 + 0.15 * 0.15);
+
+  var fourMinutePct = (Date.now() % 120000) / 120000;
+
+
+  // if( (mouseY / windowHeight)>.5) fourMinutePct = .1251
+  
+  // fourMinutePct=0.1251
+  // fourMinutePct=mouseX/windowWidth
+
   var towerEdgeAngle = [(360 * fourMinutePct) % 360];
-  for (var i = 1; i < 4; i++)
-    towerEdgeAngle[i] = (towerEdgeAngle[i - 1] + 90) % 360;
-
+  var towerEdgeCOS = [[0], [0], [0], [0]];
+  
+  for (var i = 1; i < 4; i++)    towerEdgeAngle[i] = (towerEdgeAngle[i - 1] + 90) % 360;  
+  for (i = 0; i < 4; i++) towerEdgeCOS[i][0] = round(cos((PI * towerEdgeAngle[i]) / 180), 8);
+  
   var XboxAngles = [[0], [0], [0], [0]];
   for (i = 0; i < 4; i++) {
     XboxAngles[i][0] = (towerEdgeAngle[i] + angle51) % 360;
     XboxAngles[i][1] = (towerEdgeAngle[i] - angle51) % 360;
-    XboxAngles[i][2] = XboxAngles[i][0] * boxRadius;
   }
-  var towerEdgeCOS = [[0], [0], [0], [0]];
-  for (i = 0; i < 4; i++) {
-    towerEdgeCOS[i][0] = round(cos((PI * towerEdgeAngle[i]) / 180), 8);
-    towerEdgeCOS[i][1] = abs(towerEdgeCOS[i][0]);
-    towerEdgeCOS[i][2] = towerEdgeCOS[i][0] * towerRadius;
-  }
-
-  towerDims = getTowerDimensions(towerEdgeAngle, towerEdgeCOS); // var order = towerDims[3];
-  XboxSides = towerBlackOut(towerDims, towerRadius, XboxAngles, boxRadius);
-  theXbox(boxRadius, XboxSides, towerDims[3], newColorX);
-
-  return [XboxSides, towerDims[3]]; //   towerDims[3]  = ORDER
+    
+  var tColor=["BLUE", "RED", "GREEN", "PINK"]
+  var leftBoxRightBox = drawTowerBackground(towerEdgeCOS, towerEdgeAngle,xMID, tColor, towerRadius)  
+   
+  var order  = getTowerOrder(towerEdgeAngle, towerEdgeCOS); 
+  
+  XboxSides = xBoxEXES(  XboxAngles, boxRadius,  order, xMID);
+    
+  theXbox(boxRadius, XboxSides, order, newColorX,  xMID, WH);  // DRAWS THE 2 X BOXES
+  return [XboxSides, order,towerEdgeCOS, leftBoxRightBox]; 
 }
 
-function theXbox(boxRadius, X, order, newColorX) {
-  const boxWdthHalf = 0.125 * windowHeight;
-  const tMID = windowWidth / 2; // + boxRadius / 8;
-  const BWH9 = 0.9 * boxWdthHalf; // const baseLineFade = windowHeight / 375;
 
+function theXbox(boxRadius, X, order, newColorX,  xMID,WH) {
+  const boxWdthHalf = 0.125 * WH;
+  const BWH9 = 0.9 * boxWdthHalf; // const baseLineFade = windowHeight / 375;
+  
   var lineFadePCT = [
     sin((PI * (X[1] - X[0])) / windowHeight) * sqrt(2),
     sin((PI * (X[3] - X[2])) / windowHeight) * sqrt(2)
   ];
-
+  
   var lineStrokeWeight = [
     windowHeight / (1775 - 1400 * lineFadePCT[0]),
     windowHeight / (1775 - 1400 * lineFadePCT[1])
   ];
 
-  var MUleft = BWH9 + getMu(boxRadius, XboxSides[0] - tMID);
-  var MUmidLeft = BWH9 + getMu(boxRadius, XboxSides[1] - tMID);
+  var MUleft = BWH9 + getMu(boxRadius, XboxSides[0] - xMID);
+  var MUmidLeft = BWH9 + getMu(boxRadius, XboxSides[1] - xMID);
 
-  var MUmidRite = BWH9 + getMu(boxRadius, XboxSides[2] - tMID);
-  var MURite = BWH9 + getMu(boxRadius, XboxSides[3] - tMID);
+  var MUmidRite = BWH9 + getMu(boxRadius, XboxSides[2] - xMID);
+  var MURite = BWH9 + getMu(boxRadius, XboxSides[3] - xMID);
 
   push();
   translate(0, windowHeight / 2);
@@ -60,27 +72,32 @@ function theXbox(boxRadius, X, order, newColorX) {
   strokeWeight(lineStrokeWeight[1]);
   quad(X[2], MUmidRite, X[2], -MUmidRite, X[3], -MURite, X[3], +MURite);
 
+  // THE 2 TRAPEZOIDS HAVE BEEN DRAWN.  THE FOUR POINTS FOR BOTH TRAPEZOIDS ARE SET
+
   var TLA = [];
   var TRA = [];
   var BLA = [];
   var BRA = [];
   var CENT = [];
 
-  for (var d = 0; d < 3; d = d + 2) {
-    var d1 = d + 1;
+  for (var d = 0; d < 2; d++) {
     var muMu = [-MUleft, -MUmidLeft];
-    if (d > 1) muMu = [-MUmidRite, -MURite];
+    if (d > 0) muMu = [-MUmidRite, -MURite];
+    var newD=d*2
+    var newD1=newD+1
+
     var GGG = [];
     for (var g = 0; g < 30; g++) GGG[g] = [0, 0, 0, 0];
     for (var k = 0; k < 6; k++) {
       var k1 = k + 1;
-      GGG[k] = thisGrid(X[d], X[d1], muMu[0], muMu[1], [k, 0], [6, 6 - k]);
-      GGG[6 + k] = thisGrid(X[d], X[d1], muMu[0], muMu[1], [0, k1], [5 - k, 6]);
-      GGG[12 + k] = thisGrid(X[d], X[d1], muMu[0], muMu[1], [0, k1], [k1, 0]);
-      GGG[18 + k] = thisGrid(X[d], X[d1], muMu[0], muMu[1], [k1, 6], [6, k1]);
+      GGG[ 0 + k] = thisGrid(X[newD], X[newD1], muMu[0], muMu[1], [k, 0], [6, 6 - k]);
+      GGG[ 6 + k] = thisGrid(X[newD], X[newD1], muMu[0], muMu[1], [0, k1], [5 - k, 6]);
+      GGG[12 + k] = thisGrid(X[newD], X[newD1], muMu[0], muMu[1], [0, k1], [k1, 0]);
+      GGG[18 + k] = thisGrid(X[newD], X[newD1], muMu[0], muMu[1], [k1, 6], [6, k1]);
     }
 
     var diamondXY = getCenterBoxXY(GGG[16], GGG[1], d, muMu);
+    
     CENT[0] = [diamondXY[0][0], diamondXY[1][0]];
     TLA[1] = CENT[0];
     TRA[3] = CENT[0];
@@ -89,12 +106,12 @@ function theXbox(boxRadius, X, order, newColorX) {
     BRA[3] = CENT[2];
     BLA[1] = CENT[2];
 
-    diamondXY = getCenterBoxXY(GGG[6], GGG[1], d, [0, 0]);
+    diamondXY = getCenterBoxXY(GGG[6], GGG[1], newD, [0, 0]);
     CENT[3] = [diamondXY[0][0], diamondXY[1][0]];
     TLA[2] = CENT[3];
     BLA[0] = CENT[3];
 
-    diamondXY = getCenterBoxXY(GGG[18], GGG[1], d, [0, 0]);
+    diamondXY = getCenterBoxXY(GGG[18], GGG[1], newD, [0, 0]);
     CENT[1] = [diamondXY[0][0], diamondXY[1][1]];
     TRA[2] = CENT[1];
     BRA[0] = CENT[1];
@@ -113,56 +130,65 @@ function theXbox(boxRadius, X, order, newColorX) {
 
     push();
 
-    strokeWeight(lineStrokeWeight[d / 2]);
-
+    strokeWeight(lineStrokeWeight[d ]);
     for (k = 0; k < 23; k++)
       if (k !== 0 && k !== 17) line(GGG[k][0], GGG[k][1], GGG[k][2], GGG[k][3]);
 
-    altColorX(CENT, d / 2, lineStrokeWeight, newColorX[order[d]], 0, order);
-    altColorX(TLA, d / 2, lineStrokeWeight, newColorX[order[d]], 1, order);
-    altColorX(TRA, d / 2, lineStrokeWeight, newColorX[order[d]], 2, order);
-    altColorX(BRA, d / 2, lineStrokeWeight, newColorX[order[d]], 3, order);
-    altColorX(BLA, d / 2, lineStrokeWeight, newColorX[order[d]], 4, order);
+    var colorBlock=order[d]%2
+    altColorX(CENT, lineStrokeWeight[d], newColorX[colorBlock], 0, colorBlock);
+    altColorX(TLA,  lineStrokeWeight[d], newColorX[colorBlock], 1, colorBlock);
+    altColorX(TRA,  lineStrokeWeight[d], newColorX[colorBlock], 2, colorBlock);
+    altColorX(BRA,  lineStrokeWeight[d], newColorX[colorBlock], 3, colorBlock);
+    altColorX(BLA,  lineStrokeWeight[d], newColorX[colorBlock], 4, colorBlock);
 
     pop();
   }
   pop();
+
 }
 
-function altColorX(minBox, LR, lineStrkWt, newXcolor, minMinute, order) {
+function altColorX(minBox,  lineStrkWt, newXcolor, minMinute, colorBlock) {
   const whichMinute = minute() % 5;
-
   push();
   strokeWeight(0);
-
   var boxLineW = windowHeight / 375;
   for (var k = 0; k < 7; k++) {
     var baseColor = newXcolor[minMinute][k];
     fill(color("hsla(" + baseColor + ", 100%, 50%, 1)"));
 
-    if (minMinute > whichMinute && k > 5)
-      fill(getThisSideBackGround(order[LR]));
+    if (minMinute > whichMinute && k > 5) fill(getThisSideBackGround(colorBlock));
     quad(
-      minBox[0][0],
-      minBox[0][1] + 1 * k * boxLineW,
-      minBox[1][0] - 1 * k * lineStrkWt[LR],
-      minBox[1][1],
-      minBox[2][0],
-      minBox[2][1] - 1 * k * boxLineW,
-      minBox[3][0] + 1 * k * lineStrkWt[LR],
-      minBox[3][1]
+      minBox[0][0], minBox[0][1] + 1 * k * boxLineW, minBox[1][0] - 1 * k * lineStrkWt, minBox[1][1],
+      minBox[2][0], minBox[2][1] - 1 * k * boxLineW, minBox[3][0] + 1 * k * lineStrkWt, minBox[3][1]
     );
   }
   pop();
 }
 
+function drawTowerBackground(towerEdgeCOS, towerEdgeAngle,xMID,tColor, towerRadius){
+  var ViewAngles=[135, 315]
+  var leftBoxRightBox=[0,0]
+  push()
+  strokeWeight(windowWidth/1200)
+  for (i=0;i<4;i++){
+    var L0=xMID+towerEdgeCOS[i][0]*towerRadius
+    var L1=xMID+towerEdgeCOS[(i+1)%4][0]*towerRadius
+  
+    fill(getThisSideBackGround(i+1))
+  
+    if(towerEdgeAngle[i]<135 &&  towerEdgeAngle[i]>45)leftBoxRightBox[0]=i
+    if(towerEdgeAngle[i]<45 ||  towerEdgeAngle[i]>315)leftBoxRightBox[1]=i
+    if(towerEdgeAngle[i]<ViewAngles[0] || towerEdgeAngle[i]>ViewAngles[1]) rect(L0,-100,L1-L0,4000) 
+  }
+  pop()
+  return leftBoxRightBox
+}
+
 function getCenterBoxXY(pt0, pt1, d, muMu) {
   var diamondY = [(muMu[0] + muMu[1]) / 6, -(muMu[0] + muMu[1]) / 6];
-  // var dY = diamondY;
   var rise = [pt0[1] - pt0[3], pt1[1] - pt1[3]];
   var run = [pt0[0] - pt0[2], pt1[0] - pt1[2]];
   var slope = [rise[0] / run[0], rise[1] / run[1]];
-  // var tempText = "";
   var mx = [slope[0] * pt0[0], slope[1] * pt1[0]];
   var bIntercept = [pt0[1] - mx[0], pt1[1] - mx[1]];
   var newX = [
@@ -215,58 +241,20 @@ function getMu(boxRadius, XXX) {
   return Mu;
 }
 
-function towerBlackOut(towerDIMS, towerRadius, XboxAngles, boxRadius) {
-  const tMID = windowWidth / 2; // + boxRadius / 8;
-  var order = towerDIMS[3];
-
-  push();
-  strokeWeight(1);
-  stroke(50, 50, 50);
-
-  translate(tMID, 0);
-  for (var i = 0; i < 2; i++) {
-    fill(5 + ((order[i] + 1) % 2) * 50);
-    var tD = [towerDims[i], towerDims[i + 1] - towerDims[i]];
-    rect(tD[0] * towerRadius, -10, tD[1] * towerRadius, windowHeight * 1.1);
-  }
-  translate(-tMID, 0);
-
-  stroke(250, 240, 0);
-  strokeWeight(3);
-  var visibleLeftTowerAngle = [towerDIMS[3][0], towerDIMS[3][1]];
-  var XboxLeftRite =
-    tMID +
-    boxRadius * cos((PI * XboxAngles[visibleLeftTowerAngle[1]][0]) / 180);
-  var XboxLeftLeft =
-    tMID +
-    boxRadius * cos((PI * XboxAngles[visibleLeftTowerAngle[0]][1]) / 180);
-
-  var visibleMidTowerAngle = [towerDIMS[3][1], towerDIMS[3][2]];
-  var XboxRiteRite =
-    tMID + boxRadius * cos((PI * XboxAngles[visibleMidTowerAngle[1]][0]) / 180);
-  var XboxRiteLeft =
-    tMID + boxRadius * cos((PI * XboxAngles[visibleMidTowerAngle[0]][1]) / 180);
-
-  pop();
-
-  return [XboxLeftLeft, XboxLeftRite, XboxRiteLeft, XboxRiteRite];
-}
-
-function getTowerDimensions(towerEdgeAngle, towerEdgeCOS) {
+function getTowerOrder(towerEdgeAngle, towerEdgeCOS) {
   var maxCOS = -1000;
   var minABS = +1000;
 
   for (var i = 0; i < 4; i++) maxCOS = max(maxCOS, towerEdgeCOS[i][0]);
-  for (i = 0; i < 4; i++) minABS = min(minABS, towerEdgeCOS[i][1]);
+  for (i = 0; i < 4; i++) minABS = min(minABS, abs(towerEdgeCOS[i][0]));
 
   var minCOS = -maxCOS;
   var midCOS = 0;
   for (i = 0; i < 4; i++) {
-    if (towerEdgeCOS[i][1] === minABS) {
+    if (abs(towerEdgeCOS[i][0]) === minABS) {
       if (towerEdgeAngle[i] < 180) midCOS = towerEdgeCOS[i][0];
     }
   }
-
   var order = [0, 0, 0];
   for (i = 0; i < 4; i++) {
     if (towerEdgeCOS[i][0] === minCOS) order[0] = i;
@@ -274,5 +262,21 @@ function getTowerDimensions(towerEdgeAngle, towerEdgeCOS) {
     if (towerEdgeCOS[i][0] === maxCOS) order[2] = i;
   }
 
-  return [minCOS, midCOS, maxCOS, order];
+  return  order;
+}
+function xBoxEXES(  XboxAngles, boxRadius,  order, xMID) {
+  var visibleLeftTowerAngle = [order[0], order[1]];
+
+  var t0=(PI * XboxAngles[visibleLeftTowerAngle[1]][0]) / 180
+  var XboxLeftRite =     xMID +     boxRadius * cos(t0);
+  var t1=(PI * XboxAngles[visibleLeftTowerAngle[0]][1]) / 180
+  var XboxLeftLeft =    xMID +    boxRadius * cos(t1);
+
+  var visibleMidTowerAngle = [order[1], order[2]];
+  var t2=(PI * XboxAngles[visibleMidTowerAngle[1]][0]) / 180
+  var XboxRiteRite =     xMID + boxRadius * cos(t2);
+  var t3=(PI * XboxAngles[visibleMidTowerAngle[0]][1]) / 180
+  var XboxRiteLeft =    xMID + boxRadius * cos(t3);
+
+  return [XboxLeftLeft, XboxLeftRite, XboxRiteLeft, XboxRiteRite];
 }
