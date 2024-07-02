@@ -261,7 +261,7 @@ class BunnySign {
       this.bunnyNeonFace(xxx, yyy);
       this.bunnyFlash();
       this.bunnyMotelSign(tu);
-         this.qualityLodging(tu, xxx, yyy);
+      this.qualityLodging(tu, xxx, yyy);
       this.vacancyNoVacancy(tu, xxx, yyy);
       image(RabbitTreeLine, tu * 8.19, tu * 18.14, tu * 5, tu * 1.8);
       pop();

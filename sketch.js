@@ -27,6 +27,7 @@ let don; // LEONARD'S DONUT SHOP
 let wst; // WHITE STAG
 let bre; // BUNNY RABBIT EARS
 let mbs; // MALIBU PIER
+let jcc; // JERSEY CITY CLOCK
 
 let SwitchSign;
 const backgroundImageURL = "images/background.png";
@@ -220,6 +221,7 @@ function setup() {
   wst=new StagSign(); // Oregon Stag
   mbs = new MalibuSign(); // MALIBU Sign
   bre = new BunnySign(); // BUNNY RABBIT EARS
+  jcc = new JerseyCity(); // JERSEY CITY CLOCK
 
 
   window.redirectFired = false;
@@ -268,9 +270,7 @@ function setup() {
 function draw() {
 
   var signTime = [hour(), minute(), second(), 60, 300];
-  // signTime[0] = 6;
-  // signTime[1] = 53 + (signTime[1] % 2);
-
+  
   var Hsecs = signTime[1] * 60 + signTime[2];
   var W1 = int(Hsecs / signTime[4]); // signTime 4 =  number of seconds to show each sign
   WhichSign = W1 % 12;
@@ -286,28 +286,32 @@ function draw() {
   if (signTime[1] === 59) window.redirectFired = false;
   if (every6Hours && signTime[2] < 3) WhichSign = 50;
 
-  if (signTime[0] % 12 === 5 && signTime[1] === 8) WhichSign = 12; // HEINZ 
-  if (signTime[0] % 12 === 11 && signTime[1] === 13) WhichSign = 13; // OYSTER HOUSE
-  if (signTime[0] % 12 === 6 && signTime[1] === 6) WhichSign = 14; // URTH
-  if (signTime[0] % 12 === 6 && signTime[1] === 54) WhichSign = 15; // McSORLEYS
-  if (signTime[0] % 12 === 10 && signTime[1] === 34) WhichSign = 16; // FARMACIA
-  if (signTime[0] % 12 === 5 && signTime[1] === 17) WhichSign = 17;  // HERCULES
-  if (signTime[0] % 12 === 10 && signTime[1] === 31) WhichSign = 18; // LINCOLN
-  if (signTime[0] % 12 === 8 && signTime[1] === 10) WhichSign = 19; // MONDRIAN
-  if (signTime[0] % 12 === 7 && signTime[1] === 3) WhichSign = 20; // RABBIT EARS
-  if (signTime[0] % 12 === 3 && signTime[1] === 5) WhichSign = 21; // TUSCON
-  if (signTime[0] % 12 < 99 && signTime[1] === 18) WhichSign = 22; // MANHATTAN BRIDGE
-  if (signTime[0] % 12 === 7 && signTime[1] === 29) WhichSign = 23; // BRITEX
-  if (signTime[1] === 11) WhichSign = 24; // MTA JFK
-  if (signTime[0] % 2 === 1 && signTime[1] === 11) WhichSign = 25; // LEONARD'S DONUTS
-  if (signTime[0] % 12 === 7 && signTime[1] === 25) WhichSign = 26; // OREGON STAG
-  if (signTime[0] % 12 === 8 && signTime[1] === 28) WhichSign = 27; // MALIBU
- 
+  if( signHour(signTime,  5,  8)) WhichSign = 12;   // HEINZ 
+  if( signHour(signTime, 11, 13)) WhichSign = 13;   // OYSTER HOUSE
+  if( signHour(signTime,  6,  6)) WhichSign = 14;   // URTH
+  if( signHour(signTime,  6, 54)) WhichSign = 15;   // McSORLEYS
+  if( signHour(signTime, 10, 34)) WhichSign = 16;   // FARMACIA
+  if( signHour(signTime,  5, 17)) WhichSign = 17;   // HERCULES
+  if( signHour(signTime, 10, 31)) WhichSign = 18;   // LINCOLN
+  if( signHour(signTime,  8, 10)) WhichSign = 19;   // MONDRIAN
+  if( signHour(signTime,  7,  3)) WhichSign = 20;   // RABBIT EARS
+  if( signHour(signTime,  3,  5)) WhichSign = 21;   // TUSCON
+  if( signHour(signTime,  9, 18)) WhichSign = 22;   // MANHATTAN BRIDGE
+  if( signHour(signTime,  7, 29)) WhichSign = 23;   // BRITEX
+  if( signHour(signTime,  1,  9)) WhichSign = 24;   // MTA JFK
+  if( signHour(signTime,  9, 11)) WhichSign = 25;   // LEONARD'S DONUTS
+  if( signHour(signTime,  7, 25)) WhichSign = 26;   // OREGON STAG
+  if( signHour(signTime,  8, 28)) WhichSign = 27;   // MALIBU
+  if( signHour(signTime,  1,  9)) WhichSign = 28;   // JERSEY CITY CLOCK
+  
 //////////////////////////////////////////////////////////////////////////
-WhichSign=(4*signTime[1]%7)+int(signTime[2]/15) 
-WhichSign=24
+// Which signTime = [hour(), minute(), second(), 60, 300];
+//  WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
+// WhichSign=26
+//////////////////////////////////////////////////////////////////////////
 frameRate(25);
 if (WhichSign===17) frameRate(10)
+if (WhichSign===24) frameRate(40)
 //////////////////////////////////////////////////////////////////////////
   if (WhichSign === 13) {
     if (OysterReset) {
@@ -351,11 +355,26 @@ if (WhichSign===17) frameRate(10)
   if (WhichSign === 25) don.render(signTime);   // LEONARD'S DONUTS
   if (WhichSign === 26) wst.render(signTime);   // OREGON WHITE STAG
   if (WhichSign === 27) mbs.render(signTime);   // MALIBU
+  if (WhichSign === 28) jcc.render(signTime);   // JERSEY CITY CLOCK
    
-  if (WhichSign > 48 && !window.redirectFired) {
-    window.redirectFired = true;
-    document.location = "https://q4v86.csb.app/";
+  // if (WhichSign > 48 && !window.redirectFired) {
+  //   window.redirectFired = true;
+  //   document.location = "https://q4v86.csb.app/";
+  // }
+}
+function signHour(signTime, eastern, minUTE) {
+  // RETURNS TRUE IF THE DESIRED HOUR (AM/PM) IS VALID IN EASTERN, PACIFIC, OR GMT TIMEZONES
+  // 
+  var currentHour=signTime[0]
+
+  var OnOff=false
+  for (var n=0;n<3;n++){
+    var testHour=currentHour+[5, 0, -3][n]
+    var hourTest=(((24+testHour)%12)===(eastern%12)) 
+    if (hourTest && (signTime[1]===minUTE)) OnOff=true
   }
+  // debugger
+  return OnOff
 }
 
 function windowResized() {
@@ -448,4 +467,14 @@ function newNeon3(unit,cycles, n,outColor,inColor,wig,swK){
   var iDontKnow=[activeColor,SW]
   return iDontKnow
 
+}
+
+function prismaticSky(){
+var thisPct = 360*(Date.now()%60000/60000)
+      
+for (var i =-10;i<windowHeight+10;i++){ 
+  var bgColor =int((thisPct+i/10) % 360)   // background color will fade across spectrum during the minute
+  stroke(color("hsla(" + bgColor + ", 95%, 20%, 1)"));
+  line(-10,i,windowWidth+10,i)
+} 
 }

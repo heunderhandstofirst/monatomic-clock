@@ -9,40 +9,83 @@ class ManhattanBridge {
     this.milli = millis();
 
     for (var i = 0; i < 20; i++)
-      this.HueBridge52[i] = [
-        random(250),
-        random(250),
-        random(250),
-        random(250)
-      ];
+      this.HueBridge52[i] = [ random(250),random(250),random(250),random(250)];
   }
 
   render(signTime) {
     background(0);
+    // prismaticSky()
+    var xxx = 0 + round((25 * mouseX) / windowWidth, 1);
+    var yyy = 0 + round((25 * mouseY) / windowHeight, 1);  
 
     for (var spl = 0; spl < 2; spl++) {
-      var mse = round(mouseY / 10, 1);
-
-      if (spl === 1) span2(this.s, this.Ocenter, mse);
-
+      if (spl === 1) span2(this.s, this.Ocenter, yyy);
       push();
       push();
       translate([-windowWidth * 0.2, windowWidth * 0.1][spl], 0);
       scale([0.75, 1.33][spl]);
-
+      
       var v, t, j, k, ts, L, m;
       translate(this.Ocenter[0], this.Ocenter[1] - 35 * this.s);
-
-      if (spl === 1) {
-        // Block out vertical for span and cable
-        push();
-        fill(0);
-        strokeWeight(0);
-        rect(3.5 * this.s, 0, this.s * 18, this.s * 1140);
-        rect(-3.5 * this.s, 0, -this.s * 8, this.s * 1120);
-        rect(-3.5 * this.s, 0, 1000, 10 * this.s);
-        pop();
+      
+      push();   // Block out vertical for span and cable
+      fill(50)
+      strokeWeight(0);
+      for (j=0;j<4;j++){
+        rect(3.5 * this.s, this.s*9, this.s * 2, this.s * 58);
+        translate([-9,-6,21,0][j]*this.s,0)
       }
+      push()
+      translate(-16*this.s,0)
+      rect(0,this.s*5,this.s*20,this.s*1)
+      rect(0,this.s*8.5,this.s*20,this.s*.5)
+      pop()
+      
+      translate(0,this.s*59)
+      for (j=0;j<4;j++){
+        translate(this.s*[4.5,-6, -9,-6,30][j],0)
+        triangle(0,0,this.s*2.15,this.s*8.27,this.s*-2.15,this.s*8.27)
+      }
+      translate(this.s*16.5,this.s*5.85)
+      for (j=0;j<4;j++){
+        translate(this.s*[4.5,-6, -9,-6,30][j],0)
+        triangle(0,0,this.s*2.84,this.s*2.05,this.s*-2.84,this.s*2.05)
+      }
+
+      if(spl===0){
+        push()
+        translate(0,this.s*2.2)
+        fill(2,2,80)
+        var seaY = this.s*4
+        var seaX = 1.1*windowWidth/2
+        var wavesY = [ 0, 1, 3, 5,6,22]
+        for (var v=0;v<6;v++){
+          translate(0,wavesY[v]*this.s*(4+random(5)))
+          if(random()<.9){
+          beginShape()
+            for (j=0;j<40;j++) curveVertex(-seaX+(j*windowWidth/10),seaY*(.95+random(.1)))
+          endShape()
+          }
+        }
+        pop()
+      }
+      translate(1*this.s,-4.37*this.s)
+      /// this is the horseshoe clip at the bottom.  there are 4 in total across both spans
+      for (v=0;v<2;v++){
+        if(v===1) translate (11*this.s,0)
+        for (j=-1;j<2;j=j+2){
+          if(j===1) translate(4*this.s,0)
+          rect(0,0,-j*this.s*4,this.s*.49)
+          rect(0,0,-j*this.s*.85,this.s*1.4)
+          rect(0,0,-j*this.s*.48,this.s*4)
+          
+          quad(0,this.s*2.02, 0,this.s*1.38, -j*this.s*2.03,this.s*.44, -j*this.s*2.03,this.s*1.08)
+        }
+    }
+      //////  end of the horseshoe
+
+      pop();
+      ///////////////////////////////////////////////  end of blockout of variable
 
       noFill();
       stroke(250);
@@ -73,44 +116,45 @@ class ManhattanBridge {
           rect(ts * (4.0 + L), ttt[j] * this.s, ts * 1, 0.75 * this.s);
           rect(ts * (-2.0 + L), ttt[j] * this.s, ts * 1, 0.75 * this.s);
         }
-        verticalLights(this.s, ts);
+        push()
+        fill(75)
+        verticalLights(this.s, ts);  // 4 sets of squares just above the road
+        pop()
 
-        ttt = [12, 17, 22, 27, 32];
-        for (j = 0; j < 5; j++) {
-          var t1 = ttt[j] - 2.75;
+        for (j = 0; j < 5; j++) {   //  HORIZONTAL LINES ABOVE ROAD BETWEEN SETS OF TRIANGES
+          var t1 = [12, 17, 22, 27, 32][j] - 2.75;
           line(ts * 5.5, t1 * this.s, ts * 9.5, t1 * this.s);
         }
-
+        
         /////////////////////////////////////////////////////////////////////////////////////
-        // 2 sets of 5 vertical  boxed triangles in upper center
+        // 2 sets of 5 vertical  boxed triangles in upper center  
         var tt1 = [t * 5.6, t * 3.9];
         for (var jj = 0; jj < 5; jj++) {
           j = 9 + jj * 5;
-          triShape(tt1, [j + 0.5, 4.5], this.s, 0, this.HueBridge52[jj], false);
+          triShape(tt1, [j + 0.5, 4.5], this.s, 0, this.HueBridge52[jj]);
         }
-
-        // if (spl === 1) line(juns, ji, jo, jo);
 
         ////////////////////////////////////////////////
         ////////////////////////////////////////////////
         j = 45; // 2 sets of 2 boxed triangles straddling 3
         jj = [j + 0.5, 2.5];
-        triShape([t * 7.6, t * 1.8], jj, this.s, 0, this.HueBridge52[5], false);
-        triShape([t * 5.6, t * 1.8], jj, this.s, 0, this.HueBridge52[6], false);
+        triShape([t * 7.6, t * 1.8], jj, this.s, 0, this.HueBridge52[5]);
+        triShape([t * 5.6, t * 1.8], jj, this.s, 0, this.HueBridge52[6]);
         /////////////////////////////////////////////////////////////////////
 
         /////////////////////////////////////////////////////////////////////
         // CENTER SET OF 3 TRIANGLES - BOTH SETS
         var s = 10.5; // HIGHER SET
         tt1 = [t * 1.33333, t * 2.33];
-        triShape(tt1, [j + 0.5, 2.5], this.s, 0, this.HueBridge52[7], false);
-        triShape(tt1, [j - s, 2.5], this.s, 0, this.HueBridge52[8], false);
+        triShape(tt1, [j + 0.5, 2.5], this.s, 0, this.HueBridge52[7]);
+        triShape(tt1, [j - s, 2.5], this.s, 0, this.HueBridge52[8]);
 
         tt1 = [t * -1.1666, t * 2.33];
+        push()
         if (t === 1) {
           ///   THESE are the 2 sets of boxed trianges in teh middlle of 3
-          triShape(tt1, [j - s, 2.5], this.s, 0, this.HueBridge52[9], false);
-          triShape(tt1, [j + 0.5, 2.5], this.s, 0, this.HueBridge52[10], false);
+          triShape(tt1, [j - s, 2.5], this.s, 0, this.HueBridge52[9]);
+          triShape(tt1, [j + 0.5, 2.5], this.s, 0, this.HueBridge52[10]);
         }
 
         /////////////////////////////////////////////////////////////////////
@@ -118,21 +162,32 @@ class ManhattanBridge {
         /////////////////////////////////////////////////////////////////////
 
         jj = [j - 39, 2.5];
-        triShape([t * 5.25, t * 2], jj, this.s, 0, this.HueBridge52[11], false);
-        triShape([t * 7.75, t * 2], jj, this.s, 0, this.HueBridge52[12], false);
-        triShape([t * 1.75, t * 2], jj, this.s, 0, this.HueBridge52[13], false);
-        if (t === 1)
-          triShape([-t, t * 2], jj, this.s, 0, this.HueBridge52[14], false);
+        triShape([t * 5.25, t * 2], jj, this.s, 0, this.HueBridge52[11]);
+        triShape([t * 7.75, t * 2], jj, this.s, 0, this.HueBridge52[12]);
+        triShape([t * 1.75, t * 2], jj, this.s, 0, this.HueBridge52[13]);
+        if (t === 1)  triShape([-t, t * 2], jj, this.s, 0, this.HueBridge52[14]);
 
         ///  CENTER JUST ABOVE LOWER ARCHH AND BELOW X's
-        line(ts * 5.5, (j + 0.25) * this.s, ts * 9.5, (j + 0.25) * this.s);
-        line(ts * 0, (j + 0.25) * this.s, ts * 3.5, (j + 0.25) * this.s);
-        line(ts * 0, (j + 3.25) * this.s, ts * 3.5, (j + 3.25) * this.s);
-        line(ts * 0, (j + 3.5) * this.s, ts * 3.5, (j + 3.5) * this.s);
+
+        
+        push()
+        
+          fill(20)
+          stroke(180)
+          rect(ts *0,(j+.25)*this.s,ts*3.5,.25*this.s)
+          rect(ts *0,j*this.s,ts*3.5,.25*this.s)
+
+          rect(ts *0,(j+3.25)*this.s,ts*3.5,.25*this.s)
+          rect(ts *0,(j+3.0)*this.s,ts*3.5,.25*this.s)
+
+          rect(ts * 5.5, (j + 0.25) * this.s, ts * 4,  0.25 * this.s);
+          rect(ts * 5.5, (j ) * this.s, ts * 4,  0.25 * this.s);
+        
+        pop()
 
         push();
         strokeWeight(this.s * 0.2);
-
+        
         bigArch(j, ts, this.s);
         bigArch(j - 39.45, ts, this.s);
         teenyArch(5, ts, this.s, 0, this.WW);
@@ -143,7 +198,7 @@ class ManhattanBridge {
         teenyArch(5, ts, this.s, 5, this.WW);
 
         pop();
-
+    
         ///  ABOVE AND BLEOW THE 7 TRIANGLE SETS AT THE TOP
 
         line(ts * 9.5, this.s * 9, 0, this.s * 9);
@@ -165,7 +220,8 @@ class ManhattanBridge {
           3.25 * ts,
           bz[2] * this.s
         );
-
+        
+        
         strokeCap(SQUARE);
         line(ts * 3.25, (bbb + 1.1) * this.s, 3.25 * ts, (bbb + 3.5) * this.s);
         line(ts * 3.4, (bbb - 0.4) * this.s, 3.4 * ts, (bbb + 3.5) * this.s);
@@ -182,26 +238,26 @@ class ManhattanBridge {
           var j55 = [j + 0.5, 3.5];
           rect(ts * 5.5, j * this.s, ts * 4, 0.5 * this.s);
           line(ts * 5.5, (j + 0.25) * this.s, ts * 9.5, (j + 0.25) * this.s);
-          triShape(tst55, j55, this.s, 0, this.HueBridge52[j / 4], true);
+          triShape(tst55, j55, this.s, 0, this.HueBridge52[j / 4]);
         }
-
+        
         bottom(ts, this.s, j, this.WW);
+        
         line(ts * 5.5, (60 + 0.25) * this.s, ts * 9.5, (j + 0.25) * this.s);
         line(ts * 5.5, 60.5 * this.s, ts * 9.5, 60.5 * this.s);
-
+        
         for (v = 3.5; v < 15.5; v = v + 0.5) {
           ///  DOUBLE SQUARES ABOUT 40% UP FROM BOTTOM
           rect(ts * (v + 0.0), this.s * 44.5, t * this.s * 0.5, this.s * 0.5);
           rect(ts * (v + 0.1), this.s * 44.6, t * this.s * 0.3, this.s * 0.3);
         }
-
+        
         for (v = 3.5; v > -1; v--) {
           ///  DOUBLE SQUARES ABOUT 40% UP FROM BOTTOM   IN CENTER
           rect(ts * (v + 0.0), this.s * 44.5, t * this.s * 1, this.s * 0.5);
           rect(ts * (v + 0.05), this.s * 44.55, t * this.s * 0.9, this.s * 0.4);
         }
-        for (v = 2.5; v > -1; v--) {
-          ///  RAILING   IN CENTER
+        for (v = 2.5; v > -1; v--) {         ///  RAILING   IN CENTER
           rect(ts * (v + 0.0), this.s * 43.5, t * this.s * 1, this.s * 0.95);
         }
 
@@ -213,12 +269,12 @@ class ManhattanBridge {
           rect(ts * 6.3, this.s * (39 + v), t * this.s * 0.75, this.s * 0.5);
           rect(ts * 5.55, this.s * (39 + v), t * this.s * 0.75, this.s * 0.5);
         }
-
+        
         /////   FOUR SETS OF VERTICAL X'S AT THE TOP
         push();
         for (s = 0; s > -4; s = s - 0.8) {
-          triShape([t * 10.1, t * 0.75], [5.0 - s, 0.75], this.s, 1, 0, false);
-          triShape([t * 4.1, t * 0.75], [5.0 - s, 0.75], this.s, 1, 0, false);
+          triShape([t * 10.1, t * 0.75], [5.0 - s, 0.75], this.s, 1, 0);
+          triShape([t * 4.1, t * 0.75], [5.0 - s, 0.75], this.s, 1, 0);
         }
         for (v = 0; v < 7; v++)
           rect(ts * (v * 1.5), 5 * this.s, t * 1.5 * this.s, 0.5 * this.s);
@@ -239,13 +295,14 @@ class ManhattanBridge {
           rect(this.s * 13.25, 4 * this.s, this.s * -26.5, 0.5 * this.s);
         }
         pop();
+        
 
         ///
         /// GRAND TOP WITH GLOBES
         push();
         for (v = 3.8; v < 10; v = v + 6) {
-          fill(20, 20, 200);
-          fill(0);
+          fill(20);
+          
           rect(ts * (v + 0.1), 0.8 * this.s, ts * 1.2, this.s * 0.1);
 
           rect(ts * (v - 0.2), 1.0 * this.s, ts * 1.8, this.s * 1);
@@ -268,23 +325,22 @@ class ManhattanBridge {
           ellipse(ts * (v + 0.7), 3.25 * this.s, this.s * 0.15);
           push();
           fill(0);
+          fill(kULR())
+          noFill()
           ellipse(ts * (v + 0.7), 0.75 * this.s, this.s * 0.5);
           pop();
-          makeFlute(v, ts, this.s, this.WW, this.HueBridge52[12]);
+          makeFlute(v, ts, this.s, this.WW, this.HueBridge52[12]);   //  THESE ARE THE GLOBES WAY AT THE TOP
         }
         pop();
         ///
 
         verticalsOvals(t, ts, this.s);
         // stroke(0, random(250), 250);
-
-        lowerLights(this.s, ts);
-        upperLights(this.s, ts, t);
-
+          lowerLights(this.s, ts);     //// DESPITE THE NAME, THESE ARE THE TROLLEY CARS LOCATED...
+          upperLights(this.s, ts, t);  //// IN THE TWO SIDE ARCHES JUST ABOVE THE ROAD
         ///  GREY BRACe
         push();
-        fill(20, 20, 200);
-        fill(0);
+        fill(120);
         strokeWeight(this.s * 0.15);
         stroke(180);
         for (v = 0; v < 8; v++)
@@ -318,6 +374,7 @@ class ManhattanBridge {
         line(9.5 * ts, 34.5 * this.s, (9.5 - 0.45) * ts, 35.0 * this.s);
 
         pop();
+        
         ///////  OUTER ARC  END
 
         ///////  OUTER ARC  BEGINNING
@@ -341,20 +398,24 @@ class ManhattanBridge {
 
         ///////  RED LINES
         push();
-        for (v = 0; v < -64; v = v + 2) {
-          stroke(50);
-          strokeWeight(this.s * 0.05);
-          if (v === 0) stroke(150);
-          var pp = 0;
-          line(ts * v, this.s * pp, ts * v, this.s * (pp + 69));
-          text(pp + v, 21 * this.s, (v + pp) * this.s);
-          line(21 * this.s, (v + pp) * this.s, -21 * this.s, (v + pp) * this.s);
+        strokeWeight(this.s * 0.05);
+        stroke(50);
+
+        // JKJ=9
+          
+        for (v = 0; v < -64; v = v + 2) {   // THIS IS A DEBUG UTILITY TO PUT A GRID ON THE SCREEN; IT IS NOT NEEDED DURING PRODUCTION
+          line(ts * v, 0, ts * v, this.s *  69);
+          text( v, 21 * this.s, v  * this.s);
+          line(21 * this.s, v  * this.s, -21 * this.s, v * this.s);
         }
         pop();
       }
       // }
     }
     pop();
+    var printText1=""
+    translate(-this.s*30,0)
+    if (5 === 5  / 2) printXY(xxx, yyy, this.s, 0, Date.now(), printText1);
   }
 }
 function span2(sqsz, Ocenter, mse) {
@@ -501,12 +562,12 @@ function drawRailings(bigX, bigY, sqsz) {
 }
 
 function bridgeQuad(bigX, bigY, k, t, adj, block) {
-  //  TOP PART OF RAILING
+  //  LOOPED CABLE WHERE ERM WALKS
   var onOff = 1 === t % 2;
   push();
   if (block) {
     stroke(100);
-    fill(0);
+    fill(0);  // ok to leave as black
   }
 
   quad(
@@ -520,18 +581,18 @@ function bridgeQuad(bigX, bigY, k, t, adj, block) {
     bigY[k][t * 2] - adj
   );
   if (onOff) {
-    push();
-    textSize(20);
-    for (var d = 1; d < 10; d++) {
-      var col = 120 + 12 * d;
-      col = col - 10 + random(20);
-      stroke(col, col, 0);
-      fill(col, col, 0);
-      ellipse(bigX[k][t * 2], bigY[k][t * 2] - adj, windowWidth / (d * 150));
-      var txt = round(bigX[k][t * 2], 1);
-      // if (k === 1) text(txt, bigX[k][t * 2], bigY[k][t * 2] - adj);
-    }
-    pop();
+      push()
+      translate(bigX[k][t * 2], bigY[k][t * 2] - adj);
+      
+      for(var b=0;b<8;b++){
+        var col=100+(b*50)+random(20)
+        if (random()>.5) col=col+20
+        stroke(col, col, 0);
+        fill(220+random(35));
+        ellipse(0, 0, windowWidth /  150,windowWidth/600);
+        rotate(PI/(6+random(4)))
+      }
+      pop()  
   }
   pop();
 }
@@ -614,11 +675,11 @@ function lowerLights(sqsz, ts) {
 function upperLights(sqsz, ts, t) {
   var bot = [38.5, 36, 38, 35.6, 35.5, 35.5, 35.45];
   for (m = 8; m > 5; m = m - 2) {
-    triShape([t * 8, t * 0.5], [bot[0], 0.5], sqsz, 0, BridgeHue, false);
-    triShape([t * 8.5, t * 0.5], [bot[0], 0.5], sqsz, 0, BridgeHue, false);
+    triShape([t * 8, t * 0.5], [bot[0], 0.5], sqsz, 0, BridgeHue);
+    triShape([t * 8.5, t * 0.5], [bot[0], 0.5], sqsz, 0, BridgeHue);
 
-    triShape([t * 6, t * 0.5], [bot[0], 0.5], sqsz, 0, BridgeHue, false);
-    triShape([t * 6.5, t * 0.5], [bot[0], 0.5], sqsz, 0, BridgeHue, false);
+    triShape([t * 6, t * 0.5], [bot[0], 0.5], sqsz, 0, BridgeHue);
+    triShape([t * 6.5, t * 0.5], [bot[0], 0.5], sqsz, 0, BridgeHue);
 
     rect((m + 0.05) * ts, bot[2] * sqsz, 0.9 * ts, 0.5 * sqsz);
     rect((m - 0.1) * ts, bot[1] * sqsz, 1.2 * ts, 2 * sqsz);
@@ -640,8 +701,8 @@ function verticalsOvals(t, ts, sqsz) {
     fill(120);
 
     rect(ts * (4 + m * 6), 45 * sqsz, t * sqsz, 5.25 * sqsz);
-    fill(20, 20, 200);
-    fill(0);
+    // fill(20, 20, 200);
+    fill(0);  // ok to leave as black
 
     ellipse(ts * (4.5 + m * 6), sqsz * 45.8, 0.5 * sqsz, 0.9 * sqsz);
     ellipse(ts * (4.5 + m * 6), sqsz * 47.0, 0.6 * sqsz, 1 * sqsz);
@@ -838,6 +899,7 @@ function bottom(ts, sqsz, j, WW) {
     rect(ts * (3.8 + L), 64 * sqsz, ts * 1.4, 1.4 * sqsz);
     pop();
 
+    
     line(ts * (4.0 + L), 62 * sqsz, ts * (4.0 + L), (m + 1.5) * sqsz);
     line(ts * (3.8 + L), 62 * sqsz, ts * (3.8 + L), (m + 2) * sqsz);
     line(ts * (3.5 + L), 62 * sqsz, ts * (3.5 + L), m * sqsz);
@@ -850,9 +912,12 @@ function bottom(ts, sqsz, j, WW) {
     rect(ts * (6.5 + L), 65.5 * sqsz, ts * -4, 0.16 * sqsz);
     rect(ts * (7 + L), 66.9 * sqsz, ts * -5, 0.16 * sqsz);
 
+    
+
     // var shapeA=[65.7, 65.7, 66, 66.7, 66.9,66.9]
     // var shapeB=[6.5,6.5,6.2, 7.2, 7, 7]
 
+    
     beginShape();
 
     curveVertex(ts * (6.5 + L), 65.7 * sqsz);
@@ -876,7 +941,6 @@ function bottom(ts, sqsz, j, WW) {
   line(ts * (3 + L), 62.1 * sqsz, ts * (3 + L), (m + 3.5) * sqsz);
   line(ts * (3 + L), 62.1 * sqsz, ts * (1.5 + L), (m - 0.5) * sqsz);
   line(ts * (0 + L), 62.1 * sqsz, ts * (1.5 + L), (m - 0.5) * sqsz);
-
   var ang = (millis() % 2000) * ((2 * PI) / 2000);
   var L8 = L + 8;
   if (k === 2) {
@@ -885,12 +949,12 @@ function bottom(ts, sqsz, j, WW) {
     line(ts * (8.5 + L), 68.1 * sqsz, ts * (-20.5 + L), 68.1 * sqsz);
     line(ts * (8.5 + L), 68.1 * sqsz, ts * (8.0 + L), 69.1 * sqsz);
     line(ts * (8.0 + L), 69.1 * sqsz, ts * (-14 + L), 69.1 * sqsz);
-    line(sqsz * L8, 69.1 * sqsz, sqsz * L8, (71 + 0.5 * sin(ang)) * sqsz);
-    line(-sqsz * L8, 69.1 * sqsz, -sqsz * L8, (71 + 0.5 * cos(ang)) * sqsz);
+    fill(20);
+    rect(-sqsz * L8, 69.1 * sqsz, 2*sqsz * L8, 2 * sqsz);
   }
   pop();
 }
-function triShape(xxx, yyy, sqsz, back, MMM, tfcolor) {
+function triShape(xxx, yyy, sqsz, back, MMM) {
   var X = [xxx[0] * sqsz, xxx[1] * sqsz];
   var Y = [yyy[0] * sqsz, yyy[1] * sqsz];
 
@@ -931,27 +995,17 @@ function triShape(xxx, yyy, sqsz, back, MMM, tfcolor) {
 
   var liteness = ", 47%, ";
 
-  fill(0);
   if (back !== 1) fill(color("hsla(" + MMM[0] + liteness + " 47%, 1)"));
-  // fill(250, 0, 0);
-  fill(0);
-
+  noFill()
   triangle(dX[0], Y[0], dX[1], Y[0], dX[2], dY[3]);
-  fill(0);
-
   if (back !== 1) fill(color("hsla(" + MMM[1] + liteness + " 47%, 1)"));
-  fill(0);
+  noFill()
   triangle(dX[0], Y[0] + Y[1], dX[1], Y[0] + Y[1], dX[2], dY[4]);
-
-  fill(0);
-
   if (back !== 1) fill(color("hsla(" + MMM[2] + liteness + " 47%, 1)"));
-  fill(0);
+  noFill()
   triangle(X[0], dY[0], X[0], dY[1], dX[3], dY[2]);
-  fill(0);
-
   if (back !== 1) fill(color("hsla(" + MMM[3] + liteness + " 47%, 1)"));
-  fill(0);
+  noFill()
   triangle(X[0] + X[1], dY[0], X[0] + X[1], dY[1], dX[4], dY[2]);
 
   pop();

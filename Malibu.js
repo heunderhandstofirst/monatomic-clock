@@ -9,8 +9,8 @@ class MalibuSign {
   
     render(signTime) {
       const tu = this.unit;
-      // var xxx = -1 + round((22 * mouseX) / windowWidth, 2);
-      // var yyy = -1 + round((13 * mouseY) / windowHeight, 2);
+      var xxx = -1 + round((22 * mouseX) / windowWidth, 2);
+      var yyy = -1 + round((13 * mouseY) / windowHeight, 2);
       // printXY(xxx, yyy, tu, 0);
       translate(tu / 2, windowHeight / 2 - tu * 2);
       image(this.wS, tu * 1.82, tu * 4); // WHITE SUPPORTS
@@ -222,20 +222,22 @@ class MalibuSign {
       curveCorner(2, tu, 1.54, 0.04, 1.83, 0.24, crv[5], SW, kULR(), 0, 0);
   
       pop();
-      blackDOTS(tu);
+      blackDOTS(tu,xxx);
     }
   }
   
-  function blackDOTS(tu) {
+  function blackDOTS(tu,xxx) {
     // SPORTS FISHING
     malibuDot(
       [0.78, 1.59, 2.72, 4.75, 5.58, 6.35, 6.7, 8.12, 8.55, 10.52, 11.44],
       [2.78, 2.78, 2.8, 2.08, 2.78, 2.8, 2.8, 2.1, 2.13, 2.46, 2.85],
       tu
     );
+    [13.52, 14.07, 2.48, 3, 3.53, 5.99, 5.96, 6.86, 8.26, 8.93, 9.52],
+    
     malibuDot(
-      [13.52, 14.07, 2.48, 3, 3.53, 5.99, 5.96, 6.86, 8.26, 8.93, 9.52],
-      [2.83, 2.86, 3.68, 3.66, 3.53, 3.34, 3.55, 3.24, 3.66, 3.66, 3.21],
+      [13.52, 14.07, 2.48, 3, 3.61, 5.99, 5.96, 6.86, 8.26, 8.93, 9.52],
+      [2.83, 2.86, 3.68, 3.66, 3.68, 3.34, 3.55, 3.24, 3.66, 3.66, 3.21],
       tu
     );
   
@@ -431,7 +433,7 @@ class MalibuSign {
     return fullSign;
   }
   
-  function printXY(xxx, yyy, unit, v, dateN) {
+  function printXY(xxx, yyy, unit, v, dateN,extraText1, extraText2,extraText3) {
     push();
     strokeWeight(1);
     textSize(15);
@@ -442,12 +444,20 @@ class MalibuSign {
     text("y: " + yyy, 50, 25 * x++);
     text("date.now(): " + dateN, 50, 25 * x++);
     var tempSec = (dateN % 60000) / 60000;
-    text("seconds: " + round((dateN % 60000) / 1000, 3), 50, 25 * x++);
-    text("tempSec: " + round(tempSec, 3), 50, 25 * x++);
+    text("%age of the minute [0-100]: " + round(100*tempSec,1), 50, 25 * x++);
+
+
+    
+    text("current time seconds: " + round((dateN % 60000) / 1000, 3), 50, 25 * x++);
+    text("current time minute: " + minute(), 50, 25 * x++);
+    text("current time hour: " + hour(), 50, 25 * x++);
     text("which24: " + int(tempSec * 24), 50, 25 * x++);
     text("unit: " + unit, 50, 25 * x++);
     text("ww: " + windowWidth, 50, 25 * x++);
     text("wh: " + windowHeight, 50, 25 * x++);
+    text(extraText1, 50, 25 * x++);
+    text(extraText2, 50, 25 * x++);
+    text(extraText3, 50, 25 * x++);
     pop();
   }
   

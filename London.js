@@ -37,7 +37,7 @@ class LondonSign {
     
     this.CircCent = 0.15;
   
-    // floaters( signTime,   this.Pickle, this.WH, this.step, this.iris);  // FLOATS THE GHERKIN AND THE EYE BEHIND THE TOWER
+    floaters( signTime,   this.Pickle, this.WH, this.step, this.iris);  // FLOATS THE GHERKIN AND THE EYE BEHIND THE TOWER
     
     changeXcolors2(this.newColorX) // this function changes the colors of OXO
     // this 4 function calls apply all the non-white colors to the top and bottom O's

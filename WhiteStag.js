@@ -1,12 +1,7 @@
 /* eslint-disable no-undef, no-unused, no-unused-vars */
 class StagSign {
     constructor() {
-      this.OLU = [
-        windowWidth * 0.3,
-        windowHeight * 0.35,
-        windowWidth * 0.4,
-        windowHeight * 0.4
-      ];
+      this.OLU = [ windowWidth * 0.3,  windowHeight * 0.35, windowWidth * 0.4, windowHeight * 0.4 ];
   
       this.WH = windowHeight;
       this.WW = min(this.WH * (16 / 18), windowWidth) * 0.97;
@@ -61,10 +56,8 @@ class StagSign {
     redNose(xxx, yyy) {
       push();
       // translate(this.leftBorder, this.topBorder);
-  
       fill(250, 0, 0);
-  
-      for (var k = 0; k < 100; k++) {
+        for (var k = 0; k < 100; k++) {
         strokeWeight(this.WW / (10 + k));
         stroke(2.55 * k, 0, 0);
         strokeWeight(0);
@@ -82,9 +75,20 @@ class StagSign {
       var xxx = 0 + round((15 * mouseX) / windowWidth, 1);
       var yyy = 0 + round((15 * mouseY) / windowHeight, 1);
       var dn = Date.now();
+      background(0)
+      
   
       poSpleckle(this.OLU);
       image(StagFoto, this.OLU[0], this.OLU[1], this.OLU[2], this.OLU[3]); //  WHITE LETTERING
+      push()
+      fill(0)
+      strokeWeight(0)
+      rect(this.OLU[0], this.OLU[1],windowWidth/2.5,windowHeight/196)
+      rect(this.OLU[0], this.OLU[1],windowWidth/196,this.OLU[3])
+      
+      rect(this.OLU[0], this.OLU[1]+this.OLU[3],windowWidth/2.5,windowHeight/196)
+      rect(this.OLU[0]+this.OLU[2], this.OLU[1],windowWidth/196,this.OLU[3])
+      pop()
       image(
         OregonFoto,
         this.leftBorder,
@@ -109,6 +113,7 @@ class StagSign {
     yB = createGraphics(ssW, ssH);
     for (var k = 0; k < 24; k++) {
       yB.background(0, 40, 40);
+      yB.background(0)
       for (var j = 0; j < 24; j++) {
         var yBcolor = 215 + random(50);
         if (month() === blinkMonth) yBcolor = [0, 255, 0];
