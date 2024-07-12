@@ -2,21 +2,18 @@
 class HiHoSign {
   constructor() {
     this.nL = 0;
-    this.Ocenter = [windowWidth / 2, windowHeight / 2];
     this.rectLines = [0, 0.15, 0.2, 0.5, 0.55, 0.85, 0.9, 1];
     this.boardText = ["","MERRITT PARKWAY", "", "MOTEL", "", "HI-HO", "", "RESTAURANT  COCKTAIL LOUNGE"];
     this.textSz = [20, 30, 120, 5, 5, 5, 120, 30, 120];
-    
-    
   }
-  increment() {
-    this.step = this.step + 1;
-    if (SwitchSign) this.step = 0;
-    
-  }
+  // increment() {
+  //   this.step = this.step + 1;
+  //   if (SwitchSign) this.step = 0;
+  // }
 
   render(signTime) {
     background(0);
+    this.Ocenter = [windowWidth / 2, windowHeight / 2];
     var WW = min(windowHeight * (3 / 2), windowWidth) * 0.9;
     var WH = (WW * 2) / 3;
     push();
@@ -36,8 +33,7 @@ class HiHoSign {
         var Xvar = [-WW / 2 + k * Xwide, -WW / 2 + (k + 1) * Xwide];
         Xvar[2] = 0.5 * (Xvar[0] + Xvar[1]);
         push();
-        if (j === 5)
-          Xvar[2] = Xvar[2] - Xwide * [-0.4, -0.15, +0.2, 0.35, 0.35][k];
+        if (j === 5) Xvar[2] = Xvar[2] - Xwide * [-0.4, -0.15, +0.2, 0.35, 0.35][k];
 
         translate(Xvar[2], Yvar[2]); // ellipse(0, 0, 1);
         stroke(220, 3, 9);
@@ -49,14 +45,14 @@ class HiHoSign {
         var Ytop = Yhite * 0.38;
         var Ybot = -Ytop;
         if (j === 3 || j === 5) {
-          if (rowText[k] === "E") drawHiHoE(WW, Ybot, Ytop, Xleft, Xrite, signTime);
-          if (rowText[k] === "L") drawHiHoL(WW, Ybot, Ytop, Xleft, Xrite, signTime);
-          if (rowText[k] === "M") drawHiHoM(WW, Ybot, Ytop, Xleft, Xrite, signTime);
-          if (rowText[k] === "H") drawHiHoH(WW, Ybot, Ytop, Xleft, Xrite, j, signTime, k);
-          if (rowText[k] === "O") drawHiHoO(WW, Ybot, Ytop, Xleft, Xrite, j, signTime);
-          if (rowText[k] === "T") drawHiHoT(WW, Ybot, Ytop, Xleft, Xrite, signTime);
-          if (rowText[k] === "I") drawHiHoI(WW, Ybot, Ytop, Xleft, Xrite, signTime);
-          if (rowText[k] === "-") drawHiHoDash(WW, Ybot, Ytop, Xleft, Xrite, signTime);
+          if (rowText[k] === "E") drawHiHoE(WW, Ybot, Ytop, Xleft, Xrite);
+          if (rowText[k] === "L") drawHiHoL(WW, Ybot, Ytop, Xleft, Xrite);
+          if (rowText[k] === "M") drawHiHoM(WW, Ybot, Ytop, Xleft, Xrite);
+          if (rowText[k] === "H") drawHiHoH(WW, Ybot, Ytop, Xleft, Xrite,  signTime, k);
+          if (rowText[k] === "O") drawHiHoO(WW, Ybot, Ytop,  j, signTime);
+          if (rowText[k] === "T") drawHiHoT(WW, Ybot, Ytop, Xleft, Xrite);
+          if (rowText[k] === "I") drawHiHoI(WW, Ybot, Ytop, signTime);
+          if (rowText[k] === "-") drawHiHoDash(WW,   Xleft,  signTime);
         }
         if (j !== 3 && j !== 5) {
           push();
@@ -80,7 +76,7 @@ function setRedLetterSizeStroke(j, WW) {
   var baseW = 700 + ColorSpike * 200;
   strokeWeight(WW / (200 + ColorSpike * baseW));
 }
-function drawHiHoT(WW, Ybot, Ytop, Xleft, Xrite, signTime) {
+function drawHiHoT(WW, Ybot, Ytop, Xleft, Xrite) {
   for (j = 0; j < 7; j = j + 2) {
     var EpsilonW = (j * WW) / 400;
     var EpsilonH = (j * WW) / 496;
@@ -101,7 +97,7 @@ function drawHiHoT(WW, Ybot, Ytop, Xleft, Xrite, signTime) {
   }
 }
 
-function drawHiHoI(WW, Ybot, Ytop, Xleft, Xrite, signTime) {
+function drawHiHoI(WW, Ybot, Ytop,  signTime) {
   for (j = 0; j < 7; j = j + 2) {
     var EpsilonW = (j * WW) / 400;
     var EpsilonH = (j * WW) / 496;
@@ -119,7 +115,7 @@ function drawHiHoI(WW, Ybot, Ytop, Xleft, Xrite, signTime) {
   }
 }
 
-function drawHiHoM(WW, Ybot, Ytop, Xleft, Xrite, signTime) {
+function drawHiHoM(WW, Ybot, Ytop, Xleft, Xrite) {
   Xleft = Xleft * 1.25;
   Xrite = Xrite * 1.25;
   for (j = 0; j < 7; j = j + 2) {
@@ -150,7 +146,7 @@ function drawHiHoM(WW, Ybot, Ytop, Xleft, Xrite, signTime) {
   }
 }
 
-function drawHiHoL(WW, Ybot, Ytop, Xleft, Xrite, signTime) {
+function drawHiHoL(WW, Ybot, Ytop, Xleft, Xrite) {
   for (j = 0; j < 7; j = j + 2) {
     setRedLetterSizeStroke(j, WW);
 
@@ -170,7 +166,7 @@ function drawHiHoL(WW, Ybot, Ytop, Xleft, Xrite, signTime) {
   }
 }
 
-function drawHiHoE(WW, Ybot, Ytop, Xleft, Xrite, signTime) {
+function drawHiHoE(WW, Ybot, Ytop, Xleft, Xrite) {
   for (j = 0; j < 7; j = j + 2) {
     var EpsilonW = (j * WW) / 400;
     var EpsilonH = (j * WW) / 496;
@@ -197,32 +193,24 @@ function drawHiHoE(WW, Ybot, Ytop, Xleft, Xrite, signTime) {
   }
 }
 
-function drawHiHoO(WW, Ybot, Ytop, Xleft, Xrite, topBot, signTime) {
-  JJ = 15;
-  setRedLetterSizeStroke(-2, WW);
-
-  var EpsilonW = (+JJ * WW) / 400;
-  var EpsilonH = (-8 * WW) / 596;
+function drawHiHoO(WW, Ybot, Ytop,  topBot, signTime) {
+ 
   for (j = 0; j < 13; j = j + 2) {
     setRedLetterSizeStroke(j - 2, WW);
     noFill();
     if (topBot === 5 && j === 6 && 4 === signTime[1] % 5) {
       stroke(250);
-      var ColorSpike = (6 + 2) % 4;
-      var baseW = 700 + ColorSpike * 200;
-      strokeWeight(WW / (200 + ColorSpike * baseW));
+      strokeWeight(WW/200)
     }
 
-    EpsilonW = ((j + JJ) * WW) / 400;
-    EpsilonH = ((j - 4) * WW) / 496;
-    // var xxx = 0 + round((30 * mouseX) / windowWidth, 2);
-    // var arch=windowWidth/100
+    var EpsilonW = ((j + 15) * WW) / 400;
+    var EpsilonH = ((j - 4) * WW) / 496;
    
     rect(-EpsilonW, Ytop - EpsilonH, 2 * EpsilonW, 2 * (Ybot + EpsilonH), windowWidth/100);
   }
 }
 
-function drawHiHoDash(WW, Ybot, Ytop, Xleft, Xrite, signTime) {
+function drawHiHoDash(WW,   Xleft,  signTime) {
   for (j = 0; j < 7; j = j + 2) {
     setRedLetterSizeStroke(j, WW);
     noFill();
@@ -241,7 +229,7 @@ function drawHiHoDash(WW, Ybot, Ytop, Xleft, Xrite, signTime) {
   }
 }
 
-function drawHiHoH(WW, Ybot, Ytop, Xleft, Xrite, minInd, signTime, k) {
+function drawHiHoH(WW, Ybot, Ytop, Xleft, Xrite,  signTime, k) {
   for (j = 0; j < 7; j = j + 2) {
     setRedLetterSizeStroke(j, WW);
     noFill();

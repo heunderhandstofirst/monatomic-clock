@@ -298,8 +298,8 @@ function draw() {
   if( signHour(signTime,  3,  5)) WhichSign = 21;   // TUSCON
   if( signHour(signTime,  9, 18)) WhichSign = 22;   // MANHATTAN BRIDGE
   if( signHour(signTime,  7, 29)) WhichSign = 23;   // BRITEX
-  if( signHour(signTime,  1,  9)) WhichSign = 24;   // MTA JFK
-  if( signHour(signTime,  9, 11)) WhichSign = 25;   // LEONARD'S DONUTS
+  if( signHour(signTime, 12,  4)) WhichSign = 24;   // MTA JFK
+  if( signHour(signTime,  6, 17)) WhichSign = 25;   // LEONARD'S DONUTS
   if( signHour(signTime,  7, 25)) WhichSign = 26;   // OREGON STAG
   if( signHour(signTime,  8, 28)) WhichSign = 27;   // MALIBU
   if( signHour(signTime,  1,  9)) WhichSign = 28;   // JERSEY CITY CLOCK
@@ -307,7 +307,7 @@ function draw() {
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
 //  WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
-// WhichSign=26
+// WhichSign=14
 //////////////////////////////////////////////////////////////////////////
 frameRate(25);
 if (WhichSign===17) frameRate(10)
