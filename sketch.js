@@ -33,7 +33,8 @@ let SwitchSign;
 const backgroundImageURL = "images/background.png";
 const downTown60PIC = "images/P3K.png";
 const letterURLs = [
-  "images/letter-00-s.png",
+  // "images/letter-00-s.png",
+  "images/Schw-SS.png",
   "images/letter-01-c.png",
   "images/letter-02-h.png",
   "images/letter-03-w.png",
@@ -307,7 +308,7 @@ function draw() {
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
 //  WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
-// WhichSign=14
+WhichSign=3
 //////////////////////////////////////////////////////////////////////////
 frameRate(25);
 if (WhichSign===17) frameRate(10)

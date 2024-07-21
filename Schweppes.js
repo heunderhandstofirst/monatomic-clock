@@ -6,25 +6,42 @@ class SchweppesSign {
     this.step = 250;
     this.TurnMode = 99;
     this.ConstColorIndex = 0;
+    this.letterXs=0
+    this.letterYs=0
+    this.modeCycle = 10   //  length of cycle, in seconds, for left/right/middlecollapse/sparkle
+    this.NumBands=13
+    this.NumColors=6
+    this.NumStripes = 8;
+    this.LineN = this.NumBands * this.NumStripes;
   }
+  schweppesBackground(MidX,SingleLineWidth,  MidY   ){
+    let imageX =  MidX - 0.7 * SingleLineWidth - (this.LineN * SingleLineWidth) / 2;
+    let imageY = 0.3 * (MidY / 2);
+    const imageWX = this.LineN * SingleLineWidth;
+    const imageWY = (3.2 * MidY) / 2;
+    if(random()>.5)     image(SchweppesbackgroundImage, imageX, imageY, imageWX, imageWY);
+
+
+  }
+
   render(signTime) {
+    var xxx = 0 + round((100 * mouseX) / windowWidth, 1);
+    var yyy = -5 + round((10 * mouseY) / windowHeight, 2);  
+    var MidX = windowWidth / 2;
+    var MidY = windowHeight / 2;
+    var modularSeconds=Date.now() % 60000
+    var LeftRiteCollapseMode=int(modularSeconds/(this.modeCycle/3))+int(modularSeconds/(2.5*this.modeCycle/3))
+    
     this.step = this.step + 1;
     if (SwitchSign) this.step = 0;
 
-    const NumBands = 13;
-    const NumColors = 6;
-    const NumStripes = 8;
-    var LineN = NumBands * NumStripes;
-
     var BaseLineLen = round(windowHeight * 0.9, 0);
     var SingleLineWidth = BaseLineLen / 88;
-    var MidX = windowWidth / 2;
-    var MidY = windowHeight / 2;
-    var Xstart = MidX - (LineN / 2) * SingleLineWidth;
+    var Xstart = MidX - (this.LineN / 2) * SingleLineWidth;
 
-    var CycleStep = this.step % (3 * LineN);
-    var Interim123 = int((CycleStep - 1) / LineN);
-    var The25 = int(CycleStep / (2.5 * LineN));
+    var CycleStep = this.step % (3 * this.LineN);
+    var Interim123 = int((CycleStep - 1) / this.LineN);
+    var The25 = int(CycleStep / (2.5 * this.LineN));
     var Mode = Interim123 + The25;
     if (CycleStep === 260) Mode = 2;
     if (CycleStep === 0) {
@@ -35,16 +52,16 @@ class SchweppesSign {
       }
     }
 
-    var ModeStep = 1 + ((CycleStep - 1) % LineN);
+    var ModeStep = 1 + ((CycleStep - 1) % this.LineN);
 
     strokeWeight(5);
     textSize(25);
     var lineV = 0;
     var printLineLen = 0;
-    const RandomLetterColorIndex = Math.floor(Math.random() * 7);
+    // const RandomLetterColorIndex = Math.floor(Math.random() * 7);
 
-    for (var j = 0; j < NumBands; j++) {
-      var CurrentColor = j % NumColors;
+    for (var j = 0; j < this.NumBands; j++) {
+      var CurrentColor = j % this.NumColors;
       var GreyStroke = 30 + 12 * CurrentColor;
       var ColrStroke = this.RGBx(CurrentColor);
 
@@ -56,11 +73,11 @@ class SchweppesSign {
       }
 
       var time2color = int(
-        (LineN * ((signTime[1] % 5) + signTime[2] / 60)) / 5
+        (this.LineN * ((signTime[1] % 5) + signTime[2] / 60)) / 5
       );
 
-      for (var k = 0; k < NumStripes; k++) {
-        lineV = j * NumStripes + k;
+      for (var k = 0; k < this.NumStripes; k++) {
+        lineV = j * this.NumStripes + k;
         this.printDiagnostics(false, CycleStep, Mode, ModeStep, this.TurnMode);
         stroke(
           this.getModeStroke(GreyStroke, lineV, ModeStep, Mode, ColrStroke)
@@ -92,41 +109,42 @@ class SchweppesSign {
       }
     }
 
-    const imageX =
-      +MidX - 0.7 * SingleLineWidth - (LineN * SingleLineWidth) / 2;
-    const imageY = 0.3 * (MidY / 2);
-    const imageWX = LineN * SingleLineWidth;
-    const imageWY = (3.2 * MidY) / 2;
-    image(SchweppesbackgroundImage, imageX, imageY, imageWX, imageWY);
+    // let imageX =
+    //   +MidX - 0.7 * SingleLineWidth - (this.LineN * SingleLineWidth) / 2;
+    // let imageY = 0.3 * (MidY / 2);
+    // const imageWX = this.LineN * SingleLineWidth;
+    // const imageWY = (3.2 * MidY) / 2;
+    // if(random()>.5)     image(SchweppesbackgroundImage, imageX, imageY, imageWX, imageWY);
 
-    if (Mode < 3 && this.TurnMode !== 1) {
-      for (let i = 0; i < letterImagesWhite.length; i++)
+    if(5===5/2){
+      if (Mode < 3 && this.TurnMode !== 1) {
+      for (let i = 0; i < -letterImagesWhite.length; i++){
+        
         image(letterImagesWhite[i], imageX, imageY, imageWX, imageWY);
-    }
+    }}
+    var bbb= [51.4, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx]
+    var ccc = [-.5,yyy ,yyy,yyy,yyy]
     if (this.TurnMode === 1) {
       for (let i = 0; i < letterImagesWhite.length; i++) {
-        image(
-          letterImagesWithColor[i][this.ConstColorIndex],
-          imageX,
-          imageY,
-          imageWX,
-          imageWY
-        );
+        if(i<2){
+          imageX=this.letterXs+(SingleLineWidth*bbb[i])
+          imageY=(1.6*MidY)+(windowHeight*ccc[i]/2)
+        }
+        image(letterImagesWithColor[i][this.ConstColorIndex],
+          imageX, imageY, imageWX, imageWY);
       }
     }
+    var unit, v, extraText1,extraText2,extraText3
+    
+    printXY(xxx, yyy, unit, v, Date.now(),extraText1, extraText2,extraText3) 
     if (Mode === 3) {
       for (let i = 0; i < letterImagesWithColor.length; i++) {
         image(
-          letterImagesWithColor[i][
-            Math.floor(Math.random() * letterImagesWithColor[i].length)
-          ],
-          imageX,
-          imageY,
-          imageWX,
-          imageWY
-        );
+          letterImagesWithColor[i][Math.floor(Math.random() * letterImagesWithColor[i].length)],
+          imageX, imageY, imageWX, imageWY );
       }
     }
+  }
   }
 
   /////////////////////////////////////////////////////////////
