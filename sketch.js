@@ -289,7 +289,7 @@ function draw() {
 
   if( signHour(signTime,  5,  8)) WhichSign = 12;   // HEINZ 
   if( signHour(signTime, 11, 13)) WhichSign = 13;   // OYSTER HOUSE
-  if( signHour(signTime,  6,  6)) WhichSign = 14;   // URTH
+  // if( signHour(signTime,  6,  6)) WhichSign = 14;   // URTH
   if( signHour(signTime,  6, 54)) WhichSign = 15;   // McSORLEYS
   if( signHour(signTime, 10, 34)) WhichSign = 16;   // FARMACIA
   if( signHour(signTime,  5, 17)) WhichSign = 17;   // HERCULES
