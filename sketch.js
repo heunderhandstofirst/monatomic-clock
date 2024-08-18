@@ -33,7 +33,6 @@ let SwitchSign;
 const backgroundImageURL = "images/background.png";
 const downTown60PIC = "images/P3K.png";
 const letterURLs = [
-  // "images/letter-00-s.png",
   "images/Schw-SS.png",
   "images/Schw-c.png",
   "images/Schw-h.png",
@@ -43,14 +42,6 @@ const letterURLs = [
   "images/Schw-p.png",
   "images/Schw-e.png",
   "images/Schw-s.png"
-  // "images/letter-01-c.png",
-  // "images/letter-02-h.png",
-  // "images/letter-03-w.png",
-  // "images/letter-04-e.png",
-  // "images/letter-05-p.png",
-  // "images/letter-06-p.png",
-  // "images/letter-07-e.png",
-  // "images/letter-08-s.png"
 ];
 
 // IMAGE FILES
@@ -84,7 +75,6 @@ var NewSign = true;
 let schweppesLetterColors;
 let letterImagesWhite = [];
 let letterImagesWithColor = [];
-let SchweppesbackgroundImage;
 let WeatherJsons = [];
 let WeatherStrings = [];
 let NeonPreload;
@@ -94,9 +84,6 @@ var weatherWWWfinish =
   "&mode=json&units=Imperial&cnt=7&appid=82c1267972094d5c1801e60fea29992c";
 
 const WeatherInterval = 2000;
-
-const numSigns = 12;
-// let neonTime = 300; //// DEFAULT VALUE IS 300 I.E. 5 MINUTES
 
 const BoxCombos = [
   [0, 2, 10, 9, 0],
@@ -141,12 +128,12 @@ function preload() {
   BunnyFace = loadImage("images/TransparentBRface.png");
   RabbitWords = loadImage("images/REwords.png");
   RabbitTreeLine = loadImage("images/TreeLine.png");
-HeinzShell = loadImage("images/HeinzShell.png");
-HeinzBottle = loadImage("images/HeinzBottle.png");
-HeinzLetters= loadImage("images/heinz-logo-black-and-white.png");
-Catsup = loadImage("images/catsup22.png");
-HeinzBottleWhite = loadImage("images/HeinzBottleLavender.png");
-HeinzLabel = loadImage("images/HeinzLabel.png");
+  HeinzShell = loadImage("images/HeinzShell.png");
+  HeinzBottle = loadImage("images/HeinzBottle.png");
+  HeinzLetters= loadImage("images/heinz-logo-black-and-white.png");
+  Catsup = loadImage("images/catsup22.png");
+  HeinzBottleWhite = loadImage("images/HeinzBottleLavender.png");
+  HeinzLabel = loadImage("images/HeinzLabel.png");
 
   const WeatherLocations = [
     "London",
@@ -162,7 +149,6 @@ HeinzLabel = loadImage("images/HeinzLabel.png");
   // letterImagesWithColor is an array of length 9.  Each of those 9 items are arrays of length 8.
   // the 8 items are the same letter in different color
 
-  SchweppesbackgroundImage = loadImage(backgroundImageURL);
   //////////////////////////////////////////////////////////////////
   // WeatherJsons = [];
   if (true) {
@@ -248,34 +234,12 @@ function setup() {
   ];
 
   frameRate(25);
-  
-  // for (let letterIndex = 0; letterIndex < letterImagesWhite.length;letterIndex += 1) {
-  //   const colorVariationsOfIndividualLetter = new Array(schweppesLetterColors.length);
-  //   colorVariationsOfIndividualLetter.fill(letterImagesWhite[letterIndex].get());
-  //   for (
-  //     let colorIndex = 0;
-  //     colorIndex < schweppesLetterColors.length;
-  //     colorIndex += 1
-  //   ) {
-  //     const whiteImageColorWorkingCopy =
-  //       colorVariationsOfIndividualLetter[colorIndex];
-  //     const buffer = createGraphics(1000, 797);
-  //     buffer.tint(schweppesLetterColors[colorIndex]);
-  //     buffer.image(whiteImageColorWorkingCopy, 0, 0);
-  //     colorVariationsOfIndividualLetter[colorIndex] = buffer;
-  //   }
-  //   letterImagesWithColor[letterIndex] = colorVariationsOfIndividualLetter;
-  // }
-
 
   for (let letterIndex = 0; letterIndex < letterImagesWhite.length;letterIndex += 1) {
     const colorVariationsOfIndividualLetter = new Array(schweppesLetterColors.length);
     colorVariationsOfIndividualLetter.fill(letterImagesWhite[letterIndex].get());
     for (let colorIndex = 0; colorIndex < schweppesLetterColors.length;colorIndex += 1) {
       const whiteImageColorWorkingCopy = colorVariationsOfIndividualLetter[colorIndex];
-      // var www = letterImagesWhite[letterIndex].width
-      // var hhh = letterImagesWhite[letterIndex].height
-
       const buffer = createGraphics(letterImagesWhite[letterIndex].width, letterImagesWhite[letterIndex].height);
       buffer.tint(schweppesLetterColors[colorIndex]);
       buffer.image(whiteImageColorWorkingCopy, 0, 0);
@@ -283,7 +247,6 @@ function setup() {
     }
     letterImagesWithColor[letterIndex] = colorVariationsOfIndividualLetter;
   }
-
 
 }
 
@@ -308,7 +271,7 @@ function draw() {
 
   if( signHour(signTime,  5,  8)) WhichSign = 12;   // HEINZ 
   if( signHour(signTime, 11, 13)) WhichSign = 13;   // OYSTER HOUSE
-  // if( signHour(signTime,  6,  6)) WhichSign = 14;   // URTH
+  if( signHour(signTime,  6,  6)) WhichSign = 14;   // URTH
   if( signHour(signTime,  6, 54)) WhichSign = 15;   // McSORLEYS
   if( signHour(signTime, 10, 34)) WhichSign = 16;   // FARMACIA
   if( signHour(signTime,  5, 17)) WhichSign = 17;   // HERCULES
@@ -327,7 +290,7 @@ function draw() {
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
 //  WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
-WhichSign=3
+// WhichSign=3
 //////////////////////////////////////////////////////////////////////////
 frameRate(25);
 if (WhichSign===17) frameRate(10)
@@ -472,7 +435,6 @@ function newNeon2(unit,cycles, n,outColor,inColor,wig,swK){
   stroke(activeColor)
   var iDontKnow=[activeColor,SW]
   return iDontKnow
-
 }
 function newNeon3(unit,cycles, n,outColor,inColor,wig,swK){
   const lnCycles=log(cycles*cycles)
