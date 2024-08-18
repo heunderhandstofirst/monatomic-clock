@@ -433,7 +433,7 @@ class MalibuSign {
     return fullSign;
   }
   
-  function printXY(xxx, yyy, unit, v, dateN,extraText1, extraText2,extraText3) {
+  function printXY(xxx, yyy, unit, v, dateN,extraText1, extraText2,extraText3,extraText4,extraText5,extraText6) {
     push();
     strokeWeight(1);
     textSize(15);
@@ -458,6 +458,9 @@ class MalibuSign {
     text(extraText1, 50, 25 * x++);
     text(extraText2, 50, 25 * x++);
     text(extraText3, 50, 25 * x++);
+    text(extraText4, 50, 25 * x++);
+    text(extraText5, 50, 25 * x++);
+    text(extraText6, 50, 25 * x++);
     pop();
   }
   

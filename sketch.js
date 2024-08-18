@@ -35,14 +35,22 @@ const downTown60PIC = "images/P3K.png";
 const letterURLs = [
   // "images/letter-00-s.png",
   "images/Schw-SS.png",
-  "images/letter-01-c.png",
-  "images/letter-02-h.png",
-  "images/letter-03-w.png",
-  "images/letter-04-e.png",
-  "images/letter-05-p.png",
-  "images/letter-06-p.png",
-  "images/letter-07-e.png",
-  "images/letter-08-s.png"
+  "images/Schw-c.png",
+  "images/Schw-h.png",
+  "images/Schw-w.png",
+  "images/Schw-e.png",
+  "images/Schw-p.png",
+  "images/Schw-p.png",
+  "images/Schw-e.png",
+  "images/Schw-s.png"
+  // "images/letter-01-c.png",
+  // "images/letter-02-h.png",
+  // "images/letter-03-w.png",
+  // "images/letter-04-e.png",
+  // "images/letter-05-p.png",
+  // "images/letter-06-p.png",
+  // "images/letter-07-e.png",
+  // "images/letter-08-s.png"
 ];
 
 // IMAGE FILES
@@ -241,31 +249,42 @@ function setup() {
 
   frameRate(25);
   
-  for (
-    let letterIndex = 0;
-    letterIndex < letterImagesWhite.length;
-    letterIndex += 1
-  ) {
-    const colorVariationsOfIndividualLetter = new Array(
-      schweppesLetterColors.length
-    );
-    colorVariationsOfIndividualLetter.fill(
-      letterImagesWhite[letterIndex].get()
-    );
-    for (
-      let colorIndex = 0;
-      colorIndex < schweppesLetterColors.length;
-      colorIndex += 1
-    ) {
-      const whiteImageColorWorkingCopy =
-        colorVariationsOfIndividualLetter[colorIndex];
-      const buffer = createGraphics(1000, 797);
+  // for (let letterIndex = 0; letterIndex < letterImagesWhite.length;letterIndex += 1) {
+  //   const colorVariationsOfIndividualLetter = new Array(schweppesLetterColors.length);
+  //   colorVariationsOfIndividualLetter.fill(letterImagesWhite[letterIndex].get());
+  //   for (
+  //     let colorIndex = 0;
+  //     colorIndex < schweppesLetterColors.length;
+  //     colorIndex += 1
+  //   ) {
+  //     const whiteImageColorWorkingCopy =
+  //       colorVariationsOfIndividualLetter[colorIndex];
+  //     const buffer = createGraphics(1000, 797);
+  //     buffer.tint(schweppesLetterColors[colorIndex]);
+  //     buffer.image(whiteImageColorWorkingCopy, 0, 0);
+  //     colorVariationsOfIndividualLetter[colorIndex] = buffer;
+  //   }
+  //   letterImagesWithColor[letterIndex] = colorVariationsOfIndividualLetter;
+  // }
+
+
+  for (let letterIndex = 0; letterIndex < letterImagesWhite.length;letterIndex += 1) {
+    const colorVariationsOfIndividualLetter = new Array(schweppesLetterColors.length);
+    colorVariationsOfIndividualLetter.fill(letterImagesWhite[letterIndex].get());
+    for (let colorIndex = 0; colorIndex < schweppesLetterColors.length;colorIndex += 1) {
+      const whiteImageColorWorkingCopy = colorVariationsOfIndividualLetter[colorIndex];
+      // var www = letterImagesWhite[letterIndex].width
+      // var hhh = letterImagesWhite[letterIndex].height
+
+      const buffer = createGraphics(letterImagesWhite[letterIndex].width, letterImagesWhite[letterIndex].height);
       buffer.tint(schweppesLetterColors[colorIndex]);
       buffer.image(whiteImageColorWorkingCopy, 0, 0);
       colorVariationsOfIndividualLetter[colorIndex] = buffer;
     }
     letterImagesWithColor[letterIndex] = colorVariationsOfIndividualLetter;
   }
+
+
 }
 
 function draw() {
@@ -308,7 +327,7 @@ function draw() {
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
 //  WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
-// WhichSign=3
+WhichSign=3
 //////////////////////////////////////////////////////////////////////////
 frameRate(25);
 if (WhichSign===17) frameRate(10)

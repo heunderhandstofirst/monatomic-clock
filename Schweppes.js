@@ -1,188 +1,129 @@
 /* eslint-disable no-undef, no-unused, no-unused-vars */
 class SchweppesSign {
-  // Constructor Function for the class CitgoSign
   constructor() {
-    this.step = 0;
-    this.step = 250;
-    this.TurnMode = 99;
-    this.ConstColorIndex = 0;
-    this.letterXs=0
-    this.letterYs=0
-    this.modeCycle = 10   //  length of cycle, in seconds, for left/right/middlecollapse/sparkle
-    this.NumBands=13
+    this.modeCycle = 20000  //  length of cycle, in seconds, for left/right/middlecollapse/sparkle
     this.NumColors=6
+    this.NumBands=13
     this.NumStripes = 8;
-    this.LineN = this.NumBands * this.NumStripes;
+    this.totalLineCount = this.NumBands * this.NumStripes;
   }
-  schweppesBackground(MidX,SingleLineWidth,  MidY   ){
-    let imageX =  MidX - 0.7 * SingleLineWidth - (this.LineN * SingleLineWidth) / 2;
-    let imageY = 0.3 * (MidY / 2);
-    const imageWX = this.LineN * SingleLineWidth;
-    const imageWY = (3.2 * MidY) / 2;
-    if(random()>.5)     image(SchweppesbackgroundImage, imageX, imageY, imageWX, imageWY);
+  schweppesBackground(Xstart, SingleLineWidth,  MidY   ,BaseLineLen){
+   
+    fill(0)
+    var bottomSlope =-.4941
+    var topSlope=-.5621
+    var run=SingleLineWidth*83
+    var bottomRise=bottomSlope*run
+    var topRise=topSlope*run
+    
+    var bottomLeft=[10*SingleLineWidth,BaseLineLen*.312]
+    var topLeft=   [10*SingleLineWidth,BaseLineLen*.138]
 
-
+    push()
+    translate(Xstart,MidY)
+    stroke(0)
+    quad(bottomLeft[0],bottomLeft[1],bottomLeft[0]+run,bottomLeft[1]+bottomRise,topLeft[0]+run,topLeft[1]+topRise,topLeft[0],topLeft[1])
+    
+    const blkBkGrndShift=multArray(SingleLineWidth,[10, 16, 30, 9])
+    const bottomY= [.348, .15, .101, .052]
+    const topY=[.074, -.037, -.072, -.072]
+    const runXY=multArray(SingleLineWidth,[8, 3, 4, 4])
+    
+    for(var df=0;df<4;df++){
+      translate(blkBkGrndShift[df],0)
+      bottomLeft=[0,BaseLineLen*bottomY[df]]
+      topLeft=   [0,BaseLineLen*topY[df]]
+      run=SingleLineWidth*8
+      bottomRise=bottomSlope*runXY[df]
+      topRise=topSlope*runXY[df]
+      
+      quad(bottomLeft[0],       bottomLeft[1],     bottomLeft[0]+runXY[df],bottomLeft[1]+bottomRise,
+          topLeft[0]+runXY[df],topLeft[1]+topRise,topLeft[0],             topLeft[1])
+    }
+    pop()
   }
 
   render(signTime) {
-    var xxx = 0 + round((100 * mouseX) / windowWidth, 1);
-    var yyy = -5 + round((10 * mouseY) / windowHeight, 2);  
+    // var unit, v, extraText1,extraText2,extraText3,extraText4,extraText5,extraText6
+    var xxx = 5 + round((1000 * mouseX) / windowWidth, 0);
+    var yyy = 0 + round((1000* mouseY) / windowHeight, 0);  
+      
     var MidX = windowWidth / 2;
     var MidY = windowHeight / 2;
-    var modularSeconds=Date.now() % 60000
-    var LeftRiteCollapseMode=int(modularSeconds/(this.modeCycle/3))+int(modularSeconds/(2.5*this.modeCycle/3))
-    
-    this.step = this.step + 1;
-    if (SwitchSign) this.step = 0;
+    var realSeconds=Date.now() % 60000
+    var currentCycleSeconds=realSeconds%this.modeCycle  // currentCycleSeconds has a value between 0 and 20,000
+    var LeftRiteCollapseMode= int(currentCycleSeconds/(this.modeCycle/3))  +int(currentCycleSeconds/(2.5*this.modeCycle/3))   //  MODE 0, 1, 2, 3  1/3,1/3,1/6,1/6
+    var ModeStartSeconds=(this.modeCycle/3)*(LeftRiteCollapseMode-(int(LeftRiteCollapseMode/3))*0.5)
+    var thisMODEelapse= currentCycleSeconds-ModeStartSeconds
+    var cycleDuration =(this.modeCycle/3)*(1-(int(LeftRiteCollapseMode/2)/2))
+    var cyclePCTelapsed= thisMODEelapse/cycleDuration
 
     var BaseLineLen = round(windowHeight * 0.9, 0);
     var SingleLineWidth = BaseLineLen / 88;
-    var Xstart = MidX - (this.LineN / 2) * SingleLineWidth;
-
-    var CycleStep = this.step % (3 * this.LineN);
-    var Interim123 = int((CycleStep - 1) / this.LineN);
-    var The25 = int(CycleStep / (2.5 * this.LineN));
-    var Mode = Interim123 + The25;
-    if (CycleStep === 260) Mode = 2;
-    if (CycleStep === 0) {
-      this.TurnMode = 99;
-      if (random() > 0.05) {
-        this.TurnMode = 1;
-        this.ConstColorIndex = int(random() * schweppesLetterColors.length);
-      }
-    }
-
-    var ModeStep = 1 + ((CycleStep - 1) % this.LineN);
-
-    strokeWeight(5);
-    textSize(25);
-    var lineV = 0;
-    var printLineLen = 0;
-    // const RandomLetterColorIndex = Math.floor(Math.random() * 7);
-
-    for (var j = 0; j < this.NumBands; j++) {
-      var CurrentColor = j % this.NumColors;
-      var GreyStroke = 30 + 12 * CurrentColor;
-      var ColrStroke = this.RGBx(CurrentColor);
-
-      Flicker = !Flicker;
-      if (Flicker) {
-        ColrStroke[0] = ColrStroke[0] + 8;
-        ColrStroke[1] = ColrStroke[1] + 8;
-        ColrStroke[2] = ColrStroke[2] + 8;
-      }
-
-      var time2color = int(
-        (this.LineN * ((signTime[1] % 5) + signTime[2] / 60)) / 5
-      );
-
-      for (var k = 0; k < this.NumStripes; k++) {
-        lineV = j * this.NumStripes + k;
-        this.printDiagnostics(false, CycleStep, Mode, ModeStep, this.TurnMode);
-        stroke(
-          this.getModeStroke(GreyStroke, lineV, ModeStep, Mode, ColrStroke)
-        );
-        // stroke(baseStroke);
-
-        //////////////////////////////////////////////////
-        printLineLen = (BaseLineLen * this.curveLineLen(lineV)) / 2;
-        var Ytop = MidY - printLineLen;
-        var Ybot = MidY + printLineLen;
-        var VertAxis = Xstart + SingleLineWidth * lineV;
-        line(VertAxis, Ytop, VertAxis, Ybot);
-        push();
-        // if (lineV === time2color) {
-        //   stroke(
-        //     this.getModeStroke(ColrStroke, lineV, ModeStep, Mode, GreyStroke)
-        //   );
-        //   line(VertAxis, Ybot - printLineLen / 5, VertAxis, Ybot);
-        // }
-        var inTheZone = max(0.75, abs(time2color - lineV));
-        if (2.5 > inTheZone) {
-          stroke(
-            this.getModeStroke(ColrStroke, lineV, ModeStep, Mode, GreyStroke)
-          );
-          stroke(random(250), random(250), random(250));
-          line(VertAxis, Ybot - printLineLen / (6 * inTheZone), VertAxis, Ybot);
-        }
-        pop();
-      }
-    }
-
-    // let imageX =
-    //   +MidX - 0.7 * SingleLineWidth - (this.LineN * SingleLineWidth) / 2;
-    // let imageY = 0.3 * (MidY / 2);
-    // const imageWX = this.LineN * SingleLineWidth;
-    // const imageWY = (3.2 * MidY) / 2;
-    // if(random()>.5)     image(SchweppesbackgroundImage, imageX, imageY, imageWX, imageWY);
-
-    if(5===5/2){
-      if (Mode < 3 && this.TurnMode !== 1) {
-      for (let i = 0; i < -letterImagesWhite.length; i++){
-        
-        image(letterImagesWhite[i], imageX, imageY, imageWX, imageWY);
-    }}
-    var bbb= [51.4, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx, xxx]
-    var ccc = [-.5,yyy ,yyy,yyy,yyy]
-    if (this.TurnMode === 1) {
-      for (let i = 0; i < letterImagesWhite.length; i++) {
-        if(i<2){
-          imageX=this.letterXs+(SingleLineWidth*bbb[i])
-          imageY=(1.6*MidY)+(windowHeight*ccc[i]/2)
-        }
-        image(letterImagesWithColor[i][this.ConstColorIndex],
-          imageX, imageY, imageWX, imageWY);
-      }
-    }
-    var unit, v, extraText1,extraText2,extraText3
+    var Xstart = MidX - (this.totalLineCount / 2) * SingleLineWidth;
     
-    printXY(xxx, yyy, unit, v, Date.now(),extraText1, extraText2,extraText3) 
-    if (Mode === 3) {
-      for (let i = 0; i < letterImagesWithColor.length; i++) {
-        image(
-          letterImagesWithColor[i][Math.floor(Math.random() * letterImagesWithColor[i].length)],
-          imageX, imageY, imageWX, imageWY );
-      }
+    for (var drawLineLoop = 0 ; drawLineLoop<this.totalLineCount;drawLineLoop++){  // LOOP THROUGH THE 104 VERTICAL LINES
+      let ModeLineCombo =0
+      if (LeftRiteCollapseMode == 0) ModeLineCombo=drawLineLoop/this.totalLineCount
+      if (LeftRiteCollapseMode == 1) ModeLineCombo=(this.totalLineCount-drawLineLoop)/this.totalLineCount
+      if (LeftRiteCollapseMode == 2) ModeLineCombo=2*((this.totalLineCount/2)-abs(drawLineLoop-(this.totalLineCount/2)))/this.totalLineCount
+            
+      var colorNumber =  30 + 12 * (int(drawLineLoop/this.NumStripes) % this.NumColors)  // DEFAULT TO GREY
+      if(cyclePCTelapsed>ModeLineCombo)colorNumber=this.RGBx((int(drawLineLoop/this.NumStripes) % this.NumColors)) // SWITCH TO COLOR IF APPLICABLE      
+      stroke(colorNumber)
+      strokeWeight(SingleLineWidth *.5)
+
+      var printLineLen = (BaseLineLen * this.curveLineLen(drawLineLoop)) / 2;
+      var Ytop = MidY - printLineLen;
+      var Ybot = MidY + printLineLen;
+      var VertAxis = Xstart + SingleLineWidth * drawLineLoop;
+      line(VertAxis, Ytop, VertAxis, Ybot);  //  THESE ARE THE VERTICAL LINES
+
+      var time2color = int( (this.totalLineCount * ((signTime[1] % 5) + signTime[2] / 60)) / 5 );
+      // extraText5="time2color: "+time2color
+      var inTheZone = max(0.75, abs(time2color - drawLineLoop));
+      stroke(random(250), random(250), random(250));
+      if (2.5 > inTheZone) line(VertAxis, Ybot - printLineLen / (6 * inTheZone), VertAxis, Ybot);
     }
-  }
-  }
 
-  /////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////
-  /////////////////////////////////////////////////////////////
-
-  getModeStroke(GreyStroke, lineV, ModeStep, Mode, ColrStroke) {
-    if (Mode === 0 || Mode === 2) if (lineV < ModeStep) return ColrStroke;
-    if (Mode === 1 || Mode === 2) if (103 - lineV < ModeStep) return ColrStroke;
-    if (Mode === 3) return ColrStroke;
-    return GreyStroke;
-  }
-
-  curveLineLen(s) {
-    var nLL = abs(s - 53.0) / PI;
-    var newLineLen = nLL / 52.0;
-    return cos(newLineLen);
-  }
-
-  printDiagnostics(TF, CycleStep, Mode, ModeStep, TM) {
-    if (TF) {
-      stroke(250, 0, 0);
-      text("This.Step: " + this.step, 30, 50);
-      text("CycleStep: " + CycleStep, 30, 100);
-      text("Mode: " + Mode, 30, 150);
-      text("Mode Step: " + ModeStep, 30, 200);
-      text("TurnMode: " + TM, 30, 250);
+    /////////////////////////////////////////////////////////////////////
+    // BLACK BACKGROUND BEHIND THE SCHWEPPES LETTERS
+    this.schweppesBackground(Xstart, SingleLineWidth,  MidY   ,BaseLineLen)
+    /////////////////////////////////////////////////////////////////////
+    
+    const letterShiftX=multArray(SingleLineWidth,[8.99, 8.5301, 7.475, 7.737,    13.411, 8.3030, 9.251,  10.152,  10.366])
+    const letterShiftY=multArray(SingleLineWidth,[3.58, 1.0501, -9.69, -4.167,   -1.883,-5.6480,-4.441, -6.5210, -6.088])
+    const hX=          multArray(SingleLineWidth,[10.125, 8.9540, 10.963, 15.541, 9.185, 10.674, 10.674, 11.755, 10.131])
+    const hY=             multArray(windowHeight,[.34001, 0.2281, 0.3111, .29388, .2410, .33801, .33801, .26501, .31001])   // move left and right
+    
+    push()
+    translate(Xstart,MidY)
+    
+    var whichColorDay = (day()+hour()+minute())%9
+    for (var w=0;w<9;w++){
+      translate(letterShiftX[w],letterShiftY[w])  
+      if(LeftRiteCollapseMode===3)whichColorDay=int(random(9))
+      image(letterImagesWithColor[w][whichColorDay],0,0,hX[w],hY[w]*.8)    
     }
+    pop()
+    
+  // printXY(xxx, yyy, unit, v, Date.now(),extraText1, extraText2,extraText3,extraText4,extraText5,extraText6) 
+  }
+
+  curveLineLen(s) { // CALCULATES THE TOP AND BOTTOM ARCS OF THE SHAPE
+    return cos((abs(s - 53.0) / PI)/ 52.0);
   }
 
   RGBx(Xmod) {
-    if (Xmod === 0 || Xmod === 6 || Xmod === 12) return [235, 52, 204];
-    if (Xmod === 1 || Xmod === 7) return [52, 52, 235];
-    if (Xmod === 2 || Xmod === 8) return [0, 166, 255];
-    if (Xmod === 3 || Xmod === 9) return [201, 65, 34];
-    if (Xmod === 4 || Xmod === 10) return [237, 227, 225];
-    if (Xmod === 5 || Xmod === 11) return [78, 250, 5];
-    // return dVals; // Returns an array of 3 ints: 20, 40, 60
+    const newXmod= Xmod %6
+    var RGBout=[]
+    if (newXmod === 0 ) RGBout= [235, 52, 204];
+    if (newXmod === 1 ) RGBout=[52, 52, 235];
+    if (newXmod === 2 ) RGBout= [0, 166, 255];
+    if (newXmod === 3 ) RGBout=[201, 65, 34];
+    if (newXmod === 4 ) RGBout=[237, 227, 225];
+    if (newXmod === 5 ) RGBout=[78, 250, 5];
+    var swing = 30
+    return [RGBout[0]-swing/2+random(swing),RGBout[1]-swing/2+random(swing),RGBout[2]-swing/2+random(swing)]
   }
 }
