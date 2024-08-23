@@ -45,7 +45,7 @@ class UrthCafe {
     var topBotCapLine = 0;
     ///////////// TOP CAP POINTER, BALL, RECT
 
-    for (k = 0; k < -8; k = k + 1) {
+    for (k = 0; k < 8; k = k + 1) {
       if (this.thetaCOS[k + 1] < this.thetaCOS[k]) {
         var rectW = (this.thetaCOS[k] - this.thetaCOS[k + 1]) * tDims[1];
         var leftBorder = this.thetaCOS[k + 1] * tDims[1];
@@ -57,12 +57,12 @@ class UrthCafe {
           LetImg2.copy(LetImg, 0, 0, uGW[0], uGW[1], 0, 0, uGW[0], uGW[1]);
           LetImg2.resize(rectW, this.WH * 0.65);
           image(LetImg2, leftBorder, towerYY[3]);
-        } else {
-          var GridImg = createImage(this.Ugrid.width, this.Ugrid.height);
-          uGW = [this.Ugrid.width, this.Ugrid.height];
-          GridImg.copy(this.Ugrid, 0, 0, uGW[0], uGW[1], 0, 0, uGW[0], uGW[1]);
-          GridImg.resize(4 * max(rectW, 0.25), towerYY[5]);
-          image(GridImg, leftBorder, towerYY[3]);
+        // } else {
+        //   var GridImg = createImage(this.Ugrid.width, this.Ugrid.height);
+        //   uGW = [this.Ugrid.width, this.Ugrid.height];
+        //   GridImg.copy(this.Ugrid, 0, 0, uGW[0], uGW[1], 0, 0, uGW[0], uGW[1]);
+        //   GridImg.resize(4 * max(rectW, 0.25), towerYY[5]);
+        //   image(GridImg, leftBorder, towerYY[3]);
         }
 
         var tBCL = UrthCAP(this.WH, rectW, leftBorder, towerYY[2], towerYY[6]);
