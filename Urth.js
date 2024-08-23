@@ -72,13 +72,13 @@ class UrthCafe {
     }
 
     pop();
-    translate(this.Ocenter[0], this.Ocenter[1] - this.WH / 2);
-    translate(0, this.WH / 40);
-    var flash = people(signTime, this.WW, this.constructorMillis);
+    // translate(this.Ocenter[0], this.Ocenter[1] - this.WH / 2);
+    // translate(0, this.WH / 40);
+    // var flash = people(signTime, this.WW, this.constructorMillis);
 
-    image(this.brick, 0, 0);
-    flashPhotography(1 === this.step % 2, flash);
-    clockTime(this.WW, this.WH, signTime);
+    // image(this.brick, 0, 0);
+    // flashPhotography(1 === this.step % 2, flash);
+    // clockTime(this.WW, this.WH, signTime);
   }
 }
 function flashPhotography(YN, flash) {
