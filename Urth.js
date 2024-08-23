@@ -48,21 +48,26 @@ class UrthCafe {
     for (k = 0; k < 8; k = k + 1) {
       if (this.thetaCOS[k + 1] < this.thetaCOS[k]) {
         var rectW = (this.thetaCOS[k] - this.thetaCOS[k + 1]) * tDims[1];
+        rectW=max(1,rectW)
         var leftBorder = this.thetaCOS[k + 1] * tDims[1];
 
         if (k === 1 || k === 3 || k === 5 || k === 7) {
           var LetImg = this.USS[int(random(10))];
+
           var LetImg2 = createImage(LetImg.width, LetImg.height);
           var uGW = [LetImg.width, LetImg.height];
+          // console.log(uGW)
           LetImg2.copy(LetImg, 0, 0, uGW[0], uGW[1], 0, 0, uGW[0], uGW[1]);
+          console.log(rectW)
+          // text(rectW,50,100)
           LetImg2.resize(rectW, this.WH * 0.65);
           image(LetImg2, leftBorder, towerYY[3]);
-        // } else {
-        //   var GridImg = createImage(this.Ugrid.width, this.Ugrid.height);
-        //   uGW = [this.Ugrid.width, this.Ugrid.height];
-        //   GridImg.copy(this.Ugrid, 0, 0, uGW[0], uGW[1], 0, 0, uGW[0], uGW[1]);
-        //   GridImg.resize(4 * max(rectW, 0.25), towerYY[5]);
-        //   image(GridImg, leftBorder, towerYY[3]);
+        } else {
+          var GridImg = createImage(this.Ugrid.width, this.Ugrid.height);
+          uGW = [this.Ugrid.width, this.Ugrid.height];
+          GridImg.copy(this.Ugrid, 0, 0, uGW[0], uGW[1], 0, 0, uGW[0], uGW[1]);
+          GridImg.resize(4 * max(rectW, 0.25), towerYY[5]);
+          image(GridImg, leftBorder, towerYY[3]);
         }
 
         var tBCL = UrthCAP(this.WH, rectW, leftBorder, towerYY[2], towerYY[6]);
@@ -70,6 +75,8 @@ class UrthCafe {
       }
       line(topBotCapLine, towerYY[3], -topBotCapLine, towerYY[3]);
     }
+
+    // text(Date.now(),50,180)
 
     pop();
     translate(this.Ocenter[0], this.Ocenter[1] - this.WH / 2);
