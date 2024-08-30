@@ -28,6 +28,7 @@ let wst; // WHITE STAG
 let bre; // BUNNY RABBIT EARS
 let mbs; // MALIBU PIER
 let jcc; // JERSEY CITY CLOCK
+let dom; // DOMINO SUGAR
 
 let SwitchSign;
 const backgroundImageURL = "images/background.png";
@@ -217,6 +218,7 @@ function setup() {
   mbs = new MalibuSign(); // MALIBU Sign
   bre = new BunnySign(); // BUNNY RABBIT EARS
   jcc = new JerseyCity(); // JERSEY CITY CLOCK
+  dom = new DominoSign(); // Domino Sugar
 
 
   window.redirectFired = false;
@@ -269,7 +271,7 @@ function draw() {
   if (signTime[1] === 59) window.redirectFired = false;
   if (every6Hours && signTime[2] < 3) WhichSign = 50;
 
-  if( signHour(signTime,  5,  8)) WhichSign = 12;   // HEINZ 
+  if( signHour(signTime,  4, 57)) WhichSign = 12;   // HEINZ 
   if( signHour(signTime, 11, 13)) WhichSign = 13;   // OYSTER HOUSE
   if( signHour(signTime,  6,  6)) WhichSign = 14;   // URTH
   if( signHour(signTime,  6, 54)) WhichSign = 15;   // McSORLEYS
@@ -286,11 +288,12 @@ function draw() {
   if( signHour(signTime,  7, 25)) WhichSign = 26;   // OREGON STAG
   if( signHour(signTime,  8, 28)) WhichSign = 27;   // MALIBU
   if( signHour(signTime,  1,  9)) WhichSign = 28;   // JERSEY CITY CLOCK
+  if( signHour(signTime,  5,  8)) WhichSign = 29;   // DOMINO SUGAR
   
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
 //  WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
-// WhichSign=14
+// WhichSign=28
 //////////////////////////////////////////////////////////////////////////
 frameRate(25);
 if (WhichSign===17) frameRate(10)
@@ -339,6 +342,7 @@ if (WhichSign===24) frameRate(40)
   if (WhichSign === 26) wst.render(signTime);   // OREGON WHITE STAG
   if (WhichSign === 27) mbs.render(signTime);   // MALIBU
   if (WhichSign === 28) jcc.render(signTime);   // JERSEY CITY CLOCK
+  if (WhichSign === 29) dom.render(signTime);   // DOMINO SUGAR
    
   // if (WhichSign > 48 && !window.redirectFired) {
   //   window.redirectFired = true;
@@ -451,12 +455,12 @@ function newNeon3(unit,cycles, n,outColor,inColor,wig,swK){
 
 }
 
-function prismaticSky(){
+function prismaticSky(psWidth,psHeight, nudge){
 var thisPct = 360*(Date.now()%60000/60000)
       
-for (var i =-10;i<windowHeight+10;i++){ 
+for (var i =-nudge;i<psHeight+nudge;i++){ 
   var bgColor =int((thisPct+i/10) % 360)   // background color will fade across spectrum during the minute
   stroke(color("hsla(" + bgColor + ", 95%, 20%, 1)"));
-  line(-10,i,windowWidth+10,i)
+  line(-nudge,i,psWidth+nudge,i)
 } 
 }

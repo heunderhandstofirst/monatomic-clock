@@ -361,12 +361,14 @@ class JerseyCity {
     }
 
     render(signTime) {
-      var xxx = 0 + round((2 * mouseX) / windowWidth, 2);
-      var yyy = 0 + round((5 * mouseY) / windowHeight, 2);  
+      var xxx = 0 + round((2000 * mouseX) / windowWidth, 0);
+      var yyy = 0 + round((2000 * mouseY) / windowHeight, 0);  
       push()  
       strokeWeight(1)
       var thisPct = 360*(Date.now()%60000/60000)
-      prismaticSky()
+      
+      prismaticSky(windowWidth,windowHeight, 10)
+
       translate(windowWidth / 2 , windowHeight / 2)   ////  CENTER THE WORK
       
       translate(0,-2*this.unit) // move to the middle of the clock
@@ -381,11 +383,13 @@ class JerseyCity {
       this.dodecahedronLines()
       
       translate(0,2*this.unit)
-      image(this.ColgateLogo,-this.ColgateLogo.width/5.3,this.unit*6.05,this.WW, this.WW/5)
+      var xk=17
+      var logoScalar=this.unit*xk/this.ColgateLogo.width
+      image(this.ColgateLogo,-this.unit*xk/2,this.unit*6.05,logoScalar*this.ColgateLogo.width,.75*logoScalar*this.ColgateLogo.height)
       translate(this.unit*-15,this.unit*-10)
-      var printText1="this.PCT: "+thisPct
+      // var printText1="logo: "+thisPct;       var printText2="this.PCT: "+thisPct
       pop()
-      if (5 === 5  / 2) printXY(xxx, yyy, this.unit, 0, Date.now(), printText1);
+      if (5 === 5  / 2) printXY(xxx, yyy, this.unit, 0, Date.now(), printText1, printText2, printText3, printText4, printText5);
     }
   }
   
@@ -402,16 +406,4 @@ class JerseyCity {
   
 function drawBezier(points) {
       bezier(points[0], points[1], points[2], points[3], points[4], points[5], points[6], points[7]);
-}
-function colgateFlag(){
-// var flagDips=multArray(.5*this.unit,[random(),random(),random(),random()])
-      // strokeWeight(this.unit*.2)
-      // strokeCap(SQUARE)
-      // noFill()
-      // for (var i=0;i<-13;i++){
-      //   var s=i* this.unit*.2
-      //   stroke(222,2,2)
-      //   if(1===(i%2)) stroke(222)
-      //   bezier(0,s+flagDips[0], 100,s+flagDips[1], 200,s+ flagDips[2],300,s+ flagDips[3])
-      // }
 }
