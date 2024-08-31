@@ -3,21 +3,36 @@
 class BakerySign {
   constructor() {
     this.step = 1;
+    // let HelmsSlogans = [];
 
-    HelmsSlogans[0] = [" CHOICE OF OLYMPIC CHAMPIONS  ", 1, [252, 50, 2]];
-    HelmsSlogans[1] = ["    OLYMPIC GAMES BAKERS      ", 0, [2, 200, 220]];
-    HelmsSlogans[2] = ["OLYMPIC BREAD", 2, [3, 207, 252]];
-    HelmsSlogans[3] = ["       WORLD CHAMPION         ", 0, [252, 50, 2]];
-    HelmsSlogans[4] = ["DAILY AT YOUR DOOR", 2, [253, 48, 3]];
+    // HelmsSlogans[0] = [" CHOICE OF OLYMPIC CHAMPIONS  ", 1, [252, 50, 2]];
+    // HelmsSlogans[1] = ["    OLYMPIC GAMES BAKERS      ", 0, [2, 200, 220]];
+    // HelmsSlogans[2] = ["OLYMPIC BREAD", 2, [3, 207, 252]];
+    // HelmsSlogans[3] = ["       WORLD CHAMPION         ", 0, [252, 50, 2]];
+    // HelmsSlogans[4] = ["DAILY AT YOUR DOOR", 2, [253, 48, 3]];
     this.BigHelm = createBigHelm();
+
+    this.oCenter = [windowWidth / 2, windowHeight / 2];
+   
+    this.Wwh = [13, 8]; // RELATIVE WIDTH and HEIGHT OF SIGN
+    this.WH = windowHeight;
+    this.WW = min(this.WH * (this.Wwh[0] / this.Wwh[1]), windowWidth) * 0.97;
+    this.WH = (this.WW * this.Wwh[1]) / this.Wwh[0];
+    this.unit=this.WW/this.Wwh[0]
+    // debugger
+      
   }
 
   render(signTime) {
     this.step = this.step + 1;
     this.WhichSlogan = int(second() / 10) % 2;
 
+
+
     var WH = min(windowWidth * 0.5, windowHeight);
     var WW = 2 * WH;
+    WW=this.WW
+    WH=this.WH
     var eParam = [0, 0, -30, (WW * 12.25) / 16]; // leftX
     eParam.push((WW * 13.25) / 16, windowHeight / 2.05, WW / 4);
     eParam.push(1.04, 0.75, 0.745, 0, 0, 0, 0, 0, 0, 0);
@@ -32,25 +47,40 @@ class BakerySign {
     noFill();
     background(0);
 
+    translate(this.unit*1.5,0)
+    
     coloredARC(this.step, eParam);
     rightCircles(eParam); //    findtheLostImage(, 3, this.step);
+   
     ArcWords2(HelmsLetterImages[0], 1, eParam); //HelmsSlogans[0] = [" CHOICE OF OLYMPIC CHAMPIONS  ", 1, [252, 50, 2]];
     eParam = drawStripedBottom(eParam); //    findtheLostImage(, 6, this.step);
     eParam = drawCrown(eParam); //    findtheLostImage(, 7, this.step);
     StarDisplay(eParam);
+   
     displayYellowHelm(
       eParam,
       HelmsLetterImages[2 * this.WhichSlogan + 2],
       this.BigHelm
     );
+   
     ArcWords2(HelmsLetterImages[2 * this.WhichSlogan + 1], 0, eParam); //HelmsSlogans[1] = ["    OLYMPIC GAMES BAKERS     ", 0, [2, 200, 220]];
+   
     showHelmsTextCrown(LittleHelms, eParam);
 
+    // translate(this.oCenter[0],this.oCenter[1])
+    // translate(this.unit*-1.5,0)
+    // newRectOverlay(this.unit,13,8)
+   
     translate(WW / 2.2, windowHeight / 2 + eParam[16] / 4.5);
     stroke(WW / 20);
     fill(255, 215, 0);
     textSize(WW / 20);
     text("XL" + ["", "I", "II", "III", "IV"][signTime[1] % 5], 0, 0);
+
+
+
+
+
   }
 }
 
@@ -397,4 +427,11 @@ function displayYellowHelm(eParam, HLI, BigHelm) {
   }
   // ellipse(0, 0, 100);
   pop();
+}
+function redCircle(){
+  push()
+    fill(222,2,2)
+    strokeWeight(0)
+    ellipse(0,0,50)
+    pop()
 }

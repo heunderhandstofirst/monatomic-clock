@@ -1,9 +1,10 @@
 /* eslint-disable no-undef, no-unused, no-unused-vars */
 class DominoSign {
     constructor() {
-      this.oCenter = [windowWidth / 2, windowHeight / 2];
-      this.D = 0.9 * min(windowWidth, windowHeight);
+        //  this.D = 0.9 * min(windowWidth, windowHeight);
 
+      this.oCenter = [windowWidth / 2, windowHeight / 2];
+    
       this.Wwh = [54, 30]; // RELATIVE WIDTH and HEIGHT OF SIGN
       this.WH = windowHeight;
       this.WW = min(this.WH * (this.Wwh[0] / this.Wwh[1]), windowWidth) * 0.97;

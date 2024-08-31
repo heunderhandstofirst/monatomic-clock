@@ -1,18 +1,18 @@
 /* eslint-disable no-undef, no-unused, no-unused-vars */
 class CrownSign {
   constructor() {
-    // this.step = 55;
     this.step = 15;
+    // screenBackground();
+    // background(NeonPreload);
+
   }
 
   render(signTime) {
     this.step = this.step + 1;
-    // this.step = this.step % 65;
-    // this.step = max(this.step, 40);
     var darkLight = this.step % 59;
     var j;
     strokeCap(SQUARE);
-    screenBackground();
+    // screenBackground();
     background(NeonPreload);
 
     var Ocenter = [windowWidth / 2, windowHeight / 2];
@@ -154,26 +154,8 @@ class CrownSign {
 
     fill(200, 250, 20);
     strokeWeight(0);
-    drawPointCircles(
-      1,
-      12,
-      W64,
-      [Asub[0], Asub[1]],
-      [0, Asub[1]],
-      0,
-      (darkLight + 2) % 59,
-      1
-    );
-    drawPointCircles(
-      0,
-      11,
-      W64,
-      [0, Asub[1]],
-      [-Asub[0], Asub[1]],
-      0,
-      darkLight - 10,
-      1
-    );
+    drawPointCircles(1, 12, W64, [Asub[0],     Asub[1]],  [0, Asub[1]], 0, (darkLight + 2) % 59, 1);
+    drawPointCircles(0, 11, W64, [0, Asub[1]], [-Asub[0], Asub[1]],     0, darkLight - 10,       1);
     drawPointCircles(1, 3, W64, Asub, Bprime, 0, darkLight - 20, -1);
     drawPointCircles(0, 2, W64, Bprime, D, 1, darkLight - 23, -1);
     drawPointCircles(1, 5, W64, D, E, 1, darkLight - 25, -1);
@@ -190,22 +172,12 @@ class CrownSign {
     drawPointCircles(2, 13, W64, E, C1, 0, darkLight - 29, -1);
     drawPointCircles(2, 13, W64, G, [0, midCircleY], 0, darkLight - 38, 1);
 
-    drawGrid(1 === 0);
+    // drawGrid(1 === 1);
     drawBestWesternText(Ocenter, WH, WW, BWtext);
   }
 }
 
-function drawtopCircles(
-  WH,
-  midY,
-  C1,
-  C2,
-  startCircle,
-  endCircle,
-  tNc,
-  minMan,
-  signTime
-) {
+function drawtopCircles( WH,  midY,  C1,  C2,  startCircle,  endCircle,  tNc,  minMan,  signTime) {
   push();
   strokeWeight(0);
   var circle2hiLite = signTime[1] % 5;
@@ -261,21 +233,21 @@ function drawPointCircles(strt, end, radDim, pt1, pt2, lastOne, darkLight, LR) {
   }
 }
 
-function drawGrid(tF) {
-  if (tF) {
-    stroke(0, 200, 200);
-    for (j = 500; j > -1000; j = j - 50) {
-      text(j, -500, j);
-      line(-450, j, 1000, j);
-    }
-    for (j = 0; j < 1200; j = j + 50) {
-      for (var k = -1; k < 2; k = k + 2) {
-        text(j, k * j, 100);
-        line(k * j, -1000, k * j, 1000);
-      }
-    }
-  }
-}
+// function drawGrid(tF) {
+//   if (tF) {
+//     stroke(0, 200, 200);
+//     for (j = 500; j > -1000; j = j - 50) {
+//       text(j, -500, j);
+//       line(-450, j, 1000, j);
+//     }
+//     for (j = 0; j < 1200; j = j + 50) {
+//       for (var k = -1; k < 2; k = k + 2) {
+//         text(j, k * j, 100);
+//         line(k * j, -1000, k * j, 1000);
+//       }
+//     }
+//   }
+// }
 
 function drawBestWesternText(Ocenter, WH, WW, BWtext) {
   pop();

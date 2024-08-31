@@ -45,6 +45,8 @@ const letterURLs = [
   "images/Schw-s.png"
 ];
 
+let goldenRatio = ( 1 + (5^.5))/2
+
 // IMAGE FILES
 let wpNumberone;
 let LittleHelms;
@@ -293,7 +295,7 @@ function draw() {
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
 //  WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
-// WhichSign=28
+// WhichSign=10
 //////////////////////////////////////////////////////////////////////////
 frameRate(25);
 if (WhichSign===17) frameRate(10)
@@ -455,12 +457,3 @@ function newNeon3(unit,cycles, n,outColor,inColor,wig,swK){
 
 }
 
-function prismaticSky(psWidth,psHeight, nudge){
-var thisPct = 360*(Date.now()%60000/60000)
-      
-for (var i =-nudge;i<psHeight+nudge;i++){ 
-  var bgColor =int((thisPct+i/10) % 360)   // background color will fade across spectrum during the minute
-  stroke(color("hsla(" + bgColor + ", 95%, 20%, 1)"));
-  line(-nudge,i,psWidth+nudge,i)
-} 
-}
