@@ -34,17 +34,24 @@ function twistLetter(ledder, WW16, ledColor) {
   return LetImg;
 }
 
-function ArcWords2(HLI, topBottom, eParam) {
-  var circleDim = (0.45 * eParam[15]) / 4;
-  var Lscale = eParam[15] / 27.6;
+function ArcWords2(HLI, topBottom,  unit,WW, xxx, yyy) {
+  // var circleDim = (0.45 * eParam[15]) / 4;
+  var circleDim = (0.45 * WW) / 4;
+  var Lscale = WW / 27.6;
+
+  Lscale = unit*.5
 
   push();
-  translate(eParam[4], eParam[5]);
+  // translate(eParam[4], eParam[5]);
+  translate(4.75*unit, -.5*unit)
 
   for (var j = 0; j < 30; j++) {
     var radXY = (PI * (180 + Math.pow(-1, topBottom) * (j + 1) * 6)) / 180;
-    var X = circleDim * cos(radXY) - eParam[15] / 100;
-    var Y = circleDim * sin(radXY) - eParam[15] / 100;
+    // var X = circleDim * cos(radXY) - eParam[15] / 100;
+    // var Y = circleDim * sin(radXY) - eParam[15] / 100;
+    var X = circleDim * cos(radXY) - WW / 100;
+    var Y = circleDim * sin(radXY) - WW / 100;
+    
     radXY = 276 + 6 * j;
     if (topBottom === 1) radXY = 84 - 6 * j;
     rotate_and_draw_image(HLI[j], X, Y, Lscale * 0.5, Lscale, radXY);
@@ -52,11 +59,12 @@ function ArcWords2(HLI, topBottom, eParam) {
   pop();
 }
 
-function showHelmsTextCrown(LittleHelms, eParam) {
-  var bulbTop = eParam[5] + eParam[2] + 3;
-  var HsignH = eParam[1] * 0.45;
-  var smallHstart = eParam[4] - eParam[1] / 2;
-  image(LittleHelms, smallHstart, bulbTop - HsignH, eParam[1], eParam[1] * 0.4);
+function showHelmsTextCrown(LittleHelms,  unit, xxx, yyy) {
+  // var bulbTop = eParam[5] + eParam[2] + 3;
+  // bulbTop=unit*xxx
+  // var HsignH = eParam[1] * 0.45;
+  // var smallHstart = eParam[4] - eParam[1] / 2;
+  image(LittleHelms, 4.2*unit, -1.1*unit,1.1 * unit, 1.6 * unit * 0.4);
 }
 function createBigHelm() {
   var Fscale = 1 / 0.8;

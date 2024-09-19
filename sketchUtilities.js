@@ -8,16 +8,27 @@ function newRectOverlay(unitSize, xCount, yCount) {
     push();
     noFill()
     stroke(222,222,2);
-    strokeWeight(unitSize/24)
-
+    strokeWeight(unitSize/96)
+    textSize(unitSize/6)
+    var  yAxis, xAxis
     for (var i=-(xCount)/2;i<(xCount+1)/2;i++){
-      var lll =unitSize*((yCount)/2)  
-      line(unitSize*i,-lll,unitSize*i,lll)
+      yAxis = unitSize*((yCount)/2)  
+      xAxis = unitSize*i
+      line(xAxis,-yAxis,xAxis,yAxis)
+      text(i,xAxis,unitSize*yCount/2)
     }
+    line(-windowWidth,0,windowWidth,0)
     for (var i=-(yCount)/2;i<(yCount+1)/2;i++){
-      var lll =unitSize*((xCount)/2)
-      line(-lll,unitSize*i,lll,unitSize*i)
+
+      xAxis =unitSize*((xCount)/2)
+      yAxis = unitSize*i
+      line(-xAxis,yAxis,xAxis,yAxis)
+      var sighN=0
+      if( signum(i)<0 ) sighN=unitSize/6
+      if(signum(i)===0) sighN=unitSize/24
+      text(i,-unitSize*xCount/2,yAxis+sighN)
     }
+    line(0,-windowHeight,0,windowHeight)
     // rect(unitSize * -xCount/2,unitSize * -yCount/2,unitSize*xCount,unitSize*yCount)
     pop();
   }
