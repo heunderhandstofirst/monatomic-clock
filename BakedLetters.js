@@ -42,8 +42,7 @@ function ArcWords2(HLI, topBottom,  unit,WW, xxx, yyy) {
   Lscale = unit*.5
 
   push();
-  // translate(eParam[4], eParam[5]);
-  translate(4.75*unit, -.5*unit)
+  translate(4.75*unit*0, -.5*unit)
 
   for (var j = 0; j < 30; j++) {
     var radXY = (PI * (180 + Math.pow(-1, topBottom) * (j + 1) * 6)) / 180;
@@ -59,13 +58,9 @@ function ArcWords2(HLI, topBottom,  unit,WW, xxx, yyy) {
   pop();
 }
 
-function showHelmsTextCrown(LittleHelms,  unit, xxx, yyy) {
-  // var bulbTop = eParam[5] + eParam[2] + 3;
-  // bulbTop=unit*xxx
-  // var HsignH = eParam[1] * 0.45;
-  // var smallHstart = eParam[4] - eParam[1] / 2;
-  image(LittleHelms, 4.2*unit, -1.1*unit,1.1 * unit, 1.6 * unit * 0.4);
-}
+// function showHelmsTextCrown(LittleHelms,  unit, xxx, yyy) {
+//   image(LittleHelms, -.58*unit, -1.1*unit,1.1 * unit, 1.6 * unit * 0.4);
+// }
 function createBigHelm() {
   var Fscale = 1 / 0.8;
   HlmYellowOnly = createGraphics(

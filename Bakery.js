@@ -9,21 +9,18 @@ class BakerySign {
    drawtheBlob(unit, xxx, yyy){
 
       push()
-      translate(0,.15*unit)
       var innerDiameter = this.WW *.18625;  //  THIS IS THE DIAMETER OF THE INNER [GREY] CIRCLE IN THE LOGO
       var totlVlinePerStripe=int(innerDiameter*.85/7)   //  THIS IS THE TOTAL NUMBER OF PIXELS ACROSS ONE OF EITHER THE RED OR GREY STRIPS OF THE BLOB
       var LoopCount = totlVlinePerStripe * 7;           //  THIS IS THE TOTAL NUMBER OF PIXEL VERTICAL LINES TO BE DRAWN
       var HalfLoop = (LoopCount + 1) / 2;
       var HoldOn = -99;  //  AFTER THE 2 OUTER GREY VERTICAL STRIPES ARE DRAWN, HoldOn IS THE BOTTOM.  THIS IS USED TO DRAW THE ARCCOS FOR THE BOTTOM MIDDLE.
-      translate(4.75*unit, -.6*unit)
+      translate(4.75*unit*0, -.45*unit)
       strokeWeight(1);
       
       for (var j = 0; j < HalfLoop; j++) {
         var stripeN = int(j / totlVlinePerStripe);
         var top = -innerDiameter * 0.75 * emblemTop(LoopCount, j, 0.5, 0.85);
-        var newTop = max(top, -this.WW / 64);
-
-        newTop=max(top,unit*-.25)
+        var newTop = max(top,unit*-.25)
 
         var emblemScalar = (emblemBottom(LoopCount, j) * innerDiameter) / 4;
         if (j === totlVlinePerStripe * 2 - 1) {
@@ -43,14 +40,13 @@ class BakerySign {
 
   flashStripedBottom( unit, xxx, yyy){
     push()
-    translate(0,.15*unit)
-   
+    
     var innerDiameter = this.WW *.18625;  //  THIS IS THE DIAMETER OF THE INNER [GREY] CIRCLE IN THE LOGO
     var totlVlinePerStripe=int(innerDiameter*.85/7)   //  THIS IS THE TOTAL NUMBER OF PIXELS ACROSS ONE OF EITHER THE RED OR GREY STRIPS OF THE BLOB
     var LoopCount = totlVlinePerStripe * 7;           //  THIS IS THE TOTAL NUMBER OF PIXEL VERTICAL LINES TO BE DRAWN
     var HalfLoop = (LoopCount + 1) / 2;
     var HoldOn = -99;  //  AFTER THE 2 OUTER GREY VERTICAL STRIPES ARE DRAWN, HoldOn IS THE BOTTOM.  THIS IS USED TO DRAW THE ARCCOS FOR THE BOTTOM MIDDLE.
-    translate(3.73*unit, -4.63*unit)
+    translate(0,-4.48*unit)
     strokeWeight(1);
 
     for (var j = 0; j < HalfLoop; j++) {
@@ -64,8 +60,7 @@ class BakerySign {
         var BaseEmblem = emblemScalar; //* temp;
       }
       var newBot = -top;
-      if (stripeN > 1.5) newBot = HoldOn + emblemScalar - BaseEmblem;
-  
+      if (stripeN > 1.5) newBot = HoldOn + emblemScalar - BaseEmblem;  
     }
 
     var bulbTop=3.77*unit
@@ -84,8 +79,7 @@ class BakerySign {
         var LR=Math.pow(-1,k)
         stroke(colorFlick, colorFlick * colorP, colorFlick * colorP);  
         push();
-        translate(unit*1.02,0)
-    
+     
         bezier(
           LR * tX0[0],tY[0], LR * tX0[1],tY[1],
           LR * tX0[2],tY[2], LR * tX0[3],tY[3]
@@ -102,7 +96,6 @@ class BakerySign {
      
       ///// vertical lines around inner red and white stripes
       push()
-      translate(unit*1.02,0)
       tX0=multArray(unit,[-.44, -.17, .16,.41 ])
       tY=multArray(unit,[4.85, 4.96,4.97, 4.85])
       colorP = abs(1 - colorP);
@@ -146,7 +139,6 @@ class BakerySign {
       pop();
     }
     pop()
-    // return eParam;
   }
 
    drawCrown( unit,xxx,yyy) {
@@ -157,7 +149,7 @@ class BakerySign {
     stroke(0, 0, 200);
     strokeWeight(0);
     push();
-    translate(unit*4.75,unit*-.72)  ///  now at the top of the blob and below the blue crown
+    translate(0,unit*-.72)  ///  now at the top of the blob and below the blue crown
     
     var sideD =unit*.97
     rect(sideD, unit*-.35, 2 * -sideD,unit*.33);
@@ -192,9 +184,10 @@ class BakerySign {
     background(0);
 
     translate(this.oCenter[0],this.oCenter[1])
+    translate(this.unit*4.75,0)
 
     push()
-    var xxx = -14 + round((28 * mouseX) / windowWidth, 3);
+    var xxx = -20 + round((40 * mouseX) / windowWidth, 3);
     var yyy = -12 + round((24 * mouseY) / windowHeight, 2);  
    
     coloredARC(this.step,  this.unit, xxx, yyy);
@@ -207,13 +200,14 @@ class BakerySign {
     this.flashStripedBottom( this.unit, xxx, yyy)
 
     this.drawCrown(this.unit,xxx,yyy); //    findtheLostImage(, 7, this.step);
-    StarDisplay( this.unit);
+    StarDisplay( this.unit,xxx,yyy);
    
     displayYellowHelm(HelmsLetterImages[2 * this.WhichSlogan + 2],this.BigHelm, this.unit , xxx, yyy);
-    showHelmsTextCrown(LittleHelms,  this.unit, xxx, yyy);  // SHOWS THE HELMS LETTERS IN WHITE IN THE CIRCLE ON THE RIGHT
+    image(LittleHelms, -.58*this.unit, -1.1*this.unit,1.1 * this.unit, 1.6 * this.unit * 0.4);
 
     push()
-    translate(this.WW * 0, this.WH*.2);
+    
+    translate(this.WW * -.35, this.WH*.2);
     stroke(this.WW / 20);
     fill(255, 215, 0);
     textSize(this.WW / 20);
@@ -258,8 +252,10 @@ function StarDisplay( unit, xxx, yyy) {
 push()
 strokeWeight(0)
 var ellipseAB=[1.7,.5]
+textSize(unit*.14)
+
 //  ellipseAB=[xxx,yyy]
-translate(4.75*unit,-unit)
+translate(4.75*unit*0,-unit)
   for (var j=0;j<50;j++){
       fill(255, 255, 255)
       var randColor=random()
@@ -277,7 +273,6 @@ translate(4.75*unit,-unit)
       var sprinkle=[random(-1,1)*randX,y]
       text("★", unit*sprinkle[0],unit*sprinkle[1])
   }
-  // strokeWeight(5)
   
 pop()
   
@@ -289,7 +284,7 @@ function rightCircles( unit,WW, xxx,yyy) {
   push();
   stroke(150);
   
-  translate(unit*4.75, unit*-.5)
+  translate(0, unit*-.5)
   fill(25);
   ellipse(0,0,unit*3.4)
   fill(10);
@@ -310,7 +305,7 @@ function coloredARC(stepCount,  unit,xxx,yyy) {
   strokeWeight(unit/9)
 
   // DRAW THE ARC ///////////////////////////////////////////
-  translate(unit*-5.5, unit*1);
+  translate(unit*-10, unit*1);
   
   var arcSpeed = 5;
   for (var j = 0; j < arcSpeed * Warc * 0.75; j = j + 5) {
@@ -353,14 +348,7 @@ function coloredARC(stepCount,  unit,xxx,yyy) {
   pop();
 }
 
-function rotate_and_draw_image(
-  theImage,
-  img_x,
-  img_y,
-  img_width,
-  img_height,
-  img_angle
-) {
+function rotate_and_draw_image(  theImage,  img_x,  img_y,  img_width,  img_height,  img_angle) {
   imageMode(CENTER);
   translate(img_x + img_width / 2, img_y + img_width / 2);
   rotate((PI / 180) * img_angle);
@@ -376,7 +364,7 @@ function displayYellowHelm( HLI, BigHelm, unit, xxx, yyy) {
   var WhichSpeckle = int(random(HelmsSpeckleImages.length));
   WhichSpeckle = min(max(0, WhichSpeckle), ImgCount - 1);
   var yBack0 = HelmsSpeckleImages[WhichSpeckle];
-  translate(unit*-1.1,unit*-.4)
+  translate(unit*-5.85,unit*-.4)
   rotate(6.1);
   var ImgY = -windowHeight / 4;
   var ImgX = -yBack0.width / 2;
@@ -397,11 +385,4 @@ function displayYellowHelm( HLI, BigHelm, unit, xxx, yyy) {
     image(ltrImage, imgXval, 0);
   }
   pop();
-}
-function redCircle(){
-  push()
-    fill(222,2,2)
-    strokeWeight(0)
-    ellipse(0,0,50)
-    pop()
 }
