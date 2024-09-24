@@ -245,7 +245,7 @@ class BunnySign {
   
     render(signTime) {
       const tu = this.units[0];
-      if (5 === 5 / 1) this.rectOverlay(); // ** DO NOT ERASE
+      if (5 === 5 / 2) this.rectOverlay(); // ** DO NOT ERASE
       var xxx = 0 + round((200 * mouseX) / windowWidth, 2);
       var yyy = 0 + round((100 * mouseY) / windowHeight, 2);
   

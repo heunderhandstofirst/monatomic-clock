@@ -11,33 +11,107 @@ class DominoSign {
       this.WH = (this.WW * this.Wwh[1]) / this.Wwh[0];
       this.DominoImg = loadImage("images/DominoTransparentA.png");
       this.DominoNeon = loadImage("images/domino-neon.png");
-      this.DominoBackGrnd = loadImage("images/domino-background.png");
- 
-    
+      this.DominoBackGrnd = loadImage("images/domino-background.png");  
+      this.unit=this.WW/54    
+    }
+
+     sugarQuad(bigX, bigY,  t, adj, block) {
+        //  LOOPED CABLE WHERE ERM WALKS
+        var onOff = 1 === t % 2;
+        push();
+        fill(255)
+        stroke(255)
+        strokeWeight(1)
       
+        quad(
+          bigX[t * 2],
+          bigY[t * 2],
+          bigX[t * 2 + 2],
+          bigY[t * 2 + 2],
+          bigX[t * 2 + 2],
+          bigY[t * 2 + 2] - adj,
+          bigX[t * 2],
+          bigY[t * 2] - adj
+        );
+        pop();
+      }
+      
+    sugarPile(xxx,yyy){
+        push()
+        fill(255)
+        stroke(255)
+        var tempSec =1-( (Date.now() % 60000) / 60000);
+
+        strokeWeight(30)
+        var topX =[]
+        var topY =[]
+        var XLnew=this.unit*3
+        var XRnew=this.unit*21
+        let topLR =this.unit*10
+        let topYR = this.unit * 15;
+        let topYL = this.unit*15;
+            
+
+            var vvv = -.6*this.unit*(1-tempSec)*.5
+            var t0 = createVector(XRnew, topYR);
+            var t1 = createVector(topLR, topYL - this.unit * -vvv);
+            var t2 = createVector(XLnew, topYL);
+        
+            for (var t8 = 0; t8 < 4; t8++) {
+              for (t = 0; t < 81; t++) {
+                let tx1 = lerp(t0.x, t1.x, t / 80);
+                let ty1 = lerp(t0.y, t1.y, t / 80);
+                let tx2 = lerp(t1.x, t2.x, t / 80);
+                let ty2 = lerp(t1.y, t2.y, t / 80);
+                let x = lerp(tx1, tx2, t / 80);
+                let y = lerp(ty1, ty2, t / 80);
+                topX[t] = x;
+                topY[t] = y;
+              }
+            }
+            
+            // for (var t = 0; t < 40; t++) {
+            //     this.sugarQuad(topX, topY,  t, this.unit * 0.5, true);
+            // }
+
+            // fill(255)
+            // triangle(XLnew,this.unit*15,this.unit*12,this.unit*(15-topX[40]*(1-tempSec)*.015),this.unit*21,this.unit*15)
+        
+
+        translate(9.28*this.unit,0)
+        var t = 0
+        strokeWeight(0)
+        for (var t=0;t<15*this.unit;t=t+2){
+
+            var outside = sqrt(t*this.unit*5.1)
+            var inside = sqrt(t*this.unit*1)
+
+            for (var n=inside;n<outside;n++){
+                if(random()<.3){
+                var uD=random()
+                ellipse(n,t+uD,1)
+                }
+            }
+
+        }
+        pop()
     }
   
     render(signTime) {
-        var xxx = 5 + round((1000 * mouseX) / windowWidth, 0);
-        var yyy = 0 + round((1000* mouseY) / windowHeight, 0); 
+        var xxx = -0 + round((240 * mouseX) / windowWidth, 0);
+        var yyy = -20 + round((40* mouseY) / windowHeight, 2); 
         var v=100
-        var extraText1,  extraText2j,  extraText3,  extraText4, extraText5,  extraText6
+        // var extraText1,  extraText2j,  extraText3,  extraText4, extraText5,  extraText6
         
-        let unit=this.WW/54
+        // let unit=this.WW/54
+        prismaticSky(windowWidth,windowHeight, 10)
+       
         translate(windowWidth/2,windowHeight/2)
 
         stroke(2,222,2)                
-        for (var k = -5 ; k<6;k++){
-            line(-27*unit,unit*k*3,27*unit,unit*k*3)
-            text(k*3,-27*unit,unit*k*3)
-        }
-        for (var k=-27;k<28;k=k+3){
-            line(unit*k,unit*-15,unit*k,unit*15)
-            
-        }
-        // printXY()
-        prismaticSky()
-        image(this.DominoNeon,-unit*20,-unit*15,unit*32.4,unit*18)
+           
+        image(this.DominoNeon,-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
+        this.sugarPile(xxx,yyy)
 
         // image(this.DominoBackGrnd,-unit*20,unit*1,unit*27,unit*15)
 
@@ -45,81 +119,14 @@ class DominoSign {
 
             for (var k=0;k<40;k++) text("o",80+5*k+random(),i+random()+random())
         }
-        // printXY(xxx, yyy, unit, v, Date.now(),extraText1, extraText2,extraText3,extraText4,extraText5,extraText6) 
+        
+        // newRectOverlay(this.unit,54,30,3)
+        translate(-8.25*this.unit*3,-5,this.unit)
+        var printText=[]
+        var pTextk=0
+        if (5 === 5  / 2) printXY(xxx, yyy, this.unit, 0, Date.now(), printText[pTextk++],printText[pTextk++],printText[pTextk++],printText[pTextk++],printText[pTextk++],printText[pTextk++]);
+
  
-    //   strokeWeight(0);
-    //   translate(this.oCenter[0], this.oCenter[1] * 0.85);
-    //   fill(0, 20, 10);
-    //   var rnd = this.D / 100;
-    //   rect(-0.12 * this.D, -0.47 * this.D, 0.24 * this.D, 0.94 * this.D, rnd);
-    //   rect(-0.47 * this.D, -0.12 * this.D, 0.94 * this.D, 0.24 * this.D, rnd);
-  
-    //   for (var n = 0; n < -3; n++) {
-    //     strokeWeight(this.D / (70 + n * 150));
-    //     for (var v = 0; v < 4; v++) {
-    //       var XX = [0.1, 0.075, 0.05, 0.025][v];
-    //       var YY = [0.45, 0.425, 0.4, 0.375][v];
-    //       Image(DominoImg,30,100,)
-  
-    //       for (var k = -1; k < -2; k = k + 2) {
-    //         stroke(0, 200 + random(50), 0);
-    //         if (n === 2) stroke(220 + random(34));
-  
-    //         line(-XX * this.D, -YY * this.D * k, XX * this.D, -YY * this.D * k);
-    //         line(YY * this.D * k, -XX * this.D, YY * this.D * k, XX * this.D);
-    //         for (var x = -1; x < 2; x = x + 2) {
-    //           line(
-    //             YY * this.D * k,
-    //             XX * this.D * x,
-    //             XX * this.D * k,
-    //             XX * this.D * x
-    //           );
-    //           line(
-    //             -XX * this.D * x,
-    //             -YY * this.D * k,
-    //             -XX * this.D * x,
-    //             -XX * this.D * k
-    //           );
-    //         }
-    //         push();
-    //         translate(0, this.oCenter[1] * 0.87);
-    //         // farmF(this.D, signTime[2]);
-    //         // farmA(this.D, 1, -0.31, signTime[2], 2);
-    //         // farmR(this.D, signTime[2]);
-    //         // farmM(this.D, signTime[2]);
-    //         // farmA(this.D, 0.25, 0.09, signTime[2], 5);
-    //         // farmC(this.D, signTime[2]);
-    //         // farmI(this.D, signTime[2]);
-    //         // farmA(this.D, 0.72, 0.42, signTime[2], 8);
-  
-    //         pop();
-    //       }
-    //     }
-    //   }
+    
     }
   }
- 
-  
-  
- 
-  
-//   function circleNeon(x1, y1, MWH, oneOHtwo) {
-//     stroke(0, 200 + random(50), 0);
-//     ellipse(x1, y1, MWH * oneOHtwo);
-  
-//     stroke(0, 200 + random(50), 0);
-//     ellipse(x1, y1, MWH * oneOHtwo * 0.95);
-  
-//     stroke(250);
-//     ellipse(x1, y1, MWH * oneOHtwo * 0.95 * 0.95);
-  
-//     stroke(0, 200 + random(50), 0);
-//     ellipse(x1, y1, MWH * oneOHtwo * 0.95 * 0.95 * 0.95);
-  
-//     stroke(0, 200 + random(50), 0);
-//     ellipse(x1, y1, MWH * oneOHtwo * 0.95 * 0.95 * 0.95 * 0.95);
-  
-//     stroke(5);
-//     ellipse(x1, y1, MWH * oneOHtwo * 0.95 * 0.95 * 0.95 * 0.95 * 0.95);
-//   }
-  

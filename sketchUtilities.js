@@ -3,33 +3,36 @@ class sktchUtilites {
 }
 
 
-function newRectOverlay(unitSize, xCount, yCount) {
+function newRectOverlay(unitSize, xCount, yCount,digitScalar) {
     // MUST BE MOVED TO THE CENTER OF THE SCREEN PRIOR TO DRAWING
     push();
     noFill()
     stroke(222,222,2);
     strokeWeight(unitSize/96)
-    textSize(unitSize/6)
+    textSize(unitSize/2)
+    var scaledUnit=unitSize*digitScalar
+    var scaledX=xCount/digitScalar
+    var scaledY=yCount/digitScalar
     var  yAxis, xAxis
-    for (var i=-(xCount)/2;i<(xCount+1)/2;i++){
-      yAxis = unitSize*((yCount)/2)  
-      xAxis = unitSize*i
+    for (var i=-(scaledX)/2;i<(scaledX+1)/2;i++){
+      yAxis = scaledUnit*((scaledY)/2)  
+      xAxis = scaledUnit*i
       line(xAxis,-yAxis,xAxis,yAxis)
-      text(i,xAxis,unitSize*yCount/2)
+      text(i*digitScalar,xAxis,scaledUnit*scaledY/2)
     }
     line(-windowWidth,0,windowWidth,0)
-    for (var i=-(yCount)/2;i<(yCount+1)/2;i++){
+    for (var i=-(scaledY)/2;i<(scaledY+1)/2;i++){
 
-      xAxis =unitSize*((xCount)/2)
-      yAxis = unitSize*i
+      xAxis =scaledUnit*((scaledX)/2)
+      yAxis = scaledUnit*i
       line(-xAxis,yAxis,xAxis,yAxis)
       var sighN=0
-      if( signum(i)<0 ) sighN=unitSize/6
-      if(signum(i)===0) sighN=unitSize/24
-      text(i,-unitSize*xCount/2,yAxis+sighN)
+      if( signum(i)<0 ) sighN=scaledUnit/6
+      if(signum(i)===0) sighN=scaledUnit/24
+      text(i*digitScalar,-scaledUnit*scaledX/2,yAxis+sighN)
     }
     line(0,-windowHeight,0,windowHeight)
-    // rect(unitSize * -xCount/2,unitSize * -yCount/2,unitSize*xCount,unitSize*yCount)
+    // rect(scaledUnit * -scaledX/2,scaledUnit * -scaledY/2,scaledUnit*scaledX,scaledUnit*scaledY)
     pop();
   }
 

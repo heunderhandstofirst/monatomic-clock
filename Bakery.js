@@ -215,7 +215,7 @@ class BakerySign {
     pop()
     
     pop()
-    // newRectOverlay(this.unit,13,8)
+    // newRectOverlay(this.unit,13,8,1)
     translate(-8.25*this.unit,-5,this.unit)
     var printText=[]
     var pTextk=0
