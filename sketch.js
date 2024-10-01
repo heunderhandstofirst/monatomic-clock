@@ -78,6 +78,7 @@ var NewSign = true;
 let schweppesLetterColors;
 let letterImagesWhite = [];
 let letterImagesWithColor = [];
+let dominoImagesWithColor=[];
 let WeatherJsons = [];
 let WeatherStrings = [];
 let NeonPreload;
@@ -164,6 +165,9 @@ function preload() {
     );
   }
   letterImagesWhite = letterURLs.map((url) => loadImage(url));
+  const dominoWhiteURLs ="images/domino-neon.png"
+  
+  dominoWhite=loadImage(dominoWhiteURLs)
   screenBackground();
 }
 
@@ -184,9 +188,7 @@ function setup() {
   CreateHelmLetter(HelmsSlogans);
 
   canvas = createCanvas(windowWidth, windowHeight); //size(1200,800);(578, 340)
-
   canvas.style("display", "block");
-
   canvas.drawingContext.miterLimit = 2;
   // window.setTimeout(updateWeather0, WeatherInterval);
 
@@ -252,6 +254,8 @@ function setup() {
     letterImagesWithColor[letterIndex] = colorVariationsOfIndividualLetter;
   }
 
+
+
 }
 
 function draw() {
@@ -295,7 +299,7 @@ function draw() {
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
 //  WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
-// WhichSign=29
+WhichSign=29
 //////////////////////////////////////////////////////////////////////////
 frameRate(25);
 if (WhichSign===17) frameRate(10)
