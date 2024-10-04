@@ -98,7 +98,7 @@ class DominoSign {
     
   sugarPile(xxx,yyy){
       push()
-      fill(255)
+      fill(255) 
       stroke(255)
       strokeWeight(30)
      
@@ -144,7 +144,6 @@ for (let i = 0; i < numEllipses; i++) {
 
         image(this.DominoNeon,-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
         this.sugarPile(xxx,yyy)
-
         image(this.createNeonDomino(xxx),-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
 
         // line(xxx*this.unit,-1000,xxx*this.unit,2000)

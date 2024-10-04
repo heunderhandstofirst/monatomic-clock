@@ -182,11 +182,10 @@ class BakerySign {
 
     noFill();
     background(0);
-
     translate(this.oCenter[0],this.oCenter[1])
-    translate(this.unit*4.75,0)
-
+  
     push()
+    translate(this.unit*4.75,0)
     var xxx = -20 + round((40 * mouseX) / windowWidth, 3);
     var yyy = -12 + round((24 * mouseY) / windowHeight, 2);  
    
@@ -215,11 +214,19 @@ class BakerySign {
     pop()
     
     pop()
-    // newRectOverlay(this.unit,13,8,1)
-    translate(-8.25*this.unit,-5,this.unit)
-    var printText=[]
-    var pTextk=0
-    if (5 === 5  / 2) printXY(xxx, yyy, this.unit, 0, Date.now(), printText[pTextk++],printText[pTextk++],printText[pTextk++],printText[pTextk++],printText[pTextk++],printText[pTextk++]);
+    
+    if (5 === 5  / 1) {
+      newRectOverlay(this.unit,13,8,1)
+      translate(-8.25*this.unit*3,-5,this.unit)
+      var printText=[]
+      var pTextk=0
+      textSize(this.unit*.25)
+      printXY(xxx, yyy, this.unit, 0, Date.now(), printText[pTextk++],printText[pTextk++],printText[pTextk++],printText[pTextk++],printText[pTextk++],printText[pTextk++]);
+  }
+
+
+
+
 
 
   }
