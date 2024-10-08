@@ -29,6 +29,7 @@ let bre; // BUNNY RABBIT EARS
 let mbs; // MALIBU PIER
 let jcc; // JERSEY CITY CLOCK
 let dom; // DOMINO SUGAR
+let dub; // DUBLIN TAP RO
 
 let SwitchSign;
 const backgroundImageURL = "images/background.png";
@@ -295,11 +296,12 @@ function draw() {
   if( signHour(signTime,  8, 28)) WhichSign = 27;   // MALIBU
   if( signHour(signTime,  1,  9)) WhichSign = 28;   // JERSEY CITY CLOCK
   if( signHour(signTime,  5,  8)) WhichSign = 29;   // DOMINO SUGAR
+  if( signHour(signTime,  8, 15)) WhichSign = 30;   // DUBLIN TAP RO
   
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
 //  WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
-WhichSign=29
+// WhichSign=30
 //////////////////////////////////////////////////////////////////////////
 frameRate(25);
 if (WhichSign===17) frameRate(10)

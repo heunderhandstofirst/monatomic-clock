@@ -204,8 +204,6 @@ class BakerySign {
     displayYellowHelm(HelmsLetterImages[2 * this.WhichSlogan + 2],this.BigHelm, this.unit , xxx, yyy);
     image(LittleHelms, -.58*this.unit, -1.1*this.unit,1.1 * this.unit, 1.6 * this.unit * 0.4);
 
-    push()
-    
     translate(this.WW * -.35, this.WH*.2);
     stroke(this.WW / 20);
     fill(255, 215, 0);
@@ -213,22 +211,14 @@ class BakerySign {
     text("XL" + ["", "I", "II", "III", "IV"][signTime[1] % 5], 0, 0);
     pop()
     
-    pop()
-    
     if (5 === 5  / 1) {
       newRectOverlay(this.unit,13,8,1)
-      translate(-8.25*this.unit*3,-5,this.unit)
+      translate(-5.4*this.unit,this.unit)
       var printText=[]
       var pTextk=0
       textSize(this.unit*.25)
       printXY(xxx, yyy, this.unit, 0, Date.now(), printText[pTextk++],printText[pTextk++],printText[pTextk++],printText[pTextk++],printText[pTextk++],printText[pTextk++]);
   }
-
-
-
-
-
-
   }
 }
 
@@ -373,16 +363,17 @@ function displayYellowHelm( HLI, BigHelm, unit, xxx, yyy) {
   var yBack0 = HelmsSpeckleImages[WhichSpeckle];
   translate(unit*-5.85,unit*-.4)
   rotate(6.1);
-  var ImgY = -windowHeight / 4;
-  var ImgX = -yBack0.width / 2;
+  var ImgX=unit*-5.1
+  var ImgY=unit*-1.93
   image(yBack0, ImgX, ImgY);
   image(BigHelm, ImgX, ImgY);
+
+  
 
   //////////////////////////////
   /// OLYMPIC BREAD    DAILY AT YOUR DOOR  [CYCLE]
   
   var LetterWidth=unit*7/HLI.length
-  ImgX = -yBack0.width / 2;
   ImgX = (-LetterWidth * HLI.length) / 2;
   for (var j = 0; j < HLI.length; j++) {
     var ltrImage = HLI[j];
