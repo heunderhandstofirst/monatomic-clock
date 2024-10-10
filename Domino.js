@@ -102,23 +102,23 @@ class DominoSign {
       stroke(255)
       strokeWeight(30)
      
-// Draw the sugar pile
-// let elapsedTime = millis() / 1000; // Get elapsed time in seconds
-let elapsedTime =( (Date.now() % 60000) / 1000);
+        // Draw the sugar pile
+        // let elapsedTime = millis() / 1000; // Get elapsed time in seconds
+        let elapsedTime =( (Date.now() % 60000) / 1000);
 
-let maxTime = 60; // Duration over which the pile grows (1 minute)
-let numEllipses = 200; // Increase the number of ellipses to draw for smoother growth
-let maxHeight = this.unit * 5; // Maximum height of the pile (further reduced)
-let baseWidth = this.unit * 6; // Base width of the pile (further reduced)
+        let maxTime = 60; // Duration over which the pile grows (1 minute)
+        let numEllipses = 50; // Increase the number of ellipses to draw for smoother growth
+        let maxHeight = this.unit * 5; // Maximum height of the pile (further reduced)
+        let baseWidth = this.unit * 6; // Base width of the pile (further reduced)
 
-for (let i = 0; i < numEllipses; i++) {
-    let t = map(i, 0, numEllipses, 0, maxTime);
-    if (elapsedTime > t) {
-        let h = map(t, 0, maxTime, 0, maxHeight);
-        let w = map(h, 0, maxHeight, baseWidth, 0);
-        ellipse(this.unit * 15, this.unit * 15 - h, w, this.unit / 3); // Smaller ellipses
-    }
-}
+        for (let i = 0; i < numEllipses; i++) {
+            let t = map(i, 0, numEllipses, 0, maxTime);
+            if (elapsedTime > t) {
+                let h = map(t, 0, maxTime, 0, maxHeight);
+                let w = map(h, 0, maxHeight, baseWidth, 0);
+                ellipse(this.unit * 15, this.unit * 15 - h, w, this.unit / 3); // Smaller ellipses
+            }
+        }
           
        
       // POWDER
