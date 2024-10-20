@@ -15,6 +15,8 @@ class DominoSign {
       this.greenRed=random(100) 
       this.blueRed=random(100)
       this.twirlDirection=[1,-1 ]
+      this.bigBuffer =       createGraphics(this.DominoBackGrnd.width, this.DominoBackGrnd.height);
+   
 
        // Generate random positions for X's
     this.xPositions = [];
@@ -29,14 +31,13 @@ class DominoSign {
             }
         }
     }
+    push()
+    translate(windowWidth/2,windowHeight/2)
+    image(this.DominoNeon,-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
+    pop()
     }
 
-    colorTheBillboard(xxx,yyy){
-      push()
-      translate(this.unit*-22.7,this.unit*-14.34)
-      prismaticSky(this.unit*31.76,this.unit*16.92, 10)
-      pop()
-    }
+    
 
     twirl255(currentColor, increment, twirlDirection){
     // let increment = random(increment);
@@ -56,6 +57,7 @@ class DominoSign {
     const whiteImageColorWorkingCopy = this.DominoBackGrnd;
     let neonFlash=110
         const buffer = createGraphics(this.DominoBackGrnd.width, this.DominoBackGrnd.height);
+        // const buffer = this.bigBuffer
         let TW=this.twirl255(this.greenRed, neonFlash, this.twirlDirection[0]);
         this.twirlDirection[0]=TW[1]
         this.greenRed=TW[0];
@@ -100,27 +102,7 @@ class DominoSign {
       push()
       fill(255) 
       stroke(255)
-      strokeWeight(30)
-     
-        // Draw the sugar pile
-        // let elapsedTime = millis() / 1000; // Get elapsed time in seconds
-        let elapsedTime =( (Date.now() % 60000) / 1000);
-
-        let maxTime = 60; // Duration over which the pile grows (1 minute)
-        let numEllipses = 50; // Increase the number of ellipses to draw for smoother growth
-        let maxHeight = this.unit * 5; // Maximum height of the pile (further reduced)
-        let baseWidth = this.unit * 6; // Base width of the pile (further reduced)
-
-        for (let i = 0; i < numEllipses; i++) {
-            let t = map(i, 0, numEllipses, 0, maxTime);
-            if (elapsedTime > t) {
-                let h = map(t, 0, maxTime, 0, maxHeight);
-                let w = map(h, 0, maxHeight, baseWidth, 0);
-                ellipse(this.unit * 15, this.unit * 15 - h, w, this.unit / 3); // Smaller ellipses
-            }
-        }
-          
-       
+      
       // POWDER
       translate(9.28*this.unit,0)
       strokeWeight(0)
@@ -128,25 +110,35 @@ class DominoSign {
           var inside =max(0, sqrt(t*this.unit)-this.unit)
           for (var n=inside;n<sqrt(t*this.unit*5.1);n++) if(random()<.3) ellipse(n,t+random(),1)
       }
-      // END OF POWDER
       pop()
+  }
+
+  colorTheBillboard(xxx,yyy){
+    push()
+    translate(-windowWidth/1.8,-windowHeight/1.8)
+    prismaticSky(windowWidth*1.3,windowHeight*1.3, 10)
+    pop()
+    push()
+    translate(this.unit*-22.7,this.unit*-14.6)
+    fill(0)
+    rect(0,0,this.unit*31.76,this.unit*17.3)
+    pop()
   }
   
     render(signTime) {
-        var xxx = 0 + round((50 * mouseX) / windowWidth, 0);
-        var yyy = 1 + round((40* mouseY) / windowHeight, 2); 
+        var xxx = 100 + round((600 * mouseX) / windowWidth, 0);
+        var yyy = -30 + round((60* mouseY) / windowHeight, 1); 
        
         translate(windowWidth/2,windowHeight/2)
-        this.colorTheBillboard(xxx)
+        this.colorTheBillboard(xxx,yyy)
                 
-        // Draw shadow girders
         this.drawDominoGirders()
-
+       
         image(this.DominoNeon,-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
-        this.sugarPile(xxx,yyy)
         image(this.createNeonDomino(xxx),-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
-
-        // line(xxx*this.unit,-1000,xxx*this.unit,2000)
+        this.sugarPile(xxx,yyy)
+       
+        
         if (5 === 5  / 2) {
             newRectOverlay(this.unit,54,30,3)
             translate(-8.25*this.unit*3,-5,this.unit)

@@ -10,6 +10,7 @@ class MondrianRectangle {
     this.rectCount = this.colCount * this.rowCount;
     this.upDown = [];
     this.colorGrid = [];
+    this.colorFade =[]
     for (var r = 0; r < this.rowCount; r++) {
       var tempColor = [];
       var tempUpDown = [];
@@ -23,8 +24,8 @@ class MondrianRectangle {
     }
   }
   render(signTime) {
-    strokeWeight(windowWidth / 100);
-    stroke(250);
+    strokeWeight(windowWidth / 200);
+    stroke(209, 199, 187, 255)
 
     for (var k = 0; k < this.rowCount; k++) {
       for (var j = 0; j < this.colCount; j++) {
@@ -33,7 +34,10 @@ class MondrianRectangle {
         var ddd = (720 + this.colorGrid[k][j] + colorShift) % 360;
 
         this.colorGrid[k][j] = ddd;
-        fill(color("hsla(" + ddd + ", 95%, 40%, 1)"));
+        var abc= 5+int(random(40))
+        abc=40
+        // fill(color("hsla(" + ddd + ", 70%, 40%, 1)"));
+        fill(color("hsla(" + ddd + ", 70%, " + abc +"%, 1)"));
         // fill(color("hsla(" + ddd + ", " + vvv + "%, " + jjj + "%, 1)"));
 
         rect(
