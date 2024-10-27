@@ -186,8 +186,8 @@ class BakerySign {
   
     push()
     translate(this.unit*4.75,0)
-    var xxx = -20 + round((40 * mouseX) / windowWidth, 3);
-    var yyy = -12 + round((24 * mouseY) / windowHeight, 2);  
+    var xxx = -1 + round((4 * mouseX) / windowWidth, 2);
+    var yyy = 0 + round((3 * mouseY) / windowHeight, 2);  
    
     coloredARC(this.step,  this.unit, xxx, yyy);
     rightCircles( this.unit,this.WW, xxx,yyy); //    findtheLostImage(, 3, this.step);
@@ -211,7 +211,7 @@ class BakerySign {
     text("XL" + ["", "I", "II", "III", "IV"][signTime[1] % 5], 0, 0);
     pop()
     
-    if (5 === 5  / 1) {
+    if (5 === 5  / 2) {
       newRectOverlay(this.unit,13,8,1)
       translate(-5.4*this.unit,this.unit)
       var printText=[]
@@ -365,6 +365,11 @@ function displayYellowHelm( HLI, BigHelm, unit, xxx, yyy) {
   rotate(6.1);
   var ImgX=unit*-5.1
   var ImgY=unit*-1.93
+  push()
+  textSize(unit*2.5)
+  translate(.45*unit, 1.98*unit)
+  text("HELM'S",ImgX,ImgY)
+  pop()
   image(yBack0, ImgX, ImgY);
   image(BigHelm, ImgX, ImgY);
 
