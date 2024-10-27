@@ -8,14 +8,13 @@ class DominoSign {
       this.WH = windowHeight;
       this.WW = min(this.WH * (this.Wwh[0] / this.Wwh[1]), windowWidth) * 0.97;
       this.WH = (this.WW * this.Wwh[1]) / this.Wwh[0];
-      this.DominoImg = loadImage("images/DominoTransparentA.png");
+      // this.DominoImg = loadImage("images/DominoTransparentA.png");
       this.DominoNeon = loadImage("images/domino-neon.png");
       this.DominoBackGrnd = loadImage("images/domino-background.png");  
       this.unit=this.WW/54   
       this.greenRed=random(100) 
       this.blueRed=random(100)
       this.twirlDirection=[1,-1 ]
-      this.bigBuffer =       createGraphics(this.DominoBackGrnd.width, this.DominoBackGrnd.height);
    
 
        // Generate random positions for X's
@@ -31,10 +30,8 @@ class DominoSign {
             }
         }
     }
-    push()
-    translate(windowWidth/2,windowHeight/2)
-    image(this.DominoNeon,-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
-    pop()
+
+
     }
 
     
@@ -50,14 +47,14 @@ class DominoSign {
       newColor = 0;
         twirlDirection = 1;
     }
-    debugger
+    // debugger
     return [newColor, twirlDirection]
   }
   createNeonDomino(xxx){
     const whiteImageColorWorkingCopy = this.DominoBackGrnd;
     let neonFlash=110
         const buffer = createGraphics(this.DominoBackGrnd.width, this.DominoBackGrnd.height);
-        // const buffer = this.bigBuffer
+       
         let TW=this.twirl255(this.greenRed, neonFlash, this.twirlDirection[0]);
         this.twirlDirection[0]=TW[1]
         this.greenRed=TW[0];
@@ -65,31 +62,27 @@ class DominoSign {
         TW=this.twirl255(this.blueRed, neonFlash, this.twirlDirection[1]);
         this.twirlDirection[1]=TW[1]
         this.blueRed=TW[0];
-        
+        this.blueRed=100+(xxx*55/20)
+        this.greenRed=(20-xxx)*255/25
         buffer.tint(color(255,this.greenRed, this.blueRed));
        
         buffer.image(whiteImageColorWorkingCopy, 0, 0);
         let cvoil = buffer;
+       
         return cvoil;
     }
     drawDominoGirders(){
       // Draw shadow girders
         stroke(37); // Set stroke color to xxx
         strokeWeight(this.unit / 15); // Set stroke weight to this.unit / 15
-        let offset = 0; // Set offset to 0
-        let startX = -this.unit * 22.6 + offset;
-        let endX = this.unit * 9.1 + offset;
+        let startX = -this.unit * 22.6;
+        let endX = this.unit * 9.1 ;
         let spacing = this.unit * 2; // Set equal spacing
 
-        for (let i = startX; i <= endX; i += spacing) {
-            line(i, -this.unit * 15, i, windowHeight); // Vertical lines extending past the bottom
-        }
+        for (let i = startX; i <= endX; i += spacing)  line(i, -this.unit * 15, i, windowHeight); // Vertical lines extending past the bottom  
         line(endX, -this.unit * 15, endX, windowHeight); // Ensure the far right vertical line at 9.1 * this.unit
-
-        for (let j = -this.unit * 15; j <= windowHeight; j += this.unit * 2) {
-            line(startX, j, endX, j); // Horizontal lines extending from -22.6 * this.unit to 9.1 * this.unit
-        }
-
+        for (let j = -this.unit * 15; j <= windowHeight; j += this.unit * 2) line(startX, j, endX, j); // Horizontal lines extending from -22.6 * this.unit to 9.1 * this.unit
+      
         // Draw diagonal lines to form X's in some rectangles randomly
         for (let pos of this.xPositions) {
             line(pos.x, pos.y, pos.x + this.unit * 2, pos.y + this.unit * 2); // Diagonal from top-left to bottom-right
@@ -130,13 +123,20 @@ class DominoSign {
         var yyy = -30 + round((60* mouseY) / windowHeight, 1); 
        
         translate(windowWidth/2,windowHeight/2)
+        
         this.colorTheBillboard(xxx,yyy)
                 
         this.drawDominoGirders()
        
         image(this.DominoNeon,-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
         image(this.createNeonDomino(xxx),-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
+        // let i=int(random(5))
+        // this.createNeonDomino(i)
+        image(this.createNeonDomino(int(random(20))),-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
+        // image(this.DominoBackGrnd,-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
         this.sugarPile(xxx,yyy)
+
+        
        
         
         if (5 === 5  / 2) {
@@ -145,6 +145,8 @@ class DominoSign {
             var printText=[]
             printText[0]="this.greenRed:  "+int(this.greenRed)
             printText[1]="this.blueRed:    "+int(this.blueRed)
+            printText[2]="memory: " + int (performance.memory.usedJSHeapSize/1000000)
+            // printText[3]=this.grabBag
             var pTextk=0
             printXY(xxx, yyy, this.unit, 0, Date.now(), printText[pTextk++],printText[pTextk++],printText[pTextk++],printText[pTextk++],printText[pTextk++],printText[pTextk++]);
         }

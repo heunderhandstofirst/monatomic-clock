@@ -209,7 +209,8 @@ function logo() {
 
     logo1.textSize(windowWidth / 16);
     logo1.textAlign(CENTER, CENTER);
-    logo1.textFont("Arial", 150);
+    var k =100+random(100)
+    logo1.textFont("Arial", logoDimension/1.5);
     logo1.text(logoText[i], logoDimension / 2.1, logoDimension / 1.75);
     logoReturns[i] = logo1;
   }
