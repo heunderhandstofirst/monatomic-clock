@@ -6,6 +6,7 @@ class StagSign {
       this.WH = windowHeight;
       this.WW = min(this.WH * (16 / 18), windowWidth) * 0.97;
       this.WH = (this.WW * 18) / 16;
+      this.unit=this.WH/16
   
       this.VisibleWidth = this.WW / windowWidth;
       this.leftBorder = (windowWidth * (1 - this.VisibleWidth)) / 2;
@@ -21,16 +22,6 @@ class StagSign {
         this.stagDim[1],
         StagOnly,
         this.blinkMonth
-      );
-    }
-  
-    stagImage(ttt) {
-      image(
-        this.StagLinedImages[ttt],
-        this.leftBorder + this.WW / 2 - this.StagLinedImages[0].width * 0.4,
-        0,
-        this.stagDim[0],
-        this.stagDim[1]
       );
     }
   
@@ -55,12 +46,10 @@ class StagSign {
     }
     redNose(xxx, yyy) {
       push();
-      // translate(this.leftBorder, this.topBorder);
-      fill(250, 0, 0);
-        for (var k = 0; k < 100; k++) {
+    
+      for (var k = 0; k < 100; k++) {
         strokeWeight(this.WW / (10 + k));
         stroke(2.55 * k, 0, 0);
-        strokeWeight(0);
         fill(2.55 * k, 0, 0);
         ellipse(
           this.leftBorder + (11 * this.WW) / 16,
@@ -76,49 +65,47 @@ class StagSign {
       var yyy = 0 + round((15 * mouseY) / windowHeight, 1);
       var dn = Date.now();
       background(0)
-      
   
-      poSpleckle(this.OLU);
-      image(StagFoto, this.OLU[0], this.OLU[1], this.OLU[2], this.OLU[3]); //  WHITE LETTERING
       push()
-      fill(0)
-      strokeWeight(0)
-      rect(this.OLU[0], this.OLU[1],windowWidth/2.5,windowHeight/196)
-      rect(this.OLU[0], this.OLU[1],windowWidth/196,this.OLU[3])
+      translate(0,this.unit*1)
+      poSpleckle(this.OLU);
       
-      rect(this.OLU[0], this.OLU[1]+this.OLU[3],windowWidth/2.5,windowHeight/196)
-      rect(this.OLU[0]+this.OLU[2], this.OLU[1],windowWidth/196,this.OLU[3])
+      image(StagFoto, this.OLU[0], this.OLU[1], this.OLU[2], this.OLU[3]); //  WHITE LETTERING
       pop()
-      image(
-        OregonFoto,
-        this.leftBorder,
-        this.topBorder + this.WH / 6,
-        this.WW,
-        (this.WH * 14) / 18
-      );
+      image( OregonFoto, this.leftBorder, this.topBorder + this.WH / 6, this.WW,(this.WH * 14) / 18 );
       this.oldTOWN();
   
-      var ttt = 4 + int((15 * (dn % 60000)) / 50000);
-      if (dn % 60000 > 50000) ttt = 5 + int(random(18));
+      var whichStag = 4 + int((15 * (dn % 60000)) / 50000);
+      if (dn % 60000 > 50000) whichStag = 5 + int(random(18));
   
-      this.stagImage(ttt);
+      image( this.StagLinedImages[whichStag], this.leftBorder + this.WW / 2 - this.StagLinedImages[0].width * 0.4, this.unit*.5, this.stagDim[0], this.stagDim[1] );
+
       if (month() === this.blinkMonth) this.redNose(xxx, yyy);
-      // printXY(xxx, yyy, this.WW / 16, 0, dn);
+      
+      if (5 === 5  / 2) {
+        push()
+        translate(windowWidth/2,windowHeight/2)
+        newRectOverlay(this.unit,18,16,1)
+        pop()
+        translate(4.4*this.unit,10.1*this.unit)
+        var printText=[]
+        var pTextk=0
+        printXY(xxx, yyy, this.unit, 0, Date.now(), printText[pTextk++],printText[pTextk++],printText[pTextk++],printText[pTextk++],printText[pTextk++],printText[pTextk++]);
+      }
+
     }
   }
   function stagSpeckle(ssW, ssH, stagOnly, blinkMonth) {
-    // fill(250,0,0)
-    // rect(0,0,500,500)
     let StagLines = [];
     yB = createGraphics(ssW, ssH);
+    yB.strokeWeight(windowWidth / 256);
+  
     for (var k = 0; k < 24; k++) {
-      yB.background(0, 40, 40);
       yB.background(0)
       for (var j = 0; j < 24; j++) {
         var yBcolor = 215 + random(50);
         if (month() === blinkMonth) yBcolor = [0, 255, 0];
         if (j > k) yBcolor = 50;
-        yB.strokeWeight(windowWidth / 256);
         yB.stroke(yBcolor);
         yB.fill(yBcolor);
         var x1 = [-24 + j * 2, j * 2];

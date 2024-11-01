@@ -186,8 +186,8 @@ class BakerySign {
   
     push()
     translate(this.unit*4.75,0)
-    var xxx = -1 + round((4 * mouseX) / windowWidth, 2);
-    var yyy = 0 + round((3 * mouseY) / windowHeight, 2);  
+    var xxx = 5 + round((24 * mouseX) / windowWidth, 2);
+    var yyy = 5 + round((5 * mouseY) / windowHeight, 2);  
    
     coloredARC(this.step,  this.unit, xxx, yyy);
     rightCircles( this.unit,this.WW, xxx,yyy); //    findtheLostImage(, 3, this.step);
@@ -220,6 +220,68 @@ class BakerySign {
       printXY(xxx, yyy, this.unit, 0, Date.now(), printText[pTextk++],printText[pTextk++],printText[pTextk++],printText[pTextk++],printText[pTextk++],printText[pTextk++]);
   }
   }
+}
+function coloredARC(stepCount,  unit,xxx,yyy) {
+  
+  var Warc=unit*14
+  var Ydim = [0, 0];
+  var ArcColor = stepCount * 4;
+  push();
+  strokeWeight(unit/9)
+  // DRAW THE ARC ///////////////////////////////////////////
+  translate(unit*-10, unit*1);
+  var arcSpeed = 5;
+  push()
+  stroke(222,222,2)
+  strokeWeight(unit*.1)
+  ellipse(unit*7.3, unit*0, 14.6*unit, 5.2*unit)
+  fill(0)
+  strokeWeight(0)
+  rect(unit*-5,unit*-.01, unit*20,unit*30)
+  strokeWeight(0)
+  fill(222,222,2)
+  fill(0)
+  ellipse(unit*12.12,unit*-1.5,unit*3)
+  // rect(unit*xxx, unit*yyy, unit*20, unit*20)
+  pop()
+    for (var j = 0; j < arcSpeed * Warc * 0.75; j = j + 5) {
+      Ydim[1] = Ydim[0];
+      Ydim[0] = (-height / 3) * emblemTop(Warc, j / arcSpeed, 0.95, 0.75);
+      if (j > 1) {
+        ArcColor = (ArcColor +359) % 360
+        stroke(color("hsla(" + ArcColor + ", 100%, 50%, 1)"));
+        line((j - 1) / arcSpeed, Ydim[1 + 1], j / arcSpeed, Ydim[0]);
+      }
+    }
+  // FINISH THE ARC /////////////////////////
+  
+  ////  DRAW THE LEFT STARBURST
+  strokeWeight(0);
+  rotate((random() * stepCount) % 10);
+
+  var Burst = [];
+  for (var m = 0; m < 5; m++)
+    Burst[m] = (unit*.75) * [1, 0.75, 0.5, 0.25, 0.1][m];
+
+  var IPsin = [];
+  var IPcos = [];
+  var maxBs = random([0, 1, 2]);
+  for (var k = maxBs; k < 5; k++) {
+    fill(random(150), random(150), random(150));
+    for (m = 0; m < 3; m++) {
+      var triPoints = [
+        PI * (0 + (2 / 9) * m),
+        PI * (6 / 9 + (2 / 9) * m),
+        PI * (12 / 9 + (2 / 9) * m)
+      ];
+      for (j = 0; j < 3; j++) {
+        IPsin[j] = random(0.8, 1) * Burst[k] * sin(triPoints[j] + random(0.3));
+        IPcos[j] = random(0.8, 1) * Burst[k] * cos(triPoints[j] + random(0.3));
+      }
+      triangle(IPcos[0], IPsin[0], IPcos[1], IPsin[1], IPcos[2], IPsin[2]);
+    }
+  }
+  pop();
 }
 
 function emblemBottom(length, index) {
@@ -292,58 +354,7 @@ function rightCircles( unit,WW, xxx,yyy) {
   pop();
 }
 
-function coloredARC(stepCount,  unit,xxx,yyy) {
-  
-  var Warc=unit*14
-  var Ydim = [0, 0];
-  var ArcColor = stepCount * 4;
 
-  push();
-  strokeWeight(unit/9)
-
-  // DRAW THE ARC ///////////////////////////////////////////
-  translate(unit*-10, unit*1);
-  
-  var arcSpeed = 5;
-  for (var j = 0; j < arcSpeed * Warc * 0.75; j = j + 5) {
-    Ydim[1] = Ydim[0];
-    Ydim[0] = (-height / 3) * emblemTop(Warc, j / arcSpeed, 0.95, 0.75);
-    if (j > 1) {
-      ArcColor = (ArcColor +359) % 360
-      stroke(color("hsla(" + ArcColor + ", 100%, 50%, 1)"));
-      line((j - 1) / arcSpeed, Ydim[1 + 1], j / arcSpeed, Ydim[0]);
-    }
-  }
-  // FINISH THE ARC /////////////////////////
-  
-  ////  DRAW THE LEFT STARBURST
-  strokeWeight(0);
-  rotate((random() * stepCount) % 10);
-
-  var Burst = [];
-  for (var m = 0; m < 5; m++)
-    Burst[m] = (unit*.75) * [1, 0.75, 0.5, 0.25, 0.1][m];
-
-  var IPsin = [];
-  var IPcos = [];
-  var maxBs = random([0, 1, 2]);
-  for (var k = maxBs; k < 5; k++) {
-    fill(random(150), random(150), random(150));
-    for (m = 0; m < 3; m++) {
-      var triPoints = [
-        PI * (0 + (2 / 9) * m),
-        PI * (6 / 9 + (2 / 9) * m),
-        PI * (12 / 9 + (2 / 9) * m)
-      ];
-      for (j = 0; j < 3; j++) {
-        IPsin[j] = random(0.8, 1) * Burst[k] * sin(triPoints[j] + random(0.3));
-        IPcos[j] = random(0.8, 1) * Burst[k] * cos(triPoints[j] + random(0.3));
-      }
-      triangle(IPcos[0], IPsin[0], IPcos[1], IPsin[1], IPcos[2], IPsin[2]);
-    }
-  }
-  pop();
-}
 
 function rotate_and_draw_image(  theImage,  img_x,  img_y,  img_width,  img_height,  img_angle) {
   imageMode(CENTER);

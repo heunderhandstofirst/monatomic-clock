@@ -8,69 +8,41 @@ class DominoSign {
       this.WH = windowHeight;
       this.WW = min(this.WH * (this.Wwh[0] / this.Wwh[1]), windowWidth) * 0.97;
       this.WH = (this.WW * this.Wwh[1]) / this.Wwh[0];
-      // this.DominoImg = loadImage("images/DominoTransparentA.png");
       this.DominoNeon = loadImage("images/domino-neon.png");
-      this.DominoBackGrnd = loadImage("images/domino-background.png");  
+      this.DominoBackGrnd = loadImage("images/domino-background.png"); 
+      this.DominoBackGrndRed = loadImage("images/domino-background-red.png"); 
+      this.DominoBackGrndOrange = loadImage("images/domino-background-orange.png"); 
       this.unit=this.WW/54   
-      this.greenRed=random(100) 
-      this.blueRed=random(100)
-      this.twirlDirection=[1,-1 ]
-   
+      // this.Domino0=this.createNeonDomino(0)
+      // this.Domino1=this.createNeonDomino(1)
+      
+      // Generate random positions for X's
+      this.xPositions = [];
+      let startX = -this.unit * 22.6;
+      let endX = this.unit * 9.1;
+      let spacing = this.unit * 2;
 
-       // Generate random positions for X's
-    this.xPositions = [];
-    let startX = -this.unit * 22.6;
-    let endX = this.unit * 9.1;
-    let spacing = this.unit * 2;
-
-    for (let i = startX; i <= endX - this.unit * 2; i += spacing * 2) {
+      for (let i = startX; i <= endX - this.unit * 2; i += spacing * 2) {
         for (let j = -this.unit * 15; j < windowHeight - this.unit * 2; j += this.unit * 4) {
-            if (Math.random() < 0.5) { // 50% chance to draw an X
-                this.xPositions.push({ x: i, y: j });
-            }
+          if (Math.random() < 0.5) { // 50% chance to draw an X
+            this.xPositions.push({ x: i, y: j });
+          }
         }
+      }
     }
 
+  createNeonDomino(nType){
 
-    }
-
-    
-
-    twirl255(currentColor, increment, twirlDirection){
-    // let increment = random(increment);
-    let TWIRL = random(increment) * twirlDirection;
-    let newColor=currentColor+TWIRL
-    if (newColor >= 155) {
-      newColor = 155;
-        twirlDirection = -1;
-    } else if (newColor <= 0) {
-      newColor = 0;
-        twirlDirection = 1;
-    }
-    // debugger
-    return [newColor, twirlDirection]
-  }
-  createNeonDomino(xxx){
     const whiteImageColorWorkingCopy = this.DominoBackGrnd;
-    let neonFlash=110
-        const buffer = createGraphics(this.DominoBackGrnd.width, this.DominoBackGrnd.height);
-       
-        let TW=this.twirl255(this.greenRed, neonFlash, this.twirlDirection[0]);
-        this.twirlDirection[0]=TW[1]
-        this.greenRed=TW[0];
-        
-        TW=this.twirl255(this.blueRed, neonFlash, this.twirlDirection[1]);
-        this.twirlDirection[1]=TW[1]
-        this.blueRed=TW[0];
-        this.blueRed=100+(xxx*55/20)
-        this.greenRed=(20-xxx)*255/25
-        buffer.tint(color(255,this.greenRed, this.blueRed));
-       
-        buffer.image(whiteImageColorWorkingCopy, 0, 0);
-        let cvoil = buffer;
-       
-        return cvoil;
-    }
+    const buffer = createGraphics(this.DominoBackGrnd.width, this.DominoBackGrnd.height);
+    let greener=155+(nType*10)
+    let bluer=255*-(nType*20)
+    buffer.tint(color(255,greener,bluer));
+    buffer.image(whiteImageColorWorkingCopy, 0, 0);
+    let cvoil = buffer;
+    
+    return cvoil;
+  }
     drawDominoGirders(){
       // Draw shadow girders
         stroke(37); // Set stroke color to xxx
@@ -90,13 +62,10 @@ class DominoSign {
         }
     }
 
-    
   sugarPile(xxx,yyy){
       push()
       fill(255) 
       stroke(255)
-      
-      // POWDER
       translate(9.28*this.unit,0)
       strokeWeight(0)
       for (var t=0;t<16*this.unit;t=t+2){
@@ -129,10 +98,16 @@ class DominoSign {
         this.drawDominoGirders()
        
         image(this.DominoNeon,-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
-        image(this.createNeonDomino(xxx),-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
+        // image(this.createNeonDomino(xxx),-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
+        let i=int(random(3))
+        if(i===1)image(this.DominoBackGrnd,-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
+        if(i===0) image(this.DominoBackGrndRed,-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
+        if(i===2) image(this.DominoBackGrndOrange,-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
+
+        
         // let i=int(random(5))
         // this.createNeonDomino(i)
-        image(this.createNeonDomino(int(random(20))),-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
+        // image(this.createNeonDomino(int(random(20))),-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
         // image(this.DominoBackGrnd,-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
         this.sugarPile(xxx,yyy)
 
