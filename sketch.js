@@ -301,7 +301,7 @@ function draw() {
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
 //  WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
-WhichSign=26
+// WhichSign=26
 //////////////////////////////////////////////////////////////////////////
 frameRate(25);
 if (WhichSign===17) frameRate(10)
