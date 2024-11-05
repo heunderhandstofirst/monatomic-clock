@@ -39,7 +39,7 @@ function newRectOverlay(unitSize, xCount, yCount,digitScalar) {
   function prismaticSky(psWidth,psHeight, nudge){
     var thisPct = 360*(Date.now()%60000/60000)
     for (var i =-nudge;i<psHeight+nudge;i++){ 
-      var bgColor =int((thisPct+i/10) % 360)   // background color will fade across spectrum during the minute
+      var bgColor =int((thisPct+i/25) % 360)   // background color will fade across spectrum during the minute
       stroke(color("hsla(" + bgColor + ", 95%, 20%, 1)"));
       line(-nudge,i,psWidth+nudge,i)
     } 

@@ -13,8 +13,6 @@ class DominoSign {
       this.DominoBackGrndRed = loadImage("images/domino-background-red.png"); 
       this.DominoBackGrndOrange = loadImage("images/domino-background-orange.png"); 
       this.unit=this.WW/54   
-      // this.Domino0=this.createNeonDomino(0)
-      // this.Domino1=this.createNeonDomino(1)
       
       // Generate random positions for X's
       this.xPositions = [];
@@ -31,18 +29,7 @@ class DominoSign {
       }
     }
 
-  createNeonDomino(nType){
-
-    const whiteImageColorWorkingCopy = this.DominoBackGrnd;
-    const buffer = createGraphics(this.DominoBackGrnd.width, this.DominoBackGrnd.height);
-    let greener=155+(nType*10)
-    let bluer=255*-(nType*20)
-    buffer.tint(color(255,greener,bluer));
-    buffer.image(whiteImageColorWorkingCopy, 0, 0);
-    let cvoil = buffer;
-    
-    return cvoil;
-  }
+  
     drawDominoGirders(){
       // Draw shadow girders
         stroke(37); // Set stroke color to xxx
@@ -98,18 +85,13 @@ class DominoSign {
         this.drawDominoGirders()
        
         image(this.DominoNeon,-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
-        // image(this.createNeonDomino(xxx),-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
         let i=int(random(3))
         if(i===1)image(this.DominoBackGrnd,-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
         if(i===0) image(this.DominoBackGrndRed,-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
         if(i===2) image(this.DominoBackGrndOrange,-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
 
         
-        // let i=int(random(5))
-        // this.createNeonDomino(i)
-        // image(this.createNeonDomino(int(random(20))),-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
-        // image(this.DominoBackGrnd,-this.unit*23,-this.unit*15,this.unit*32.4,this.unit*18)
-        this.sugarPile(xxx,yyy)
+        // this.sugarPile(xxx,yyy)
 
         
        
