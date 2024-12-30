@@ -2,11 +2,11 @@
 
 class TusconCactus {
   constructor() {
-    CGspot = someArrays(0); // USED IN THE CACTUS
-    HHspot = someArrays(1); // USED IN THE CACTUS
-    GGspot = someArrays(2); // USED IN THE CACTUS
-    DDspot = someArrays(3); // USED IN THE CACTUS
-    CCspot = someArrays(4); // USED IN THE CACTUS
+    this.CGspot = someArrays(0); // USED IN THE CACTUS
+    this.HHspot = someArrays(1); // USED IN THE CACTUS
+    this.GGspot = someArrays(2); // USED IN THE CACTUS
+    this.DDspot = someArrays(3); // USED IN THE CACTUS
+    this.CCspot = someArrays(4); // USED IN THE CACTUS
   }
 
   render() {
@@ -21,13 +21,13 @@ class TusconCactus {
     fill(17, 99, 12);
     beginShape();
     for (var j = 0; j < 29; j++)
-      curveVertex(CGspot[j][0] * oneCol, CGspot[j][1] * oneLong);
+      curveVertex(this.CGspot[j][0] * oneCol, this.CGspot[j][1] * oneLong);
     endShape();
 
-    CLights(CCspot, 19, oneCol, WH);
-    CLights(DDspot, 22, oneCol, WH);
-    CLights(GGspot, 55, oneCol, WH);
-    CLights(HHspot, 32, oneCol, WH);
+    CLights(this.CCspot, 19, oneCol, WH);
+    CLights(this.DDspot, 22, oneCol, WH);
+    CLights(this.GGspot, 55, oneCol, WH);
+    CLights(this.HHspot, 32, oneCol, WH);
 
     stroke(250);
     strokeWeight(WH / 300);
@@ -69,68 +69,44 @@ class TusconCactus {
     strokeWeight(WH / 300);
     noFill();
     bezier(
-      -0.2 * oneCol,
-      2.4 * oneLong,
-      -1.6 * oneCol,
-      3.2 * oneLong,
-      -1.7 * oneCol,
-      20 * oneLong,
-      -1.7 * oneCol,
-      20 * oneLong
+      -0.2 * oneCol, 2.4 * oneLong,
+      -1.6 * oneCol, 3.2 * oneLong,
+      -1.7 * oneCol, 20 * oneLong,
+      -1.7 * oneCol, 20 * oneLong
     );
     bezier(
-      -0.2 * oneCol,
-      2.7 * oneLong,
-      -0.8 * oneCol,
-      3.5 * oneLong,
-      -0.99 * oneCol,
-      12.5 * oneLong,
-      -0.75 * oneCol,
-      19.8 * oneLong
+      -0.2 * oneCol,2.7 * oneLong,
+      -0.8 * oneCol, 3.5 * oneLong,
+      -0.99 * oneCol,12.5 * oneLong,
+      -0.75 * oneCol,19.8 * oneLong
     );
 
     bezier(
-      -0.01 * oneCol,
-      2.9 * oneLong,
-      -0.03 * oneCol,
-      3.5 * oneLong,
-      -0.2 * oneCol,
-      12.5 * oneLong,
-      -0.01 * oneCol,
-      20.05 * oneLong
+      -0.01 * oneCol, 2.9 * oneLong, 
+      -0.03 * oneCol, 3.5 * oneLong,
+      -0.2 * oneCol, 12.5 * oneLong,
+      -0.01 * oneCol, 20.05 * oneLong
     );
 
     bezier(
-      0.31 * oneCol,
-      4.1 * oneLong,
-      0.33 * oneCol,
-      4.5 * oneLong,
-      0.55 * oneCol,
-      12.5 * oneLong,
-      0.3 * oneCol,
-      19.97 * oneLong
+      0.31 * oneCol, 4.1 * oneLong,
+      0.33 * oneCol, 4.5 * oneLong,
+      0.55 * oneCol, 12.5 * oneLong,
+      0.3 * oneCol, 19.97 * oneLong
     );
 
     bezier(
-      0.2 * oneCol,
-      2.7 * oneLong,
-      0.8 * oneCol,
-      3.5 * oneLong,
-      0.99 * oneCol,
-      12.5 * oneLong,
-      0.75 * oneCol,
-      19.95 * oneLong
+      0.2 * oneCol,       2.7 * oneLong,
+      0.8 * oneCol,      3.5 * oneLong,
+      0.99 * oneCol,      12.5 * oneLong,
+      0.75 * oneCol,      19.95 * oneLong
     );
 
     bezier(
-      0.2 * oneCol,
-      2.4 * oneLong,
-      1.9 * oneCol,
-      3.2 * oneLong,
-      1.4 * oneCol,
-      20 * oneLong,
-      1.4 * oneCol,
-      20.02 * oneLong
+      0.2 * oneCol,      2.4 * oneLong,
+      1.9 * oneCol,      3.2 * oneLong,
+      1.4 * oneCol,      20 * oneLong,
+      1.4 * oneCol,      20.02 * oneLong
     );
 
     beginShape();
@@ -168,67 +144,43 @@ class TusconCactus {
     endShape();
 
     bezier(
-      2.0 * oneCol,
-      22.2 * oneLong,
-      4.8 * oneCol,
-      19 * oneLong,
-      5.4 * oneCol,
-      12.5 * oneLong,
-      4.85 * oneCol,
-      8.45 * oneLong
+      2.0 * oneCol,      22.2 * oneLong,
+      4.8 * oneCol,      19 * oneLong,
+      5.4 * oneCol,      12.5 * oneLong,
+      4.85 * oneCol,      8.45 * oneLong
     );
 
     bezier(
-      2.0 * oneCol,
-      21.2 * oneLong,
-      4.6 * oneCol,
-      18 * oneLong,
-      4.6 * oneCol,
-      13.5 * oneLong,
-      4.85 * oneCol,
-      8.45 * oneLong
+      2.0 * oneCol,      21.2 * oneLong,
+      4.6 * oneCol,      18 * oneLong,
+      4.6 * oneCol,      13.5 * oneLong,
+      4.85 * oneCol,      8.45 * oneLong
     );
     bezier(
-      2.0 * oneCol,
-      20.2 * oneLong,
-      4.1 * oneCol,
-      17 * oneLong,
-      4.1 * oneCol,
-      12.5 * oneLong,
-      4.25 * oneCol,
-      9.45 * oneLong
+      2.0 * oneCol,      20.2 * oneLong,
+      4.1 * oneCol,      17 * oneLong,
+      4.1 * oneCol,      12.5 * oneLong,
+      4.25 * oneCol,      9.45 * oneLong
     );
 
     bezier(
-      -2.0 * oneCol,
-      25.2 * oneLong,
-      -3.8 * oneCol,
-      21 * oneLong,
-      -4.4 * oneCol,
-      18.5 * oneLong,
-      -4.25 * oneCol,
-      17.45 * oneLong
+      -2.0 * oneCol,      25.2 * oneLong,
+      -3.8 * oneCol,      21 * oneLong,
+      -4.4 * oneCol,      18.5 * oneLong,
+      -4.25 * oneCol,      17.45 * oneLong
     );
 
     bezier(
-      -2.0 * oneCol,
-      26.2 * oneLong,
-      -4.6 * oneCol,
-      23 * oneLong,
-      -4.6 * oneCol,
-      18.5 * oneLong,
-      -4.85 * oneCol,
-      17.05 * oneLong
+      -2.0 * oneCol,      26.2 * oneLong,
+      -4.6 * oneCol,      23 * oneLong,
+      -4.6 * oneCol,      18.5 * oneLong,
+      -4.85 * oneCol,      17.05 * oneLong
     );
     bezier(
-      -2.0 * oneCol,
-      26.7 * oneLong,
-      -5.4 * oneCol,
-      22 * oneLong,
-      -5.1 * oneCol,
-      19.5 * oneLong,
-      -5.25 * oneCol,
-      18.45 * oneLong
+      -2.0 * oneCol,      26.7 * oneLong,
+      -5.4 * oneCol,      22 * oneLong,
+      -5.1 * oneCol,      19.5 * oneLong,
+      -5.25 * oneCol,      18.45 * oneLong
     );
   }
 }

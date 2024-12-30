@@ -90,19 +90,19 @@ var weatherWWWfinish =
 
 const WeatherInterval = 2000;
 
-const BoxCombos = [
-  [0, 2, 10, 9, 0],
-  [1, 6, 11, 2, 1],
-  [11, 7, 3, 5, 11],
-  [10, 5, 4, 8, 10],
-  [2, 11, 5, 10, 2]
-];
+// const BoxCombos = [
+//   [0, 2, 10, 9, 0],
+//   [1, 6, 11, 2, 1],
+//   [11, 7, 3, 5, 11],
+//   [10, 5, 4, 8, 10],
+//   [2, 11, 5, 10, 2]
+// ];
 
-let CGspot; //= someArrays(0); // USED IN THE CACTUS
-let HHspot; //= someArrays(1); // USED IN THE CACTUS
-let GGspot; //= someArrays(2); // USED IN THE CACTUS
-let DDspot; //= someArrays(3); // USED IN THE CACTUS
-let CCspot; //= someArrays(4); // USED IN THE CACTUS
+// let CGspot; //= someArrays(0); // USED IN THE CACTUS
+// let HHspot; //= someArrays(1); // USED IN THE CACTUS
+// let GGspot; //= someArrays(2); // USED IN THE CACTUS
+// let DDspot; //= someArrays(3); // USED IN THE CACTUS
+// let CCspot; //= someArrays(4); // USED IN THE CACTUS
 
 const helmLittleURL = "images/HelmsF.png";
 
@@ -224,6 +224,7 @@ function setup() {
   bre = new BunnySign(); // BUNNY RABBIT EARS
   jcc = new JerseyCity(); // JERSEY CITY CLOCK
   dom = new DominoSign(); // Domino Sugar
+  dub = new DublinSign(); // Domino Sugar
 
 
   window.redirectFired = false;
@@ -301,7 +302,7 @@ function draw() {
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
 //  WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
-// WhichSign=29
+WhichSign=19
 //////////////////////////////////////////////////////////////////////////
 frameRate(25);
 if (WhichSign===17) frameRate(10)
@@ -351,6 +352,7 @@ if (WhichSign===24) frameRate(40)
   if (WhichSign === 27) mbs.render(signTime);   // MALIBU
   if (WhichSign === 28) jcc.render(signTime);   // JERSEY CITY CLOCK
   if (WhichSign === 29) dom.render(signTime);   // DOMINO SUGAR
+  if (WhichSign === 30) dub.render(signTime);   // PICADILLY CIRCUS
    
   // if (WhichSign > 48 && !window.redirectFired) {
   //   window.redirectFired = true;
@@ -463,3 +465,31 @@ function newNeon3(unit,cycles, n,outColor,inColor,wig,swK){
 
 }
 
+function printStats(xxx, yyy, unit, extraText1) {
+  let dateN=Date.now()
+  push();
+  strokeWeight(1);
+  textSize(15);
+  fill(0, 250, 0);
+  stroke(0, 250, 0);
+  var x = 5;
+  text("x: " + xxx, 50, 25 * x++);
+  text("y: " + yyy, 50, 25 * x++);
+  text("date.now(): " + dateN, 50, 25 * x++);
+  var tempSec = (dateN % 60000) / 60000;
+  text("%age of the minute [0-100]: " + round(100*tempSec,1), 50, 25 * x++);
+
+
+  
+  text("current time seconds: " + round((dateN % 60000) / 1000, 3), 50, 25 * x++);
+  text("current time minute: " + minute(), 50, 25 * x++);
+  text("current time hour: " + hour(), 50, 25 * x++);
+  text("which24: " + int(tempSec * 24), 50, 25 * x++);
+  text("unit: " + unit, 50, 25 * x++);
+  text("ww: " + windowWidth, 50, 25 * x++);
+  text("wh: " + windowHeight, 50, 25 * x++);
+  for (let i=0;i<extraText1.length; i++){
+    text(extraText1[i], 50, 25 * x++);
+  }
+  pop();
+}
