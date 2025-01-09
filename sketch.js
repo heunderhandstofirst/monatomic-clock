@@ -465,31 +465,31 @@ function newNeon3(unit,cycles, n,outColor,inColor,wig,swK){
 
 }
 
-function printStats(xxx, yyy, unit, extraText1) {
+function printStats(xxx, yyy, unit,widX,lenY, extraText1) {
   let dateN=Date.now()
   push();
+  fill(0)
+  // rect(0,0,unit*5,unit*(8+extraText1.length ))
+  rect(0,0,unit*widX,unit*lenY)
+  // fill(kULR())
+  // ellipse(0,0,unit*5000,unit*5000)
   strokeWeight(1);
   textSize(15);
+
   fill(0, 250, 0);
   stroke(0, 250, 0);
-  var x = 5;
+  var x = 2;
   text("x: " + xxx, 50, 25 * x++);
   text("y: " + yyy, 50, 25 * x++);
   text("date.now(): " + dateN, 50, 25 * x++);
   var tempSec = (dateN % 60000) / 60000;
   text("%age of the minute [0-100]: " + round(100*tempSec,1), 50, 25 * x++);
-
-
-  
-  text("current time seconds: " + round((dateN % 60000) / 1000, 3), 50, 25 * x++);
-  text("current time minute: " + minute(), 50, 25 * x++);
-  text("current time hour: " + hour(), 50, 25 * x++);
-  text("which24: " + int(tempSec * 24), 50, 25 * x++);
+  text("current time seconds: " + round((dateN % 60000) / 1000, 1), 50, 25 * x++);
+  text("current time hour minute: " + hour() + ":" + minute(), 50, 25 * x++);
   text("unit: " + unit, 50, 25 * x++);
   text("ww: " + windowWidth, 50, 25 * x++);
   text("wh: " + windowHeight, 50, 25 * x++);
-  for (let i=0;i<extraText1.length; i++){
-    text(extraText1[i], 50, 25 * x++);
-  }
+  for (let i=0;i<extraText1.length; i++)    text(extraText1[i], 50, 25 * x++);
+  
   pop();
 }

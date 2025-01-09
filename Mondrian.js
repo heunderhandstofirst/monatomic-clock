@@ -2,28 +2,22 @@
 class MondrianRectangle {
   constructor() {
     this.colCount = 16;
+    this.rowCount = 16;
     this.eachCubeW = windowWidth / this.colCount;
-    this.eachCubeH = this.eachCubeW / 1.8;
-    this.rowCount = windowHeight / this.eachCubeH;
-    this.rowCount = int(this.rowCount);
-    this.eachCubeH = windowHeight / this.rowCount;
+    this.eachCubeH = windowHeight/this.rowCount;
     this.rectCount = this.colCount * this.rowCount;
     this.upDown = [];
     this.colorGrid = [];
     this.colorFade =[]
+    this.unit=this.eachCubeW
 
-    this.fadeRow = Array.from({length: 60}, (_, i) => i);
-    this.fadeCol = Array.from({length: 60}, (_, i) => i);
+    this.fadeRow = Array.from({length: 16}, (_, i) => i);
+    this.fadeCol = Array.from({length: 16}, (_, i) => i);
     
     // Fill arrays with random values between 0-15
-    for (let i = 0; i < this.fadeRow.length; i++) {
-      this.fadeRow[i] = Math.floor(Math.random() * 16); // Random int 0-15
-    }
-    
-    for (let i = 0; i < this.fadeCol.length; i++) {
-      this.fadeCol[i] = Math.floor(Math.random() * 16); // Random int 0-15 
-    }
-    
+    // Create arrays with numbers 0-15 and shuffle them
+    this.fadeRow = Array.from({length: 16}, (_, i) => i).sort(() => Math.random() - 0.5);
+    this.fadeCol = Array.from({length: 16}, (_, i) => i).sort(() => Math.random() - 0.5);
 
     for (var r = 0; r < this.rowCount; r++) {
       var tempColor = [];
@@ -38,12 +32,10 @@ class MondrianRectangle {
     }
   }
   render(signTime) {
+    var xxx = 0 + round((20 * mouseX) / windowWidth, 1);
+    var yyy = 0 + round((20 * mouseY) / windowHeight, 1);  
     strokeWeight(windowWidth / 200);
     stroke(209, 199, 187, 255)
-    
-    let minutePCT = ((Date.now() % 60000) / 60000) * 100;
-    let minute60ths = Math.floor((Date.now() % 60000) / (60000/60));
-    let currentFade = round(minutePCT);
         
     for (var k = 0; k < this.rowCount; k++) {
       for (var j = 0; j < this.colCount; j++) {
@@ -52,60 +44,36 @@ class MondrianRectangle {
         var ddd = (720 + this.colorGrid[k][j] + colorShift) % 360;
 
         this.colorGrid[k][j] = ddd;
-        var abc= 5+int(random(40))
-        abc=40
-        fill(color("hsla(" + ddd + ", 70%, " + abc +"%, 1)"));
-      
+        fill(color("hsla(" + ddd + ", 70%, 40%, 1)"));
         rect(this.eachCubeW * j, this.eachCubeH * k,this.eachCubeW,this.eachCubeH);
-        push();
-        strokeWeight(0);
-        fill(0);
-        if (1 === 2) text(ddd, 8 + this.eachCubeW * j, 20 + this.eachCubeH * k);
-        pop();
       }
-
-    for (let i = minute60ths; i < minute60ths + 9; i++) {
-      let j = this.fadeRow[i]%60;
-      let k = this.fadeCol[i]%60;
-      debugger
-        push();
-        strokeWeight(windowWidth / 200);
-        let timeSinceStart = (i - minute60ths) / 9; // 0 to 1 over the 10 seconds
-        let fadeAmount;
-        if (timeSinceStart < 0.5) {
-            // First half: fade to black
-            fadeAmount = map(timeSinceStart, 0, 0.5, 100, 0);
-        } else {
-            // Second half: fade back to color
-            fadeAmount = map(timeSinceStart, 0.5, 1, 0, 100);
-        }
-        fadeAmount=round(fadeAmount,0)
-        console.log(fadeAmount)
-        console.log(this.colorGrid[k][j])
-        console.log("j and k: " + j + " " + k)
-        console.log("i and minute60ths: " + i + " " + minute60ths)
-        let bbb="hsla(" + this.colorGrid[k][j] + ", 70%, " + fadeAmount + "%, 1)"
-        // console.log(bbb)
-        fill(color("hsla(" + this.colorGrid[k][j] + ", 70%, " + fadeAmount + "%, 1)"));
-        rect(this.eachCubeW * j, this.eachCubeH * k,this.eachCubeW,this.eachCubeH);
-
-        pop();
     }
 
-
+    let currentTimeSeconds =(Date.now() % 60000) / 1000
+    let fadeBASE=0
+    let colorFADE=0
+    let row=0
+    let col=0
     
+    for (let i = 0; i < 13; i++) {
+      let cellStartSecond=3.75*i
+      let cellEndSecond=(cellStartSecond+10)%60
+      if(currentTimeSeconds>cellStartSecond && currentTimeSeconds<cellEndSecond) {
+       
+        fadeBASE = min(10,max(-.01,currentTimeSeconds-cellStartSecond))
+        colorFADE = sin(abs(abs((fadeBASE % 10)-5)-5)*PI/10)
+        row = this.fadeRow[i];
+        col = this.fadeCol[i];
+        ddd=this.colorGrid[row][col] ;
+        // let darkenAmount = colorFADE; // 0 = original color, 1 = fully black
+        let adjustedLightness = 40 * (1 - colorFADE); // Reduces the 40% lightness proportionally
+        fill(color("hsla(" + ddd + ", 70%, " + adjustedLightness + "%, 1)"));
+
+        rect(this.eachCubeW * col, this.eachCubeH * row, this.eachCubeW, this.eachCubeH);
+      }
     }
-    if (1 === 1) {
-      textSize(windowWidth / 64);
-      var pos = 180;
-      var yPos = 4;
-      fill(0);
-      rect(pos - 25, (yPos - 1) * 50, 325, 225);
-      text("RowCount: " + this.rowCount, pos, 50 * yPos++);
-      text("ColCount: " + this.colCount, pos, 50 * yPos++);
-      text("rectCont: " + this.rectCount, pos, 50 * yPos++);
-      text("time: " + signTime, pos, 50 * yPos++);
-      printStats(xxx, yyy, this.unit, extraText1)
-    }
+
+      let extraText=["Mondrian","fadeBase: " + fadeBASE,"colorFADE: " + colorFADE,"row: " + row,"col: " + col,"ddd: " + ddd,"time: " + signTime]
+      if (1 === 2) printStats(xxx, yyy, this.unit,2,3.5, extraText)
   }
 }
