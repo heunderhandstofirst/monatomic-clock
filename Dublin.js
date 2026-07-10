@@ -134,7 +134,9 @@ class DublinSign {
   
     render(signTime) {
         var xxx = 0 + round((50 * mouseX) / windowWidth, 0);
-        var yyy = 1 + round((40* mouseY) / windowHeight, 2); 
+        var yyy = 1 + round((40* mouseY) / windowHeight, 2);
+        fill(kULR())
+        ellipse(0,0,random(1000)) 
        
         translate(windowWidth/2,windowHeight/2)
          // Create a green neon sign with a harp
