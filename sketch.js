@@ -29,7 +29,7 @@ let bre; // BUNNY RABBIT EARS
 let mbs; // MALIBU PIER
 let jcc; // JERSEY CITY CLOCK
 let dom; // DOMINO SUGAR
-let dub; // DUBLIN TAP RO
+
 
 let SwitchSign;
 const backgroundImageURL = "images/background.png";
@@ -80,8 +80,8 @@ let schweppesLetterColors;
 let letterImagesWhite = [];
 let letterImagesWithColor = [];
 let dominoImagesWithColor=[];
-let WeatherJsons = [];
-let WeatherStrings = [];
+let headlinesArray = [];
+let formattedHeadlines = [];
 let NeonPreload;
 var Flicker = true;
 var weatherWWWstart = "https://api.openweathermap.org/data/2.5/weather?q=";
@@ -140,31 +140,7 @@ function preload() {
   HeinzBottleWhite = loadImage("images/HeinzBottleLavender.png");
   HeinzLabel = loadImage("images/HeinzLabel.png");
 
-  const WeatherLocations = [
-    "London",
-    "Los Angeles",
-    "New York",
-    "Boston",
-    "Madrid",
-    "Florence",
-    "Hong Kong",
-    "Melbourne"
-  ];
-
-  // letterImagesWithColor is an array of length 9.  Each of those 9 items are arrays of length 8.
-  // the 8 items are the same letter in different color
-
-  //////////////////////////////////////////////////////////////////
-  // WeatherJsons = [];
-  if (true) {
-    WeatherStrings = WeatherLocations.map(
-      (location) => weatherWWWstart + location + weatherWWWfinish
-    );
-
-    WeatherJsons = WeatherStrings.map((weatherString) =>
-      loadJSON(weatherString)
-    );
-  }
+  headlinesArray = loadStrings("images/Headlines.txt");
   letterImagesWhite = letterURLs.map((url) => loadImage(url));
   const dominoWhiteURLs ="images/domino-neon.png"
   
@@ -224,7 +200,7 @@ function setup() {
   bre = new BunnySign(); // BUNNY RABBIT EARS
   jcc = new JerseyCity(); // JERSEY CITY CLOCK
   dom = new DominoSign(); // Domino Sugar
-  dub = new DublinSign(); // Domino Sugar
+
 
 
   window.redirectFired = false;
@@ -256,8 +232,19 @@ function setup() {
     letterImagesWithColor[letterIndex] = colorVariationsOfIndividualLetter;
   }
 
-
-
+  if (headlinesArray && headlinesArray.length > 0) {
+    formattedHeadlines = headlinesArray.map(rawLine => {
+      let line = rawLine.replace(/\0/g, '').replace(/^[\uFEFF\uFFFE]+/g, '');
+      let parts = line.split("\t");
+      if (parts.length >= 3) {
+        let headline = parts[0].trim().replace(/^"|"$/g, '');
+        let date = parts[1].trim().replace(/^"|"$/g, '');
+        let source = parts[2].trim().replace(/^"|"$/g, '');
+        return `${source} - ${date} - ${headline}`;
+      }
+      return "";
+    }).filter(line => line.length > 0);
+  }
 }
 
 function draw() {
@@ -297,12 +284,11 @@ function draw() {
   if( signHour(signTime,  8, 28)) WhichSign = 27;   // MALIBU
   if( signHour(signTime,  1,  9)) WhichSign = 28;   // JERSEY CITY CLOCK
   if( signHour(signTime,  5,  8)) WhichSign = 29;   // DOMINO SUGAR
-  if( signHour(signTime,  8, 15)) WhichSign = 30;   // DUBLIN TAP RO
   
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
-//  WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
-// WhichSign=19
+  // WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
+  // WhichSign=2; // Force BOND sign
 //////////////////////////////////////////////////////////////////////////
 frameRate(25);
 if (WhichSign===17) frameRate(10)
@@ -352,7 +338,7 @@ if (WhichSign===24) frameRate(40)
   if (WhichSign === 27) mbs.render(signTime);   // MALIBU
   if (WhichSign === 28) jcc.render(signTime);   // JERSEY CITY CLOCK
   if (WhichSign === 29) dom.render(signTime);   // DOMINO SUGAR
-  if (WhichSign === 30) dub.render(signTime);   // PICADILLY CIRCUS
+
    
   // if (WhichSign > 48 && !window.redirectFired) {
   //   window.redirectFired = true;

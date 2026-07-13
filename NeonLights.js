@@ -7,19 +7,6 @@
 // Code for: https://youtu.be/KkyIDI6rQJI
 
 // this.bondStrokes = new getBondStrokes(this.cycle);
-// this.formWeatherStr = new this.formWeatherStr(this.jsonCt);
-
-function formWeatherStr(jsonCT) {
-  var SSS =
-    WeatherJsons[jsonCT].name +
-    ": " +
-    int(WeatherJsons[jsonCT].main.temp) +
-    "  " +
-    WeatherJsons[jsonCT].weather[0].description +
-    "   ||   ";
-
-  return SSS;
-}
 
 function getBondStrokes(edgeABC, currentCycle) {
   this.cycle = currentCycle;
