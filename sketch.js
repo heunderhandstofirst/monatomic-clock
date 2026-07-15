@@ -288,7 +288,8 @@ function draw() {
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
   // WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
-  WhichSign=8; // Force BOND sign
+// WhichSign=8; // Force HELMS sign
+  // Here we are fixing these problems
 //////////////////////////////////////////////////////////////////////////
 frameRate(25);
 if (WhichSign===17) frameRate(10)

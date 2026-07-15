@@ -30,12 +30,12 @@ class BondSign {
     this.bondFill = new getBondFill(this.cycle);
     
     this.streams = [];
-    for (let i = 0; i < 4000; i++) {
+    for (let i = 0; i < 200; i++) {
       this.streams.push({
         xOffset: Math.random(),
         yOffset: Math.random(),
         speed: Math.random() * 8 + 4,
-        size: Math.random() * 4 + 1
+        size: Math.random() * 8 + 2 // slightly larger to compensate for fewer particles
       });
     }
   }
@@ -45,6 +45,9 @@ class BondSign {
   //   if (SwitchSign) this.step = 0;
   // }
   render(signTime) {
+    // Force stream count down in case of hot-reloading without constructor call
+    if (this.streams && this.streams.length > 200) this.streams.length = 200;
+
     // increment();
     this.step = this.step + 1;
     if (SwitchSign) this.step = 0;
@@ -103,45 +106,56 @@ class BondSign {
     // --- DRAW VERTICAL LIGHT BEAMS ---
     let numBeams = 12;
     let beamSpacing = windowWidth / numBeams;
-    let beamHeight = 0.20 * windowHeight;
+    let beamHeight = 0.35 * windowHeight; // Increased height
     let zipLineTop = zipLineY - (strokeScale * 5.5) / 2;
     
-    colorMode(HSB, 255);
-    drawingContext.shadowBlur = 20;
-    strokeCap(SQUARE);
+    // Initialize or resize the offscreen graphics buffer for the fade mask
+    if (typeof window.bondPg === 'undefined' || window.bondPgExpectedWidth !== windowWidth || window.bondPgExpectedHeight !== windowHeight) {
+      if (typeof window.bondPg !== 'undefined') window.bondPg.remove();
+      window.bondPg = createGraphics(windowWidth, windowHeight);
+      window.bondPgExpectedWidth = windowWidth;
+      window.bondPgExpectedHeight = windowHeight;
+    }
     
-    // Draw a contiguous curtain of 1-pixel wide lines
-    let subSpacing = 1;
+    // Pre-calculate the horizontal rainbow gradient ONCE to completely eliminate per-frame overhead
+    if (typeof window.rainbowGrad === 'undefined' || window.rainbowGradWidth !== windowWidth) {
+      window.rainbowGradWidth = windowWidth;
+      window.rainbowGrad = window.bondPg.drawingContext.createLinearGradient(0, 0, windowWidth, 0);
+      for (let i = 0; i <= 20; i++) {
+        let pct = i / 20;
+        let cssHue = pct * 360;
+        window.rainbowGrad.addColorStop(pct, `hsla(${cssHue}, 100%, 50%, 1.0)`);
+      }
+    }
+    
+    window.bondPg.clear();
+    window.bondPg.drawingContext.shadowBlur = 0; // Disabled for performance
+    // window.bondPg.drawingContext.shadowColor = 'rgba(255, 255, 255, 0.4)'; // Generic bright glow for all lines
+    window.bondPg.drawingContext.strokeStyle = window.rainbowGrad;
+    window.bondPg.strokeCap(SQUARE);
+    window.bondPg.strokeWeight(1);
+    
+    let subSpacing = 1; 
     let currentVariation = 0;
     
-    // Dynamically modulate the harmonic frequencies over time so the offshoot parabolas slowly morph and ripple
     let dynFreq1 = 2.7 + Math.sin(this.step * 0.005) * 0.8;
     let dynFreq2 = 4.3 + Math.cos(this.step * 0.007) * 1.2;
     
+    // Draw ALL lines as a single batched path. This executes in 1 native call instead of 1920!
+    window.bondPg.drawingContext.beginPath();
     for (let x = 0; x <= windowWidth; x += subSpacing) {
-      let hue = (x / windowWidth) * 255;
-      
-      // Calculate the phase of the primary wave
       let theta = (x - beamSpacing / 2) * (Math.PI * 2 / beamSpacing);
       
-      // Base macroscopic sine wave
       let mainCurve = Math.cos(theta);
-      // Introduce dynamically shifting non-integer harmonic offshoots to create a living fractal structure
       let offshoot1 = Math.cos(theta * dynFreq1) * 0.20;
       let offshoot2 = Math.cos(theta * dynFreq2) * 0.10;
-      
       let compositeCurve = mainCurve + offshoot1 + offshoot2;
       
-      // Map the composite curve to the screen geometry, slightly scaling down the base multiplier to account for the added offshoot heights
       let topY = (zipLineTop - beamHeight / 2) - (beamHeight / 2.5) * compositeCurve;
       
-      // Calculate the intended random drift
       let targetVariation = (currentVariation * 0.95) + ((Math.random() - 0.5) * 0.05);
-      // Hard clamp to +/- 10%
       targetVariation = Math.max(-0.10, Math.min(0.10, targetVariation));
       
-      // Slew rate limit: strictly bound the maximum change between adjacent pixels
-      // A max delta of 0.002 limits the slope, completely eliminating jagged "steps"
       let maxDelta = 0.002; 
       if (targetVariation > currentVariation + maxDelta) currentVariation += maxDelta;
       else if (targetVariation < currentVariation - maxDelta) currentVariation -= maxDelta;
@@ -151,20 +165,44 @@ class BondSign {
       let actualHeight = (zipLineTop - topY) * R;
       let randomizedTopY = zipLineTop - actualHeight;
       
-      stroke(hue, 255, 255, 80); // Uniform dimmer lines
-      strokeWeight(1);
-      
-      drawingContext.shadowColor = drawingContext.strokeStyle;
-      line(x, zipLineTop, x, randomizedTopY);
+      window.bondPg.drawingContext.moveTo(x, randomizedTopY);
+      window.bondPg.drawingContext.lineTo(x, zipLineTop);
     }
     
-    drawingContext.shadowBlur = 0;
-    strokeCap(ROUND);
-    colorMode(RGB, 255);
-    strokeWeight(1);
-    // --- END VERTICAL BEAMS ---
+    // Fake the heavy shadowBlur by stroking the exact same batched path 3 times 
+    // with expanding thickness and dropping alpha. This creates a gorgeous glowing bloom 
+    // using purely hardware-accelerated strokes instead of CPU blur math!
     
-
+    // Outer wide glow
+    window.bondPg.strokeWeight(12);
+    window.bondPg.drawingContext.globalAlpha = 0.15;
+    window.bondPg.drawingContext.stroke();
+    
+    // Inner tight glow
+    window.bondPg.strokeWeight(4);
+    window.bondPg.drawingContext.globalAlpha = 0.4;
+    window.bondPg.drawingContext.stroke();
+    
+    // Core intense beam
+    window.bondPg.strokeWeight(1);
+    window.bondPg.drawingContext.globalAlpha = 0.6;
+    window.bondPg.drawingContext.stroke();
+    
+    // Apply a mathematically perfect vertical fade over the glowing path
+    window.bondPg.drawingContext.globalCompositeOperation = 'destination-in';
+    // Start the gradient much lower down so the peaks of the parabolas are perfectly 100% transparent
+    let fadeGrad = window.bondPg.drawingContext.createLinearGradient(0, zipLineTop - beamHeight * 0.85, 0, zipLineTop);
+    fadeGrad.addColorStop(0, 'rgba(0,0,0,0)');     // 100% transparent well before the top edge
+    fadeGrad.addColorStop(0.5, 'rgba(0,0,0,0.15)'); // Keep it very soft through the middle
+    fadeGrad.addColorStop(1, 'rgba(0,0,0,0.6)');   // 60% opacity at bottom
+    
+    window.bondPg.drawingContext.fillStyle = fadeGrad;
+    window.bondPg.noStroke();
+    window.bondPg.rect(0, zipLineTop - beamHeight * 1.5, windowWidth, beamHeight * 1.5);
+    window.bondPg.drawingContext.globalCompositeOperation = 'source-over';
+    
+    // Draw the fully assembled, faded light curtain to the main canvas
+    image(window.bondPg, 0, 0);
     
     drawingContext.shadowBlur = 0;
     strokeCap(ROUND);
@@ -255,6 +293,11 @@ class BondSign {
       headlineStr = reordered.join("   ***   ");
     }
 
+    // Fallback in case Headlines.txt parsing failed or returned empty
+    if (!headlineStr || headlineStr.trim() === "") {
+      headlineStr = "NO HEADLINES FOUND   ***   PLEASE STAND BY   ***   BOND CLOCK TICKER TEST";
+    }
+
     let matrixHeight = strokeScale * 5.5;
     let bulbSpacing = 4;
     
@@ -273,25 +316,54 @@ class BondSign {
     // Automatically center the 14-bulb-high text within the available rows
     let verticalOffset = Math.floor((rows - charHeightBulbs) / 2);
     
-    // Deterministic frame counter (this.step increments exactly by 1 each render)
-    // Moving multiple EXACT columns per frame keeps the scrolling perfectly rhythmic
-    let columnsPerFrame = 5.0; 
+    // Move at 2.0 columns per frame. Because scale is 2, moving by exactly 2 columns perfectly preserves the "blocky" macro-pixel shapes without squishing them!
+    let columnsPerFrame = 2.0; 
     let scrollDistance = cols + totalStringCols;
     
-    // Calculate global scroll offset in bulb columns and loop it infinitely
-    let elapsedColumns = Math.floor(this.step * columnsPerFrame);
+    // Calculate global scroll offset in bulb columns and loop it infinitely.
+    // We add `cols` to the elapsed columns so that on step 0, the first word is already touching the left edge of the screen.
+    let elapsedColumns = Math.floor(this.step * columnsPerFrame) + cols;
     let globalOffsetCols = cols - (elapsedColumns % scrollDistance);
+    
+    // Create an offscreen buffer for the static bulbs to save thousands of circle calls per frame
+    let matrixVersion = 2; // Bump version to force redraw on hot-reload
+    if (typeof window.bondMatrixPg === 'undefined' || window.bondMatrixPgExpectedWidth !== windowWidth || window.bondMatrixPgExpectedHeight !== matrixHeight || window.bondMatrixPgVersion !== matrixVersion) {
+      if (typeof window.bondMatrixPg !== 'undefined') window.bondMatrixPg.remove();
+      window.bondMatrixPg = createGraphics(windowWidth, matrixHeight);
+      window.bondMatrixPgExpectedWidth = windowWidth;
+      window.bondMatrixPgExpectedHeight = matrixHeight;
+      window.bondMatrixPgVersion = matrixVersion;
+      
+      window.bondMatrixPg.clear(); 
+      window.bondMatrixPg.noStroke();
+      
+      // Draw a wider static matrix (from row 3 to rows-3) that doesn't need refreshing
+      for (let i = 0; i < cols; i++) {
+        for (let j = 3; j < rows - 3; j++) {
+          let px = Math.floor(i * bulbSpacing);
+          let py = Math.floor(j * bulbSpacing);
+          
+          // Bake the "permanently ON" horizontal borders directly into the static background image
+          if (j === 4 || j === rows - 5) {
+            window.bondMatrixPg.fill(255, 230, 150);
+          } else {
+            window.bondMatrixPg.fill(50, 20, 20); // Dark OFF bulbs
+          }
+          
+          window.bondMatrixPg.circle(px + bulbSpacing / 2, py + bulbSpacing / 2, bulbSpacing * 0.7);
+        }
+      }
+    }
     
     strokeWeight(0);
     let onBulbs = [];
-    let offBulbs = [];
+    
     for (let i = 0; i < cols; i++) {
       // Map physical screen column `i` to the string's logical column
       let stringCol = i - globalOffsetCols;
       let charIndex = Math.floor(stringCol / colsPerChar);
       let colWithinChar = stringCol % colsPerChar;
       
-      let isBulbOnCol = false;
       let charData = null;
       
       if (charIndex >= 0 && charIndex < headlineStr.length) {
@@ -299,8 +371,8 @@ class BondSign {
         charData = BITMAP_FONT_5x7[char] || BITMAP_FONT_5x7[' '];
       }
       
-      // Skip the top 3 and bottom 3 rows of bulbs entirely to remove them from the screen
-      for (let j = 3; j < rows - 3; j++) {
+      // Skip the top 8 and bottom 8 rows of bulbs entirely to shrink matrix
+      for (let j = 8; j < rows - 8; j++) {
         let px = Math.floor(i * bulbSpacing);
         let py = Math.floor(j * bulbSpacing);
         let cx = px + bulbSpacing / 2;
@@ -319,29 +391,21 @@ class BondSign {
           }
         }
         
-        // Force specific rows of bulbs to be permanently ON to act as horizontal borders
-        if (j === 4 || j === rows - 5) {
-          isBulbOn = true;
-        }
+        // Removed borders to shrink matrix size
         
         if (isBulbOn) {
           onBulbs.push({cx: cx, cy: cy});
-        } else {
-          offBulbs.push({cx: cx, cy: cy});
         }
       }
     }
     
-    // Draw all OFF bulbs first
+    // Draw all OFF bulbs as a single flat image
     drawingContext.shadowBlur = 0;
-    fill(50, 20, 20);
-    for (let bulb of offBulbs) {
-      circle(bulb.cx, startY + bulb.cy, bulbSpacing * 0.7);
-    }
+    image(window.bondMatrixPg, 0, startY);
     
-    // Draw all ON bulbs
-    drawingContext.shadowBlur = 10;
-    drawingContext.shadowColor = 'rgba(255, 150, 50, 1)';
+    // Draw all ON bulbs individually to keep the glow effect
+    drawingContext.shadowBlur = 0; // Disabled for performance
+    // drawingContext.shadowColor = 'rgba(255, 150, 50, 1)';
     fill(255, 230, 150);
     for (let bulb of onBulbs) {
       circle(bulb.cx, startY + bulb.cy, bulbSpacing * 0.7);
@@ -363,6 +427,7 @@ class BondSign {
     // Digital Time (Top Half)
     let hr = signTime[0];
     let mn = signTime[1];
+    let sc = signTime[2];
     let ampm = hr >= 12 ? "PM" : "AM";
     let hr12 = hr % 12;
     if (hr12 === 0) hr12 = 12;
@@ -370,29 +435,34 @@ class BondSign {
     let timeStr = `${hr12}:${mnStr}`;
     
     // LED Glow effect
-    drawingContext.shadowBlur = 15;
-    drawingContext.shadowColor = 'rgba(255, 255, 0, 1)';
+    drawingContext.shadowBlur = 0; // Disabled for performance
+    // drawingContext.shadowColor = 'rgba(255, 255, 0, 1)';
     fill(255, 255, 0);
     noStroke();
     textAlign(CENTER, CENTER);
     textFont('Courier New'); // Blocky monospaced font for LED look
     textStyle(BOLD);
-    textSize(clockRadius * 0.5);
-    text(timeStr, circleX, circleY - clockRadius * 0.4);
     
-    // AM/PM smaller
-    textSize(clockRadius * 0.2);
-    text(ampm, circleX, circleY - clockRadius * 0.05);
+    // Draw centered time (bumped size up slightly since seconds are removed)
+    textSize(clockRadius * 0.45);
+    let timeStrWidth = textWidth(timeStr);
+    text(timeStr, circleX, circleY - clockRadius * 0.40);
+    
+    // Draw AM/PM right-justified under the time
+    textSize(clockRadius * 0.16);
+    textAlign(RIGHT, TOP);
+    text(ampm, circleX + timeStrWidth / 2, circleY - clockRadius * 0.20);
     
     // Bottom Half Text
     drawingContext.shadowBlur = 0;
     fill(255);
     textFont('Arial');
     textStyle(BOLD);
+    textAlign(CENTER, CENTER);
     textSize(clockRadius * 0.22);
-    text("EVERY HOUR", circleX, circleY + clockRadius * 0.2);
-    text("2,490 PEOPLE", circleX, circleY + clockRadius * 0.45);
-    text("BUY AT", circleX, circleY + clockRadius * 0.7);
+    text("EVERY HOUR", circleX, circleY + clockRadius * 0.10);
+    text("2,490 PEOPLE", circleX, circleY + clockRadius * 0.35);
+    text("BUY AT", circleX, circleY + clockRadius * 0.65);
     
     // Reset alignment
     textAlign(LEFT, BASELINE);
