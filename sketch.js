@@ -80,15 +80,8 @@ let schweppesLetterColors;
 let letterImagesWhite = [];
 let letterImagesWithColor = [];
 let dominoImagesWithColor=[];
-let WeatherJsons = [];
-let WeatherStrings = [];
 let NeonPreload;
 var Flicker = true;
-var weatherWWWstart = "https://api.openweathermap.org/data/2.5/weather?q=";
-var weatherWWWfinish =
-  "&mode=json&units=Imperial&cnt=7&appid=82c1267972094d5c1801e60fea29992c";
-
-const WeatherInterval = 2000;
 
 // const BoxCombos = [
 //   [0, 2, 10, 9, 0],
@@ -140,31 +133,10 @@ function preload() {
   HeinzBottleWhite = loadImage("images/HeinzBottleLavender.png");
   HeinzLabel = loadImage("images/HeinzLabel.png");
 
-  const WeatherLocations = [
-    "London",
-    "Los Angeles",
-    "New York",
-    "Boston",
-    "Madrid",
-    "Florence",
-    "Hong Kong",
-    "Melbourne"
-  ];
-
   // letterImagesWithColor is an array of length 9.  Each of those 9 items are arrays of length 8.
   // the 8 items are the same letter in different color
 
   //////////////////////////////////////////////////////////////////
-  // WeatherJsons = [];
-  if (true) {
-    WeatherStrings = WeatherLocations.map(
-      (location) => weatherWWWstart + location + weatherWWWfinish
-    );
-
-    WeatherJsons = WeatherStrings.map((weatherString) =>
-      loadJSON(weatherString)
-    );
-  }
   letterImagesWhite = letterURLs.map((url) => loadImage(url));
   const dominoWhiteURLs ="images/domino-neon.png"
   
@@ -191,7 +163,7 @@ function setup() {
   canvas = createCanvas(windowWidth, windowHeight); //size(1200,800);(578, 340)
   canvas.style("display", "block");
   canvas.drawingContext.miterLimit = 2;
-  // window.setTimeout(updateWeather0, WeatherInterval);
+
 
   // Create a walker object
   wps = new WallauerSign();
@@ -301,8 +273,8 @@ function draw() {
   
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
-//  WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
-// WhichSign=19
+// WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
+WhichSign=5
 //////////////////////////////////////////////////////////////////////////
 frameRate(25);
 if (WhichSign===17) frameRate(10)
@@ -378,14 +350,7 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
 
-function AsyncWeather0(www) {
-  Wjson = www;
-}
 
-const updateWeather0 = () => {
-  loadJSON(weatherWWWstart + "London" + weatherWWWfinish, AsyncWeather0);
-  window.setTimeout(updateWeather0, WeatherInterval);
-};
 
 function screenBackground() {
   img = createImage(windowWidth, windowHeight);

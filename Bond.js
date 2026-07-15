@@ -10,7 +10,9 @@ class BondSign {
     this.jsonCt = 0;
     this.bondStrokes = new getBondStrokes(this.cycle);
     this.bondFill = new getBondFill(this.cycle);
-    this.WeatherStr = new formWeatherStr(this.jsonCt);
+    this.waterfall = new LightFixture(windowWidth * 0.4, windowHeight * 0.35);
+    this.parabolicLeft = new ParabolicLights(windowWidth * 0.25, windowHeight * 0.5, windowWidth * 0.15, windowHeight * 0.25);
+    this.parabolicRight = new ParabolicLights(windowWidth * 0.75, windowHeight * 0.5, windowWidth * 0.15, windowHeight * 0.25);
   }
 
   // increment() {
@@ -66,6 +68,18 @@ class BondSign {
       (1.57 * windowWidth) / 4,
       (2.33 * windowWidth) / 4
     ];
+    
+    // Draw Parabolic Lights and Waterfall
+    this.parabolicLeft.update();
+    this.parabolicLeft.draw();
+    this.parabolicRight.update();
+    this.parabolicRight.draw();
+    
+    push();
+    translate(windowWidth * 0.3, windowHeight * 0.35);
+    this.waterfall.draw();
+    pop();
+
     for (var FontLayer = 0; FontLayer < 3; FontLayer++) {
       strokeWeight(StrokeScaleI[FontLayer]);
       for (var WhichLetter = 0; WhichLetter < 4; WhichLetter++) {
@@ -100,17 +114,10 @@ class BondSign {
 
     // Windows  under temp
     ///////////////////////////////////////////////////////////////////
-    // text(data[0], 5, BondYstart * 0.9);
-    var newsStrip = "";
-    for (i = 0; i < WeatherStrings.length; i++)
-      newsStrip = newsStrip + formWeatherStr(i);
-    for (i = 0; i < 10; i++) newsStrip = newsStrip + newsStrip;
+    var newsStrip = "BOND CLOTHES   TWO TROUSER SUITS   ";
+    for (var i = 0; i < 6; i++) newsStrip = newsStrip + newsStrip;
 
-    stroke(250, 0, 0);
-    strokeWeight(0);
-    fill(150);
-    // text(newsStrip, -(5 + this.step / 0.25), BondYstart * 1.15);
-    text(newsStrip, -(5 + this.step / 0.25), BondYstart * 1.15);
+    drawZipperText(newsStrip, -(5 + this.step / 0.25), BondYstart * 1.15, (strokeScale * 5) / 4);
     ///////////////////////////////////////////////////////////////////
 
     stroke(250, 250, 0);

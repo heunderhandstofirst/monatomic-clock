@@ -44,3 +44,43 @@ function newRectOverlay(unitSize, xCount, yCount,digitScalar) {
       line(-nudge,i,psWidth+nudge,i)
     } 
     }
+
+let zipperGraphics;
+
+function drawZipperText(textStr, xOffset, y, size) {
+  if (!zipperGraphics) {
+    zipperGraphics = createGraphics(windowWidth, size * 1.5);
+    zipperGraphics.pixelDensity(1);
+  } else if (zipperGraphics.width !== windowWidth) {
+    zipperGraphics.resizeCanvas(windowWidth, size * 1.5);
+  }
+  
+  zipperGraphics.clear();
+  zipperGraphics.background(0);
+  zipperGraphics.fill(255);
+  zipperGraphics.textFont("Arial");
+  zipperGraphics.textSize(size);
+  zipperGraphics.text(textStr, xOffset, size * 0.2);
+  
+  zipperGraphics.loadPixels();
+  
+  let step = Math.max(2, Math.floor(size / 8)); 
+  
+  push();
+  noStroke();
+  translate(0, y - size * 0.2);
+  
+  for (let py = 0; py < zipperGraphics.height; py += step) {
+    for (let px = 0; px < zipperGraphics.width; px += step) {
+      let index = (px + py * zipperGraphics.width) * 4;
+      let r = zipperGraphics.pixels[index];
+      if (r > 128) {
+        fill(255, 200, 50, 255); 
+        circle(px, py, step * 0.8);
+        fill(255, 255, 200, 200);
+        circle(px, py, step * 0.4);
+      }
+    }
+  }
+  pop();
+}
