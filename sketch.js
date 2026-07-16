@@ -289,7 +289,12 @@ function draw() {
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
   // BOND=2, LONDON=5, HELMS=8// WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
-WhichSign=2
+WhichSign=8
+  
+  if (window.isDemoMode) {
+    let elapsed = millis() - window.demoModeStartTime;
+    WhichSign = Math.floor(elapsed / 15000) % 30; // 30 signs (0 to 29), 15s each
+  }
   // Here we are fixing these problems
 //////////////////////////////////////////////////////////////////////////
 frameRate(15);
@@ -482,4 +487,22 @@ function printStats(xxx, yyy, unit,widX,lenY, extraText1) {
   for (let i=0;i<extraText1.length; i++)    text(extraText1[i], 50, 25 * x++);
   
   pop();
+}
+
+// Global hotkeys
+window.isDemoMode = false;
+window.demoModeStartTime = 0;
+
+function keyPressed() {
+  // Ctrl + J to toggle Demo Mode
+  if (keyIsDown(CONTROL) && (key === 'j' || key === 'J')) {
+    window.isDemoMode = !window.isDemoMode;
+    if (window.isDemoMode) {
+      window.demoModeStartTime = millis();
+      console.log("Demo Mode ON: Showing each complication for 15s");
+    } else {
+      console.log("Demo Mode OFF");
+    }
+    return false; // Prevent default browser behavior
+  }
 }
