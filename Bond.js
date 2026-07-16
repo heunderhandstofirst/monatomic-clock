@@ -52,7 +52,6 @@ class BondSign {
     this.step = this.step + 1;
     if (SwitchSign) this.step = 0;
 
-    screenBackground();
     background(NeonPreload);
 
     const freqNumber = 2; // cycle length for new stroke
@@ -78,131 +77,237 @@ class BondSign {
 
     var strokeScale = 24;
     var BondXstart = windowWidth / 8;
-    var BondYstart = windowHeight * 0.7 - strokeScale / 2;
-    let zipLineY = BondYstart * 1.15 + windowHeight / 20.0;
+    var BondYstart = windowHeight * 0.78 - strokeScale / 2;
+    let zipLineY = windowHeight - (strokeScale * 5.5) / 2;
     
-    // --- WATERFALL RENDERING ---
-    colorMode(HSB, 255);
-    for (let i = 0; i < this.streams.length; i++) {
-      let s = this.streams[i];
-      let x = s.xOffset * windowWidth;
-      s.yOffset += s.speed / zipLineY;
-      if (s.yOffset > 1.0) {
-        s.yOffset = -0.1; // Start slightly offscreen
-        s.xOffset = Math.random();
+    // ==========================================
+    // --- OPTION 1: WATERFALL STREAKS RENDERING (DOWNWARD) ---
+    // Generates fast-falling neon water streaks.
+    /*
+    if (!this.rainStreaks) {
+      this.rainStreaks = [];
+      for (let i = 0; i < 80; i++) {
+        this.rainStreaks.push({
+          x: Math.random(),
+          y: Math.random(),
+          speed: Math.random() * 0.015 + 0.015,
+          length: Math.random() * 0.08 + 0.04,
+          alpha: Math.random() * 40 + 20
+        });
       }
-      let y = s.yOffset * zipLineY;
+    }
+    
+    drawingContext.shadowBlur = 0;
+    strokeCap(ROUND);
+    for (let i = 0; i < this.rainStreaks.length; i++) {
+      let streak = this.rainStreaks[i];
+      streak.y += streak.speed;
       
-      let hue = s.xOffset * 255;
-      let sat = Math.pow(s.yOffset, 2) * 255; // Exponential fade to color at bottom
+      if (streak.y > 1.0) {
+        streak.y = -streak.length;
+        streak.x = Math.random();
+        streak.speed = Math.random() * 0.015 + 0.015;
+      }
       
-      noStroke();
-      fill(hue, sat, 255, 120);
-      circle(x, y, s.size);
+      let xPos = streak.x * windowWidth;
+      let yStart = streak.y * zipLineY;
+      let yEnd = (streak.y + streak.length) * zipLineY;
+      if (yEnd > zipLineY) yEnd = zipLineY;
+      
+      stroke(180, 240, 255, streak.alpha);
+      strokeWeight(Math.max(1, windowWidth * 0.0005));
+      line(xPos, yStart, xPos, yEnd);
+    }
+    noStroke();
+    */
+    // --- END OPTION 1 ---
+    // ==========================================
+
+    // ==========================================
+    // --- OPTION 3: FALLING MIST / SPRAY ---
+    // Simulates the chaotic splash and spray of a heavy waterfall
+    if (!this.mistParticles) {
+      this.mistParticles = [];
+      for (let i = 0; i < 150; i++) { // Dense mist
+        this.mistParticles.push({
+          x: Math.random(),
+          y: Math.random(),
+          speedY: Math.random() * 0.015 + 0.01, // Falling fast
+          speedX: (Math.random() - 0.5) * 0.003, // Slight horizontal fanning out
+          size: Math.random() * 2.5 + 1, // Tiny dots
+          life: Math.random() * Math.PI
+        });
+      }
+    }
+    
+    drawingContext.shadowBlur = 0;
+    noStroke();
+    for (let i = 0; i < this.mistParticles.length; i++) {
+      let p = this.mistParticles[i];
+      p.y += p.speedY;
+      p.x += p.speedX; // Fan out
+      p.life += 0.05;
+      
+      // Reset when they hit the bottom
+      if (p.y > 1.0) {
+        p.y = Math.random() * 0.4; // Respawn somewhere in the top half
+        p.x = Math.random();
+        p.speedX = (Math.random() - 0.5) * 0.003;
+        p.life = 0;
+      }
+      
+      let xPos = p.x * windowWidth;
+      let yPos = p.y * zipLineY;
+      
+      // Calculate opacity: they get more visible as they fall towards the bottom
+      let alpha = (p.y * 150) + (Math.sin(p.life) * 50); 
+      
+      fill(200, 240, 255, alpha); // Soft pale cyan mist
+      circle(xPos, yPos, p.size);
+    }
+    // --- END OPTION 3 ---
+    // ==========================================
+
+    // --- WATERFALL BURST RENDERING ---
+    // Initialize bursts if they don't exist yet (handles hot-reloading smoothly)
+    if (!this.bubbleSets) {
+      this.bubbleSets = [];
+      // Create 40 vertical bursts
+      for (let i = 0; i < 40; i++) {
+        let numBubbles = Math.floor(Math.random() * 5) + 6; // 6 to 10 bubbles per burst for a more realistic look
+        let burst = {
+          xOffset: Math.floor(Math.random() * 50) / 50, // Quantize to 50 columns
+          yOffset: Math.random() * 0.8 + 0.2, // Start randomly lower down
+          life: Math.random() * Math.PI,
+          lifeSpeed: Math.random() * 0.04 + 0.02,
+          speed: Math.random() * 2 + 1,
+          hue: 0,
+          bubbles: []
+        };
+        burst.hue = burst.xOffset * 255;
+        for (let b = 0; b < numBubbles; b++) {
+          burst.bubbles.push({
+            yShift: (Math.random() - 0.5) * 0.08, // Small vertical offset from burst center
+            maxSize: Math.random() * 4 + 2 // Reduced maximum bubble diameter by 50%
+          });
+        }
+        this.bubbleSets.push(burst);
+      }
+    }
+
+    drawingContext.shadowBlur = 0; // Explicitly disable shadow blur to guarantee maximum performance
+    colorMode(HSB, 255);
+    for (let i = 0; i < this.bubbleSets.length; i++) {
+      let b = this.bubbleSets[i];
+      // Travel upward at a faster pace
+      b.yOffset -= (b.speed * 1.5) / zipLineY; 
+      b.life += b.lifeSpeed;
+      
+      // If the burst finishes its lifecycle or hits the top, respawn it randomly from top to bottom
+      if (b.life > Math.PI || b.yOffset < 0.0) {
+        b.xOffset = Math.floor(Math.random() * 50) / 50;
+        b.yOffset = Math.random(); // Appear randomly anywhere vertically
+        b.life = 0;
+        b.speed = Math.random() * 2 + 1;
+        b.hue = b.xOffset * 255;
+      }
+      
+      let x = b.xOffset * windowWidth;
+      // Fade alpha smoothly from 0 to 200 and back to 0
+      let alpha = Math.sin(b.life) * 200;
+      
+      for (let j = 0; j < b.bubbles.length; j++) {
+        let bub = b.bubbles[j];
+        let y = (b.yOffset + bub.yShift) * zipLineY;
+        
+        // Calculate a gentle side-to-side sway within a strict 1% total band (0.5% each way)
+        // b.life * 2 ensures one full smooth oscillation, j*0.5 gently offsets the bubbles from each other
+        let xSway = Math.sin(b.life * 2 + j * 0.5) * (windowWidth * 0.005);
+        let currentX = x + xSway;
+        
+        // Size scales smoothly from 0 -> maxSize -> 0
+        let currentSize = Math.sin(b.life) * bub.maxSize;
+        
+        // Main bubble body: Transparent with a solid white border
+        noFill();
+        stroke(0, 0, 255, alpha); // White stroke in HSB (Hue 0, Saturation 0, Brightness 255)
+        strokeWeight(Math.max(1, currentSize * 0.08)); // Adjust border thickness based on size
+        circle(currentX, y, currentSize);
+        
+        // Inner white highlight for authentic liquid look
+        noStroke();
+        fill(0, 0, 255, alpha); // White fill in HSB
+        circle(currentX - currentSize*0.2, y - currentSize*0.2, currentSize*0.2);
+      }
     }
     colorMode(RGB, 255);
-    // --- END WATERFALL ---
+    // --- END WATERFALL BURSTS ---
 
     // --- DRAW VERTICAL LIGHT BEAMS ---
-    let numBeams = 12;
-    let beamSpacing = windowWidth / numBeams;
-    let beamHeight = 0.35 * windowHeight; // Increased height
+    let beamHeight = 0.36 * windowHeight; // Increased height by 80% (from 0.20 to 0.36)
     let zipLineTop = zipLineY - (strokeScale * 5.5) / 2;
+    let rectTop = zipLineTop - beamHeight;
     
-    // Initialize or resize the offscreen graphics buffer for the fade mask
-    if (typeof window.bondPg === 'undefined' || window.bondPgExpectedWidth !== windowWidth || window.bondPgExpectedHeight !== windowHeight) {
-      if (typeof window.bondPg !== 'undefined') window.bondPg.remove();
-      window.bondPg = createGraphics(windowWidth, windowHeight);
-      window.bondPgExpectedWidth = windowWidth;
-      window.bondPgExpectedHeight = windowHeight;
-    }
-    
-    // Pre-calculate the horizontal rainbow gradient ONCE to completely eliminate per-frame overhead
-    if (typeof window.rainbowGrad === 'undefined' || window.rainbowGradWidth !== windowWidth) {
-      window.rainbowGradWidth = windowWidth;
-      window.rainbowGrad = window.bondPg.drawingContext.createLinearGradient(0, 0, windowWidth, 0);
-      for (let i = 0; i <= 20; i++) {
-        let pct = i / 20;
-        let cssHue = pct * 360;
-        window.rainbowGrad.addColorStop(pct, `hsla(${cssHue}, 100%, 50%, 1.0)`);
+    // Initialize or resize the offscreen graphics buffer for the static vertical lines
+    if (typeof window.bondStaticPg === 'undefined' || 
+        window.bondStaticPgExpectedWidth !== windowWidth || 
+        window.bondStaticPgExpectedHeight !== windowHeight ||
+        window.bondStaticPgExpectedBeamHeight !== beamHeight) {
+        
+      if (typeof window.bondStaticPg !== 'undefined') window.bondStaticPg.remove();
+      window.bondStaticPg = createGraphics(windowWidth, beamHeight);
+      window.bondStaticPgExpectedWidth = windowWidth;
+      window.bondStaticPgExpectedHeight = windowHeight;
+      window.bondStaticPgExpectedBeamHeight = beamHeight;
+      
+      window.bondStaticPg.clear(); // Transparent background
+      let ctx = window.bondStaticPg.drawingContext;
+      ctx.lineWidth = 1;
+      
+      // Draw one line per horizontal pixel
+      for (let x = 0; x < windowWidth; x++) {
+        let pct = x / windowWidth;
+        let cssHue = pct * 360; // Spectrum from left to right
+        
+        let grad = ctx.createLinearGradient(0, 0, 0, beamHeight);
+        // Top matches the background perfectly by fading to transparent
+        grad.addColorStop(0, 'rgba(0,0,0,0)'); 
+        // Bottom is solid spectrum color
+        grad.addColorStop(1, `hsla(${cssHue}, 100%, 60%, 1.0)`);
+        
+        ctx.strokeStyle = grad;
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, beamHeight);
+        ctx.stroke();
       }
     }
     
-    window.bondPg.clear();
-    window.bondPg.drawingContext.shadowBlur = 0; // Disabled for performance
-    // window.bondPg.drawingContext.shadowColor = 'rgba(255, 255, 255, 0.4)'; // Generic bright glow for all lines
-    window.bondPg.drawingContext.strokeStyle = window.rainbowGrad;
-    window.bondPg.strokeCap(SQUARE);
-    window.bondPg.strokeWeight(1);
-    
-    let subSpacing = 1; 
-    let currentVariation = 0;
-    
-    let dynFreq1 = 2.7 + Math.sin(this.step * 0.005) * 0.8;
-    let dynFreq2 = 4.3 + Math.cos(this.step * 0.007) * 1.2;
-    
-    // Draw ALL lines as a single batched path. This executes in 1 native call instead of 1920!
-    window.bondPg.drawingContext.beginPath();
-    for (let x = 0; x <= windowWidth; x += subSpacing) {
-      let theta = (x - beamSpacing / 2) * (Math.PI * 2 / beamSpacing);
+    // Draw the static light curtain in vertical slices to create a wave effect
+    // By squashing the image, the top edge drops down and ripples, while the bottom stays anchored
+    let sliceWidth = 5;
+    for (let x = 0; x < windowWidth; x += sliceWidth) {
+      // Calculate an organic undulating wave
+      let wave1 = Math.sin(x * 0.005 + this.step * 0.05);
+      let wave2 = Math.cos(x * 0.011 - this.step * 0.07);
+      let combinedWave = (wave1 + wave2) / 2; // Range [-1, 1]
       
-      let mainCurve = Math.cos(theta);
-      let offshoot1 = Math.cos(theta * dynFreq1) * 0.20;
-      let offshoot2 = Math.cos(theta * dynFreq2) * 0.10;
-      let compositeCurve = mainCurve + offshoot1 + offshoot2;
+      // Map wave to [0, 1] so 0 is the flat cap, and 1 is pushed downward
+      let normalizedWave = (combinedWave + 1) / 2; 
       
-      let topY = (zipLineTop - beamHeight / 2) - (beamHeight / 2.5) * compositeCurve;
+      // Max downward push is 40% of the total height
+      let waveOffset = normalizedWave * (beamHeight * 0.40);
       
-      let targetVariation = (currentVariation * 0.95) + ((Math.random() - 0.5) * 0.05);
-      targetVariation = Math.max(-0.10, Math.min(0.10, targetVariation));
+      // The destination height squashes to keep the bottom anchored
+      let currentHeight = beamHeight - waveOffset;
       
-      let maxDelta = 0.002; 
-      if (targetVariation > currentVariation + maxDelta) currentVariation += maxDelta;
-      else if (targetVariation < currentVariation - maxDelta) currentVariation -= maxDelta;
-      else currentVariation = targetVariation;
-      
-      let R = 1.0 + currentVariation;
-      let actualHeight = (zipLineTop - topY) * R;
-      let randomizedTopY = zipLineTop - actualHeight;
-      
-      window.bondPg.drawingContext.moveTo(x, randomizedTopY);
-      window.bondPg.drawingContext.lineTo(x, zipLineTop);
+      // p5.js image signature: img, dx, dy, dWidth, dHeight, sx, sy, sWidth, sHeight
+      image(
+        window.bondStaticPg, 
+        x, rectTop + waveOffset, sliceWidth, currentHeight, // Destination rect
+        x, 0, sliceWidth, beamHeight                        // Source rect
+      );
     }
-    
-    // Fake the heavy shadowBlur by stroking the exact same batched path 3 times 
-    // with expanding thickness and dropping alpha. This creates a gorgeous glowing bloom 
-    // using purely hardware-accelerated strokes instead of CPU blur math!
-    
-    // Outer wide glow
-    window.bondPg.strokeWeight(12);
-    window.bondPg.drawingContext.globalAlpha = 0.15;
-    window.bondPg.drawingContext.stroke();
-    
-    // Inner tight glow
-    window.bondPg.strokeWeight(4);
-    window.bondPg.drawingContext.globalAlpha = 0.4;
-    window.bondPg.drawingContext.stroke();
-    
-    // Core intense beam
-    window.bondPg.strokeWeight(1);
-    window.bondPg.drawingContext.globalAlpha = 0.6;
-    window.bondPg.drawingContext.stroke();
-    
-    // Apply a mathematically perfect vertical fade over the glowing path
-    window.bondPg.drawingContext.globalCompositeOperation = 'destination-in';
-    // Start the gradient much lower down so the peaks of the parabolas are perfectly 100% transparent
-    let fadeGrad = window.bondPg.drawingContext.createLinearGradient(0, zipLineTop - beamHeight * 0.85, 0, zipLineTop);
-    fadeGrad.addColorStop(0, 'rgba(0,0,0,0)');     // 100% transparent well before the top edge
-    fadeGrad.addColorStop(0.5, 'rgba(0,0,0,0.15)'); // Keep it very soft through the middle
-    fadeGrad.addColorStop(1, 'rgba(0,0,0,0.6)');   // 60% opacity at bottom
-    
-    window.bondPg.drawingContext.fillStyle = fadeGrad;
-    window.bondPg.noStroke();
-    window.bondPg.rect(0, zipLineTop - beamHeight * 1.5, windowWidth, beamHeight * 1.5);
-    window.bondPg.drawingContext.globalCompositeOperation = 'source-over';
-    
-    // Draw the fully assembled, faded light curtain to the main canvas
-    image(window.bondPg, 0, 0);
     
     drawingContext.shadowBlur = 0;
     strokeCap(ROUND);
@@ -220,15 +325,20 @@ class BondSign {
     
     // Draw 5 grey bars dropping from behind the clock down to behind the zip line
     let barWidth = (clockRadius * 2) * 0.05; // 5% of clock diameter
-    let barOffsets = [-0.6, -0.3, 0, 0.3, 0.6]; // offsets as a fraction of clockRadius
+    let barOffsets = [-0.3, -0.15, 0, 0.15, 0.3]; // offsets as a fraction of clockRadius
     
     drawingContext.shadowBlur = 0;
     fill(100);
     noStroke();
     for (let offset of barOffsets) {
       let bx = circleX + offset * clockRadius - barWidth / 2;
-      let by = circleY;
-      let bh = zipLineTop - circleY; // Drop down to zipLineTop
+      
+      // Calculate Y coordinate on the circular edge
+      let circleEdgeY = circleY - Math.sqrt(Math.pow(clockRadius, 2) - Math.pow(offset * clockRadius, 2));
+      // Peek slightly over the top
+      let by = circleEdgeY - clockRadius * 0.15;
+      
+      let bh = zipLineTop - by; // Drop down to zipLineTop
       rect(bx, by, barWidth, bh);
     }
 
@@ -247,19 +357,53 @@ class BondSign {
       strokeWeight(StrokeScaleI[FontLayer]);
       for (var WhichLetter = 0; WhichLetter < 4; WhichLetter++) {
         var Letter2print = BondText.substring(WhichLetter, WhichLetter + 1);
-        fill(getBondFill(FontLayer, CC[WhichLetter]));
-        stroke(getBondStrokes(FontLayer, CC[WhichLetter]));
+        let myFill = getBondFill(FontLayer, CC[WhichLetter]);
+        let myStroke = getBondStrokes(FontLayer, CC[WhichLetter]);
+        
+        fill(myFill);
+        stroke(myStroke);
+        
+        // Apply neon glow based on the stroke and fill colors for the different animation phases
+        if (myFill[0] === 255 && myFill[1] === 255 && myFill[2] === 0) {
+          // The "Big Finish" yellow phase (fill lights up)
+          drawingContext.shadowBlur = 40; // Massive intense glow
+          drawingContext.shadowColor = 'rgba(255, 255, 0, 1)';
+        } else if (myStroke[0] === 0 && myStroke[1] === 0 && myStroke[2] === 255) {
+          // Blue neon phase
+          drawingContext.shadowBlur = 25;
+          drawingContext.shadowColor = 'rgba(0, 100, 255, 1)';
+        } else if (myStroke[0] === 250 && myStroke[1] === 100 && myStroke[2] === 50) {
+          // Red-Orange neon phase
+          drawingContext.shadowBlur = 25;
+          drawingContext.shadowColor = 'rgba(255, 120, 20, 1)';
+        } else if (myStroke[0] === 255 && myStroke[1] === 135 && myStroke[2] === 35) {
+          // Light Orange neon phase
+          drawingContext.shadowBlur = 30;
+          drawingContext.shadowColor = 'rgba(255, 150, 50, 1)';
+        } else if ((myStroke[0] === 250 && myStroke[1] === 250 && myStroke[2] === 250) || 
+                   (myStroke[0] === 255 && myStroke[1] === 255 && myStroke[2] === 255)) {
+          // White neon phase
+          drawingContext.shadowBlur = 25;
+          drawingContext.shadowColor = 'rgba(255, 255, 255, 0.9)';
+        } else if (myStroke[0] === 50 && myStroke[1] === 50 && myStroke[2] === 50) {
+          // Dark grey "unlit" border phase
+          drawingContext.shadowBlur = 15;
+          drawingContext.shadowColor = 'rgba(180, 180, 180, 0.6)'; // Subtle ghost glow
+        } else {
+          drawingContext.shadowBlur = 0;
+        }
+        
         text(Letter2print, BondXstart + AdjXstart[WhichLetter], BondYstart);
       }
     }
+    drawingContext.shadowBlur = 0; // Reset shadow for all subsequent drawing
     //////////////////////////////////////////////////////////////////////////////////
     textSize((strokeScale * 5) / 4);
     fill(160);
     strokeWeight(strokeScale * 5.5);
     stroke(0, 0, 0);
     line(0, zipLineY, windowWidth, zipLineY);
-    fill(133, 20, 12);
-    rect(-100, zipLineY, 3 * windowWidth, windowHeight);
+
 
 
 
@@ -407,9 +551,14 @@ class BondSign {
     drawingContext.shadowBlur = 0; // Disabled for performance
     // drawingContext.shadowColor = 'rgba(255, 150, 50, 1)';
     fill(255, 230, 150);
+    noStroke();
+    drawingContext.beginPath();
+    let bulbRadius = bulbSpacing * 0.35;
     for (let bulb of onBulbs) {
-      circle(bulb.cx, startY + bulb.cy, bulbSpacing * 0.7);
+      drawingContext.moveTo(bulb.cx + bulbRadius, startY + bulb.cy);
+      drawingContext.arc(bulb.cx, startY + bulb.cy, bulbRadius, 0, Math.PI * 2);
     }
+    drawingContext.fill();
     
     drawingContext.shadowBlur = 0;
     textFont('Arial');
@@ -453,18 +602,56 @@ class BondSign {
     textAlign(RIGHT, TOP);
     text(ampm, circleX + timeStrWidth / 2, circleY - clockRadius * 0.20);
     
-    // Bottom Half Text
-    drawingContext.shadowBlur = 0;
-    fill(255);
-    textFont('Arial');
-    textStyle(BOLD);
-    textAlign(CENTER, CENTER);
-    textSize(clockRadius * 0.22);
-    text("EVERY HOUR", circleX, circleY + clockRadius * 0.10);
-    text("2,490 PEOPLE", circleX, circleY + clockRadius * 0.35);
-    text("BUY AT", circleX, circleY + clockRadius * 0.65);
+    // 5-second toggle for the bottom half
+    let showNationwide = Math.floor(signTime[2] / 5) % 2 === 0;
+
+    if (!showNationwide) {
+      // Bottom Half Text
+      drawingContext.shadowBlur = 0;
+      fill(255);
+      noStroke();
+      textFont('Arial');
+      textStyle(BOLD);
+      textAlign(CENTER, CENTER);
+      textSize(clockRadius * 0.22);
+      text("EVERY HOUR", circleX, circleY + clockRadius * 0.10);
+      text("2,490 PEOPLE", circleX, circleY + clockRadius * 0.35);
+      text("BUY AT", circleX, circleY + clockRadius * 0.65);
+    } else {
+      // Neon USA Map Image
+      let usY = circleY + clockRadius * 0.45 - windowHeight * 0.01; // Dropped down by 1% of screen height
+      let w = clockRadius * 1.96875; // Reduced by 25% from previous size
+      
+      // Calculate height dynamically to preserve aspect ratio, with a fallback
+      let h = clockRadius * 0.7; 
+      if (typeof ContinentalUSAImage !== 'undefined' && ContinentalUSAImage.width > 0) {
+        h = (ContinentalUSAImage.height / ContinentalUSAImage.width) * w;
+      }
+      
+      drawingContext.shadowBlur = 20;
+      drawingContext.shadowColor = 'rgba(255, 50, 50, 1)'; // Red neon outline glow
+      imageMode(CENTER);
+      
+      if (typeof ContinentalUSAImage !== 'undefined') {
+        image(ContinentalUSAImage, circleX, usY, w, h);
+      }
+      
+      // NATIONWIDE Text in the center - simple rendering for performance
+      drawingContext.shadowBlur = 0; // No glow to keep performance high
+      fill(255, 100, 100); // Base red color
+      noStroke();
+      textFont('Arial');
+      textStyle(BOLD);
+      textAlign(CENTER, CENTER);
+      textSize(clockRadius * 0.153);
+      text("NATIONWIDE", circleX, usY);
+      
+      // Reset imageMode
+      imageMode(CORNER);
+    }
     
-    // Reset alignment
+    // Reset alignment and crucially reset shadowBlur so it doesn't bleed into the background image next frame!
     textAlign(LEFT, BASELINE);
+    drawingContext.shadowBlur = 0;
   }
 }

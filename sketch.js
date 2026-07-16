@@ -127,6 +127,7 @@ function preload() {
   OregonFoto = loadImage("images/StateOutline.png");
   StagOnly = loadImage("images/StagOnlyTransparent.png");
   MPSignFont = loadImage("images/MalibuFontE.png");
+  ContinentalUSAImage = loadImage("images/ContinentalUSA.png");
   
   RedBunny = loadImage("images/BunnyTransparent.png");
   WhiteBunny = loadImage("images/AWhiteBunny.png");
@@ -287,8 +288,8 @@ function draw() {
   
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
-  // WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
-// WhichSign=8; // Force HELMS sign
+  // BOND=2, LONDON=5, HELMS=8// WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
+WhichSign=2
   // Here we are fixing these problems
 //////////////////////////////////////////////////////////////////////////
 frameRate(15);
@@ -364,6 +365,7 @@ function signHour(signTime, eastern, minUTE) {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  screenBackground();
 }
 
 function AsyncWeather0(www) {
@@ -381,7 +383,7 @@ function screenBackground() {
   for (let x = 0; x < img.width; x++) {
     for (let y = 0; y < img.height; y++) {
       let a = map(y, 0, img.height, 255, 0);
-      img.set(x, y, [0, 153, 204, a]);
+      img.set(x, y, [0, 76, 102, a]); // Reduced vibrancy by 50%
     }
   }
   img.updatePixels();
