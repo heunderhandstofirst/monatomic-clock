@@ -576,7 +576,7 @@ class BondSign {
     
     drawingContext.shadowBlur = 0;
     textFont('Arial');
->>>>>>> development
+
     ///////////////////////////////////////////////////////////////////
 
     stroke(250, 250, 0);

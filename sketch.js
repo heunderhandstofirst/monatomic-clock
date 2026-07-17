@@ -299,7 +299,7 @@ function draw() {
   }
   // Here we are fixing these problems
 //////////////////////////////////////////////////////////////////////////
-frameRate(15);
+// frameRate(15);
 frameRate(25)
 if (WhichSign===17) frameRate(10)
 if (WhichSign===24) frameRate(40)
