@@ -2,7 +2,7 @@
 /* eslint-disable no-undef, no-unused, no-unused-vars,no-loop-func */
 
 function initialize0HS(k) {
-  altTowerabc = createGraphics(windowWidth * 0.18,windowWidth * 0.18);
+  altTowerabc = createGraphics(windowHeight * 0.35, windowHeight * 0.35);
   altTowerabc.background(getThisSideBackGround(k));
   return altTowerabc;
 }

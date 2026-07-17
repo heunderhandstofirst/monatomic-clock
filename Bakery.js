@@ -4,18 +4,18 @@ class BakerySign {
   constructor() {
     this.step = 1;
     this.BigHelm = createBigHelm();      
+    this.showOlympicRings = true;
   }
 
-   drawtheBlob(unit, xxx, yyy){
-
-      push()
+   drawtheBlob(pg, unit, xxx, yyy){
+      pg.push()
       var innerDiameter = this.WW *.18625;  //  THIS IS THE DIAMETER OF THE INNER [GREY] CIRCLE IN THE LOGO
       var totlVlinePerStripe=int(innerDiameter*.85/7)   //  THIS IS THE TOTAL NUMBER OF PIXELS ACROSS ONE OF EITHER THE RED OR GREY STRIPS OF THE BLOB
       var LoopCount = totlVlinePerStripe * 7;           //  THIS IS THE TOTAL NUMBER OF PIXEL VERTICAL LINES TO BE DRAWN
       var HalfLoop = (LoopCount + 1) / 2;
       var HoldOn = -99;  //  AFTER THE 2 OUTER GREY VERTICAL STRIPES ARE DRAWN, HoldOn IS THE BOTTOM.  THIS IS USED TO DRAW THE ARCCOS FOR THE BOTTOM MIDDLE.
-      translate(4.75*unit*0, -.45*unit)
-      strokeWeight(1);
+      pg.translate(4.75*unit*0, -.45*unit)
+      pg.strokeWeight(1);
       
       for (var j = 0; j < HalfLoop; j++) {
         var stripeN = int(j / totlVlinePerStripe);
@@ -30,12 +30,12 @@ class BakerySign {
         var newBot = -top;
         if (stripeN > 1.5) newBot = HoldOn + emblemScalar - BaseEmblem;
     
-        stroke(100, 100 * (stripeN % 2), 100 * (stripeN % 2));
+        pg.stroke(100, 100 * (stripeN % 2), 100 * (stripeN % 2));
         var Hcolumn = -HalfLoop + j + 1;
-        line(Hcolumn, newTop, Hcolumn, newBot);
-        line(-Hcolumn, newTop, -Hcolumn, newBot);
+        pg.line(Hcolumn, newTop, Hcolumn, newBot);
+        pg.line(-Hcolumn, newTop, -Hcolumn, newBot);
       }
-      pop()
+      pg.pop()
    }
 
   flashStripedBottom( unit, xxx, yyy){
@@ -49,19 +49,7 @@ class BakerySign {
     translate(0,-4.48*unit)
     strokeWeight(1);
 
-    for (var j = 0; j < HalfLoop; j++) {
-      var stripeN = int(j / totlVlinePerStripe);
-      var top = -innerDiameter * 0.75 * emblemTop(LoopCount, j, 0.5, 0.85);
-  
-      ///////////////  SET THE BOTTOM DIMENSION
-      var emblemScalar = (emblemBottom(LoopCount, j) * innerDiameter) / 4;
-      if (j === totlVlinePerStripe * 2 - 1) {
-        HoldOn = -top; // Lower Y - Fixed when switching to ArcCos
-        var BaseEmblem = emblemScalar; //* temp;
-      }
-      var newBot = -top;
-      if (stripeN > 1.5) newBot = HoldOn + emblemScalar - BaseEmblem;  
-    }
+    // (Deleted a useless math loop that was wasting CPU calculating newBot over and over but never drawing anything!)
 
     var bulbTop=3.77*unit
     var colorFlick = 190 + Flicker * 20;
@@ -75,7 +63,7 @@ class BakerySign {
       
       /////   CHISELED EDGES LEFT AND RIGHT ONLY   /////
       var colorP = neon;
-      for (k = 0; k < 2; k++) {
+      for (var k = 0; k < 2; k++) {
         var LR=Math.pow(-1,k)
         stroke(colorFlick, colorFlick * colorP, colorFlick * colorP);  
         push();
@@ -85,8 +73,8 @@ class BakerySign {
           LR * tX0[2],tY[2], LR * tX0[3],tY[3]
         );
         
-        j=[unit*-.76,unit*.74]
-        line(j[k], bulbTop, j[k], unit*4.65); //str line edge        
+        var j_arr=[unit*-.76,unit*.74]
+        line(j_arr[k], bulbTop, j_arr[k], unit*4.65); //str line edge        
         line(LR*unit*.97, bulbTop, unit*.72, bulbTop)  // edge top
         pop();
       }
@@ -141,32 +129,84 @@ class BakerySign {
     pop()
   }
 
-   drawCrown( unit,xxx,yyy) {
+  drawOlympicRings(pg, unit) {
+    pg.push();
     
+    // Position the rings at 40% the radius (0.68) below the visual center (-0.5)
+    pg.translate(0, unit * 0.18); 
+    pg.scale(0.47);
+    
+    // Draw the rings
+    let r = unit * 0.9; // radius
+    let sw = unit * 0.15; // stroke weight
+    pg.noFill();
+    pg.strokeWeight(sw);
+    
+    // Centers of the rings
+    let cx = [-unit * 1.1, 0, unit * 1.1, -unit * 0.55, unit * 0.55];
+    let cy = [0, 0, 0, unit * 0.45, unit * 0.45];
+    let colors = [
+      color(0, 129, 200),   // Blue
+      color(0, 0, 0),       // Black
+      color(238, 51, 78),   // Red
+      color(252, 177, 49),  // Yellow
+      color(0, 166, 81)     // Green
+    ];
+
+    // Draw the base rings
+    for (let i = 0; i < 5; i++) {
+        pg.stroke(colors[i]);
+        pg.ellipse(cx[i], cy[i], r, r);
+    }
+
+    // Draw interlocking overlaps
+    // To make them interlock, we redraw small arc sections of the top rings over the bottom rings
+    pg.strokeCap(SQUARE);
+    
+    // Blue over Yellow
+    pg.stroke(colors[0]);
+    pg.arc(cx[0], cy[0], r, r, 0, PI/2);
+    
+    // Black over Yellow
+    pg.stroke(colors[1]);
+    pg.arc(cx[1], cy[1], r, r, PI/2, PI);
+    
+    // Black over Green
+    pg.stroke(colors[1]);
+    pg.arc(cx[1], cy[1], r, r, 0, PI/2);
+    
+    // Red over Green
+    pg.stroke(colors[2]);
+    pg.arc(cx[2], cy[2], r, r, PI/2, PI);
+
+    pg.pop();
+  }
+
+   drawCrown(pg, unit,xxx,yyy) {
     //////////////////////////////////////////////////////
     // MAKE THE CROWN BLUE   -  MASK OUT AROUND THE TOP
-    fill(0, 0, 200);
-    stroke(0, 0, 200);
-    strokeWeight(0);
-    push();
-    translate(0,unit*-.72)  ///  now at the top of the blob and below the blue crown
+    pg.fill(0, 0, 200);
+    pg.stroke(0, 0, 200);
+    pg.strokeWeight(0);
+    pg.push();
+    pg.translate(0,unit*-.72)  ///  now at the top of the blob and below the blue crown
     
     var sideD =unit*.97
-    rect(sideD, unit*-.35, 2 * -sideD,unit*.33);
-    triangle(0, unit*-.83, -sideD, unit*-.27, sideD, unit*-.27);
+    pg.rect(sideD, unit*-.35, 2 * -sideD,unit*.33);
+    pg.triangle(0, unit*-.83, -sideD, unit*-.27, sideD, unit*-.27);
       
-    fill(120);
+    pg.fill(120);
     for (var j = 0; j < 2; j++) {
-      strokeWeight(5 - 4 * j);
-      stroke(250 * j, 250 * j, 250);
+      pg.strokeWeight(5 - 4 * j);
+      pg.stroke(250 * j, 250 * j, 250);
         
-      for (m=-1;m<2;m=m+2){
-        bezier(m*sideD, 0, m*unit*.95, unit*-.2, m*unit*  .944, unit*-.2,m*unit*1.0, unit*-.35);
-        bezier(m*unit*1, -.35*unit,m* unit*.22, -.31*unit, m*0*unit, -.84*unit,m* 0*unit, -.84*unit);
+      for (var m=-1;m<2;m=m+2){
+        pg.bezier(m*sideD, 0, m*unit*.95, unit*-.2, m*unit*  .944, unit*-.2,m*unit*1.0, unit*-.35);
+        pg.bezier(m*unit*1, -.35*unit,m* unit*.22, -.31*unit, m*0*unit, -.84*unit,m* 0*unit, -.84*unit);
       }
-      noFill();
+      pg.noFill();
     }
-    pop()
+    pg.pop()
   }
 
   render(signTime) {
@@ -176,6 +216,37 @@ class BakerySign {
     this.WW = min(this.WH * (this.Wwh[0] / this.Wwh[1]), windowWidth) * 0.97;
     this.WH = (this.WW * this.Wwh[1]) / this.Wwh[0];
     this.unit=this.WW/this.Wwh[0]
+    
+    // --- CACHE STATIC BACKGROUND ELEMENTS ---
+    let pgVersion = "1_olympic_" + this.showOlympicRings;
+    if (typeof window.bakeryPg === 'undefined' || window.bakeryPgExpectedWidth !== windowWidth || window.bakeryPgExpectedHeight !== windowHeight || window.bakeryPgVersion !== pgVersion) {
+      if (typeof window.bakeryPg !== 'undefined') window.bakeryPg.remove();
+      window.bakeryPg = createGraphics(windowWidth, windowHeight);
+      window.bakeryPgExpectedWidth = windowWidth;
+      window.bakeryPgExpectedHeight = windowHeight;
+      window.bakeryPgVersion = pgVersion;
+      
+      window.bakeryPg.clear();
+      window.bakeryPg.push();
+      window.bakeryPg.translate(this.oCenter[0], this.oCenter[1]);
+      window.bakeryPg.translate(this.unit * 4.75, 0);
+      
+      this.drawtheBlob(window.bakeryPg, this.unit, 0, 0);
+      this.drawCrown(window.bakeryPg, this.unit, 0, 0);
+      
+      window.bakeryPg.pop();
+
+      if (this.showOlympicRings) {
+        if (typeof window.olympicPg !== 'undefined') window.olympicPg.remove();
+        window.olympicPg = createGraphics(windowWidth, windowHeight);
+        window.olympicPg.clear();
+        window.olympicPg.push();
+        window.olympicPg.translate(this.oCenter[0], this.oCenter[1]);
+        window.olympicPg.translate(this.unit * 4.75, 0);
+        this.drawOlympicRings(window.olympicPg, this.unit);
+        window.olympicPg.pop();
+      }
+    }
     
     this.step = this.step + 1;
     this.WhichSlogan = int(second() / 10) % 2;
@@ -193,23 +264,48 @@ class BakerySign {
     rightCircles( this.unit,this.WW, xxx,yyy); //    findtheLostImage(, 3, this.step);
    
     ArcWords2(HelmsLetterImages[0], 1,  this.unit,this.WW, xxx, yyy); //HelmsSlogans[0] = [" CHOICE OF OLYMPIC CHAMPIONS  ", 1, [252, 50, 2]];
-    ArcWords2(HelmsLetterImages[2 * this.WhichSlogan + 1], 0,  this.unit,this.WW,xxx,yyy); //HelmsSlogans[1] = ["    OLYMPIC GAMES BAKERS     ", 0, [2, 200, 220]];
+    ArcWords2(HelmsLetterImages[this.WhichSlogan + 1], 0,  this.unit,this.WW,xxx,yyy); // Maps 0/1 to slogans 1/2
   
-    this.drawtheBlob(this.unit,xxx, yyy)   ///  THIS IS JUST THE RED AND GREY STRIPES
-    this.flashStripedBottom( this.unit, xxx, yyy)
+    // Paste the pre-rendered static graphics buffer onto the screen
+    push();
+    translate(-(this.oCenter[0] + this.unit*4.75), -this.oCenter[1]); // Precisely undo the translations instead of resetMatrix
+    image(window.bakeryPg, 0, 0);
+    pop();
 
-    this.drawCrown(this.unit,xxx,yyy); //    findtheLostImage(, 7, this.step);
+    this.flashStripedBottom( this.unit, xxx, yyy)
     StarDisplay( this.unit,xxx,yyy);
    
-    displayYellowHelm(HelmsLetterImages[2 * this.WhichSlogan + 2],this.BigHelm, this.unit , xxx, yyy);
+    displayYellowHelm(this.BigHelm, this.unit , xxx, yyy);
     image(LittleHelms, -.58*this.unit, -1.1*this.unit,1.1 * this.unit, 1.6 * this.unit * 0.4);
+
+    if (this.showOlympicRings && typeof window.olympicPg !== 'undefined') {
+      push();
+      translate(-(this.oCenter[0] + this.unit*4.75), -this.oCenter[1]); 
+      image(window.olympicPg, 0, 0);
+      pop();
+    }
 
     translate(this.WW * -.35, this.WH*.2);
     stroke(this.WW / 20);
     fill(255, 215, 0);
     textSize(this.WW / 20);
-    text("XL" + ["", "I", "II", "III", "IV"][signTime[1] % 5], 0, 0);
-    pop()
+    
+    let minNum = signTime[1];
+    let minRoman = "";
+    if (minNum === 0) {
+      minRoman = "00";
+    } else {
+      let rVals = {L:50, XL:40, X:10, IX:9, V:5, IV:4, I:1};
+      for (let k in rVals) {
+        while (minNum >= rVals[k]) {
+          minRoman += k;
+          minNum -= rVals[k];
+        }
+      }
+    }
+    text(minRoman, 0, 0);
+    pop();
+
     
     if (5 === 5  / 2) {
       newRectOverlay(this.unit,13,8,1)
@@ -231,19 +327,7 @@ function coloredARC(stepCount,  unit,xxx,yyy) {
   // DRAW THE ARC ///////////////////////////////////////////
   translate(unit*-10, unit*1);
   var arcSpeed = 5;
-  push()
-  stroke(222,222,2)
-  strokeWeight(unit*.1)
-  ellipse(unit*7.3, unit*0, 14.6*unit, 5.2*unit)
-  fill(0)
-  strokeWeight(0)
-  rect(unit*-5,unit*-.01, unit*20,unit*30)
-  strokeWeight(0)
-  fill(222,222,2)
-  fill(0)
-  ellipse(unit*12.12,unit*-1.5,unit*3)
-  // rect(unit*xxx, unit*yyy, unit*20, unit*20)
-  pop()
+    // Removed the legacy static yellow arc and masking logic
     for (var j = 0; j < arcSpeed * Warc * 0.75; j = j + 5) {
       Ydim[1] = Ydim[0];
       Ydim[0] = (-height / 3) * emblemTop(Warc, j / arcSpeed, 0.95, 0.75);
@@ -366,37 +450,70 @@ function rotate_and_draw_image(  theImage,  img_x,  img_y,  img_width,  img_heig
   imageMode(CORNER);
 }
 
-function displayYellowHelm( HLI, BigHelm, unit, xxx, yyy) {
+function displayYellowHelm( BigHelm, unit, xxx, yyy) {
   push();
   var ImgCount = HelmsSpeckleImages.length;
-  var WhichSpeckle = int(random(HelmsSpeckleImages.length));
+  
+  // Initialize state to remember the last chosen frame
+  if (typeof displayYellowHelm.lastSpeckle === 'undefined') {
+      displayYellowHelm.lastSpeckle = -1;
+  }
+  
+  var WhichSpeckle;
+  if (ImgCount > 1) {
+      // Pick randomly from the remaining frames (N - 1)
+      WhichSpeckle = int(random(ImgCount - 1));
+      // Shift the index if it collides with the last chosen frame
+      if (WhichSpeckle >= displayYellowHelm.lastSpeckle && displayYellowHelm.lastSpeckle !== -1) {
+          WhichSpeckle++;
+      }
+  } else {
+      WhichSpeckle = 0;
+  }
+  
+  displayYellowHelm.lastSpeckle = WhichSpeckle;
   WhichSpeckle = min(max(0, WhichSpeckle), ImgCount - 1);
   var yBack0 = HelmsSpeckleImages[WhichSpeckle];
   translate(unit*-5.85,unit*-.4)
   rotate(6.1);
   var ImgX=unit*-5.1
   var ImgY=unit*-1.93
-  push()
-  textSize(unit*2.5)
-  translate(.45*unit, 1.98*unit)
-  text("HELM'S",ImgX,ImgY)
-  pop()
-  image(yBack0, ImgX, ImgY);
-  image(BigHelm, ImgX, ImgY);
 
-  
+  let bw = (windowWidth / 2) * (1 / 0.8) * 0.95;
+  let bh = (windowHeight / 4) * (1 / 0.8) * 0.95;
+  image(yBack0, ImgX, ImgY, bw, bh);
+  image(BigHelm, ImgX, ImgY, bw, bh);
 
-  //////////////////////////////
-  /// OLYMPIC BREAD    DAILY AT YOUR DOOR  [CYCLE]
+  // 6-second alternator
+  let isOlympic = int(Date.now() / 6000) % 2 === 0;
+  let WW = unit * 13;
   
-  var LetterWidth=unit*7/HLI.length
-  ImgX = (-LetterWidth * HLI.length) / 2;
-  for (var j = 0; j < HLI.length; j++) {
-    var ltrImage = HLI[j];
-    
-    ltrImage.resize(LetterWidth * 1.5, unit*1.5);
-    var imgXval = ImgX + LetterWidth * (j - 0.5);
-    image(ltrImage, imgXval, 0);
+  // Position text perfectly underneath the HELM'S word
+  push();
+  translate(0, WW * 0.06); 
+  
+  // Non-repeating randomizer for flicker frames (0 to 3)
+  if (typeof displayYellowHelm.lastFlicker === 'undefined') {
+      displayYellowHelm.lastFlicker = -1;
   }
+  
+  let whichFrame = int(random(3));
+  if (whichFrame >= displayYellowHelm.lastFlicker && displayYellowHelm.lastFlicker !== -1) {
+      whichFrame++;
+  }
+  displayYellowHelm.lastFlicker = whichFrame;
+  whichFrame = min(max(0, whichFrame), 3);
+  
+  // Select the correct frame array
+  let activeFrames = isOlympic ? OlympicNeonFrames : DailyNeonFrames;
+  
+  // Draw the pre-rendered frame
+  if (activeFrames && activeFrames.length > 0) {
+      imageMode(CENTER);
+      image(activeFrames[whichFrame], 0, 0);
+      imageMode(CORNER);
+  }
+  pop();
+  
   pop();
 }

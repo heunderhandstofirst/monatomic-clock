@@ -29,7 +29,7 @@ let bre; // BUNNY RABBIT EARS
 let mbs; // MALIBU PIER
 let jcc; // JERSEY CITY CLOCK
 let dom; // DOMINO SUGAR
-let dub; // DUBLIN TAP RO
+
 
 let SwitchSign;
 const backgroundImageURL = "images/background.png";
@@ -62,7 +62,9 @@ let BWtext;
 let OysterReset = true;
 let OysterGroundZero = true;
 
-var HelmsLetterImages = new Array(6);
+var HelmsLetterImages = new Array(3);
+var OlympicNeonFrames = [];
+var DailyNeonFrames = [];
 
 var BridgeColors = new Array(6);
 
@@ -80,6 +82,8 @@ let schweppesLetterColors;
 let letterImagesWhite = [];
 let letterImagesWithColor = [];
 let dominoImagesWithColor=[];
+let headlinesArray = [];
+let formattedHeadlines = [];
 let NeonPreload;
 var Flicker = true;
 
@@ -103,9 +107,7 @@ let HelmsSlogans = [];
 
 HelmsSlogans[0] = [" CHOICE OF OLYMPIC CHAMPIONS  ", 1, [252, 50, 2]];
 HelmsSlogans[1] = ["    OLYMPIC GAMES BAKERS      ", 0, [2, 200, 220]];
-HelmsSlogans[2] = ["OLYMPIC BREAD", 2, [3, 207, 252]];
-HelmsSlogans[3] = ["       WORLD CHAMPION         ", 0, [252, 50, 2]];
-HelmsSlogans[4] = ["DAILY AT YOUR DOOR", 2, [253, 48, 3]];
+HelmsSlogans[2] = ["       WORLD CHAMPION         ", 0, [252, 50, 2]];
 
 const wpNumber1 = "images/WPnumLet3.png";
 
@@ -120,6 +122,7 @@ function preload() {
   OregonFoto = loadImage("images/StateOutline.png");
   StagOnly = loadImage("images/StagOnlyTransparent.png");
   MPSignFont = loadImage("images/MalibuFontE.png");
+  ContinentalUSAImage = loadImage("images/ContinentalUSA.png");
   
   RedBunny = loadImage("images/BunnyTransparent.png");
   WhiteBunny = loadImage("images/AWhiteBunny.png");
@@ -137,6 +140,7 @@ function preload() {
   // the 8 items are the same letter in different color
 
   //////////////////////////////////////////////////////////////////
+  headlinesArray = loadStrings("images/Headlines.txt");
   letterImagesWhite = letterURLs.map((url) => loadImage(url));
   const dominoWhiteURLs ="images/domino-neon.png"
   
@@ -149,7 +153,7 @@ function setup() {
 
   noCursor();
   SpeckledBack = createHelmsSpeckle();
-  for (var i = 0; i < 6; i++) HelmsLetterImages[i] = [];
+  for (var i = 0; i < 3; i++) HelmsLetterImages[i] = [];
   var tempImg = createImage(5, 5);
   for (var m = 0; m < 6; m++) {
     for (var c = 0; c < 30; c++) {
@@ -162,6 +166,9 @@ function setup() {
 
   canvas = createCanvas(windowWidth, windowHeight); //size(1200,800);(578, 340)
   canvas.style("display", "block");
+  
+  // Generate pre-rendered neon flickering graphics to save massive compute during draw()
+  generateNeonFrames();
   canvas.drawingContext.miterLimit = 2;
 
 
@@ -196,7 +203,7 @@ function setup() {
   bre = new BunnySign(); // BUNNY RABBIT EARS
   jcc = new JerseyCity(); // JERSEY CITY CLOCK
   dom = new DominoSign(); // Domino Sugar
-  dub = new DublinSign(); // Domino Sugar
+
 
 
   window.redirectFired = false;
@@ -228,8 +235,19 @@ function setup() {
     letterImagesWithColor[letterIndex] = colorVariationsOfIndividualLetter;
   }
 
-
-
+  if (headlinesArray && headlinesArray.length > 0) {
+    formattedHeadlines = headlinesArray.map(rawLine => {
+      let line = rawLine.replace(/\0/g, '').replace(/^[\uFEFF\uFFFE]+/g, '');
+      let parts = line.split("\t");
+      if (parts.length >= 3) {
+        let headline = parts[0].trim().replace(/^"|"$/g, '');
+        let date = parts[1].trim().replace(/^"|"$/g, '');
+        let source = parts[2].trim().replace(/^"|"$/g, '');
+        return `${source} - ${date} - ${headline}`;
+      }
+      return "";
+    }).filter(line => line.length > 0);
+  }
 }
 
 function draw() {
@@ -269,14 +287,20 @@ function draw() {
   if( signHour(signTime,  8, 28)) WhichSign = 27;   // MALIBU
   if( signHour(signTime,  1,  9)) WhichSign = 28;   // JERSEY CITY CLOCK
   if( signHour(signTime,  5,  8)) WhichSign = 29;   // DOMINO SUGAR
-  if( signHour(signTime,  8, 15)) WhichSign = 30;   // DUBLIN TAP RO
   
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
 // WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
-WhichSign=5
+// WhichSign=5
+  
+  if (window.isDemoMode) {
+    let elapsed = millis() - window.demoModeStartTime;
+    WhichSign = Math.floor(elapsed / 15000) % 30; // 30 signs (0 to 29), 15s each
+  }
+  // Here we are fixing these problems
 //////////////////////////////////////////////////////////////////////////
-frameRate(25);
+frameRate(15);
+frameRate(25)
 if (WhichSign===17) frameRate(10)
 if (WhichSign===24) frameRate(40)
 //////////////////////////////////////////////////////////////////////////
@@ -324,7 +348,7 @@ if (WhichSign===24) frameRate(40)
   if (WhichSign === 27) mbs.render(signTime);   // MALIBU
   if (WhichSign === 28) jcc.render(signTime);   // JERSEY CITY CLOCK
   if (WhichSign === 29) dom.render(signTime);   // DOMINO SUGAR
-  if (WhichSign === 30) dub.render(signTime);   // PICADILLY CIRCUS
+
    
   // if (WhichSign > 48 && !window.redirectFired) {
   //   window.redirectFired = true;
@@ -348,6 +372,7 @@ function signHour(signTime, eastern, minUTE) {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  screenBackground();
 }
 
 
@@ -358,7 +383,7 @@ function screenBackground() {
   for (let x = 0; x < img.width; x++) {
     for (let y = 0; y < img.height; y++) {
       let a = map(y, 0, img.height, 255, 0);
-      img.set(x, y, [0, 153, 204, a]);
+      img.set(x, y, [0, 76, 102, a]); // Reduced vibrancy by 50%
     }
   }
   img.updatePixels();
@@ -393,11 +418,6 @@ function noisyCOLOR(currentValue, moveSize) {
   var cV1 = int(currentValue - moveSize * 0.3 + random(moveSize));
   return (359 + cV1) % 359;
 }
-function argsXscalar(scalar, ...args) {
-  const scaledArguments = args.map((arg) => arg * scalar);
-  // console.log(scaledArguments);
-  return scaledArguments;
-}
 function kULR() {
   return [random(255), random(255), random(255)];
 }
@@ -427,34 +447,22 @@ function newNeon3(unit,cycles, n,outColor,inColor,wig,swK){
   stroke(activeColor)
   var iDontKnow=[activeColor,SW]
   return iDontKnow
-
 }
 
-function printStats(xxx, yyy, unit,widX,lenY, extraText1) {
-  let dateN=Date.now()
-  push();
-  fill(0)
-  // rect(0,0,unit*5,unit*(8+extraText1.length ))
-  rect(0,0,unit*widX,unit*lenY)
-  // fill(kULR())
-  // ellipse(0,0,unit*5000,unit*5000)
-  strokeWeight(1);
-  textSize(15);
+// Global hotkeys
+window.isDemoMode = false;
+window.demoModeStartTime = 0;
 
-  fill(0, 250, 0);
-  stroke(0, 250, 0);
-  var x = 2;
-  text("x: " + xxx, 50, 25 * x++);
-  text("y: " + yyy, 50, 25 * x++);
-  text("date.now(): " + dateN, 50, 25 * x++);
-  var tempSec = (dateN % 60000) / 60000;
-  text("%age of the minute [0-100]: " + round(100*tempSec,1), 50, 25 * x++);
-  text("current time seconds: " + round((dateN % 60000) / 1000, 1), 50, 25 * x++);
-  text("current time hour minute: " + hour() + ":" + minute(), 50, 25 * x++);
-  text("unit: " + unit, 50, 25 * x++);
-  text("ww: " + windowWidth, 50, 25 * x++);
-  text("wh: " + windowHeight, 50, 25 * x++);
-  for (let i=0;i<extraText1.length; i++)    text(extraText1[i], 50, 25 * x++);
-  
-  pop();
+function keyPressed() {
+  // Ctrl + J to toggle Demo Mode
+  if (keyIsDown(CONTROL) && (key === 'j' || key === 'J')) {
+    window.isDemoMode = !window.isDemoMode;
+    if (window.isDemoMode) {
+      window.demoModeStartTime = millis();
+      console.log("Demo Mode ON: Showing each complication for 15s");
+    } else {
+      console.log("Demo Mode OFF");
+    }
+    return false; // Prevent default browser behavior
+  }
 }

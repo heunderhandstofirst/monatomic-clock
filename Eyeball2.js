@@ -1,9 +1,9 @@
 /* eslint-disable no-undef, no-unused, no-unused-vars */
 
 function createTheEye(GherkinX, rotation,  iris) {
-  var GmidX = windowWidth / 8;
-  var GherkinY = windowHeight / 2;
   var innerCir = windowHeight / 6;
+  var GmidX = 1.4 * innerCir;
+  var GherkinY = windowHeight / 2;
   for (var i = 0; i < 32; i++) iris[i] = (iris[i]+2)%360;
     
 
@@ -56,13 +56,11 @@ function createTheEye(GherkinX, rotation,  iris) {
     var Xpod = 1.3 * innerCir * sin(NewAngle) + GmidX + GherkinX;
     var Ypod = 1.3 * innerCir * cos(NewAngle) + windowHeight / 2;
     strokeWeight(windowWidth / 160);
-    stroke(color("hsla(" + iris[j] + ", 100%, 50%, 1)"));
     stroke(250);
     
  line(Xpod - lineLen, Ypod, Xpod + lineLen, Ypod);
 
     strokeWeight(windowWidth / 200);
-    stroke(250);
     stroke(color("hsla(" + iris[j] + ", 100%, 50%, 1)"));
     line(Xpod - lineLen, Ypod, Xpod + lineLen, Ypod);
   }
