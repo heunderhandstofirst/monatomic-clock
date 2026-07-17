@@ -264,7 +264,7 @@ class BakerySign {
     rightCircles( this.unit,this.WW, xxx,yyy); //    findtheLostImage(, 3, this.step);
    
     ArcWords2(HelmsLetterImages[0], 1,  this.unit,this.WW, xxx, yyy); //HelmsSlogans[0] = [" CHOICE OF OLYMPIC CHAMPIONS  ", 1, [252, 50, 2]];
-    ArcWords2(HelmsLetterImages[2 * this.WhichSlogan + 1], 0,  this.unit,this.WW,xxx,yyy); //HelmsSlogans[1] = ["    OLYMPIC GAMES BAKERS     ", 0, [2, 200, 220]];
+    ArcWords2(HelmsLetterImages[this.WhichSlogan + 1], 0,  this.unit,this.WW,xxx,yyy); // Maps 0/1 to slogans 1/2
   
     // Paste the pre-rendered static graphics buffer onto the screen
     push();
@@ -275,7 +275,7 @@ class BakerySign {
     this.flashStripedBottom( this.unit, xxx, yyy)
     StarDisplay( this.unit,xxx,yyy);
    
-    displayYellowHelm(HelmsLetterImages[2 * this.WhichSlogan + 2],this.BigHelm, this.unit , xxx, yyy);
+    displayYellowHelm(this.BigHelm, this.unit , xxx, yyy);
     image(LittleHelms, -.58*this.unit, -1.1*this.unit,1.1 * this.unit, 1.6 * this.unit * 0.4);
 
     if (this.showOlympicRings && typeof window.olympicPg !== 'undefined') {
@@ -289,8 +289,23 @@ class BakerySign {
     stroke(this.WW / 20);
     fill(255, 215, 0);
     textSize(this.WW / 20);
-    text("XL" + ["", "I", "II", "III", "IV"][signTime[1] % 5], 0, 0);
-    pop()
+    
+    let minNum = signTime[1];
+    let minRoman = "";
+    if (minNum === 0) {
+      minRoman = "00";
+    } else {
+      let rVals = {L:50, XL:40, X:10, IX:9, V:5, IV:4, I:1};
+      for (let k in rVals) {
+        while (minNum >= rVals[k]) {
+          minRoman += k;
+          minNum -= rVals[k];
+        }
+      }
+    }
+    text(minRoman, 0, 0);
+    pop();
+
     
     if (5 === 5  / 2) {
       newRectOverlay(this.unit,13,8,1)
@@ -435,10 +450,28 @@ function rotate_and_draw_image(  theImage,  img_x,  img_y,  img_width,  img_heig
   imageMode(CORNER);
 }
 
-function displayYellowHelm( HLI, BigHelm, unit, xxx, yyy) {
+function displayYellowHelm( BigHelm, unit, xxx, yyy) {
   push();
   var ImgCount = HelmsSpeckleImages.length;
-  var WhichSpeckle = int(random(HelmsSpeckleImages.length));
+  
+  // Initialize state to remember the last chosen frame
+  if (typeof displayYellowHelm.lastSpeckle === 'undefined') {
+      displayYellowHelm.lastSpeckle = -1;
+  }
+  
+  var WhichSpeckle;
+  if (ImgCount > 1) {
+      // Pick randomly from the remaining frames (N - 1)
+      WhichSpeckle = int(random(ImgCount - 1));
+      // Shift the index if it collides with the last chosen frame
+      if (WhichSpeckle >= displayYellowHelm.lastSpeckle && displayYellowHelm.lastSpeckle !== -1) {
+          WhichSpeckle++;
+      }
+  } else {
+      WhichSpeckle = 0;
+  }
+  
+  displayYellowHelm.lastSpeckle = WhichSpeckle;
   WhichSpeckle = min(max(0, WhichSpeckle), ImgCount - 1);
   var yBack0 = HelmsSpeckleImages[WhichSpeckle];
   translate(unit*-5.85,unit*-.4)
@@ -446,22 +479,41 @@ function displayYellowHelm( HLI, BigHelm, unit, xxx, yyy) {
   var ImgX=unit*-5.1
   var ImgY=unit*-1.93
 
-  image(yBack0, ImgX, ImgY);
-  image(BigHelm, ImgX, ImgY);
+  let bw = (windowWidth / 2) * (1 / 0.8) * 0.95;
+  let bh = (windowHeight / 4) * (1 / 0.8) * 0.95;
+  image(yBack0, ImgX, ImgY, bw, bh);
+  image(BigHelm, ImgX, ImgY, bw, bh);
 
+  // 6-second alternator
+  let isOlympic = int(Date.now() / 6000) % 2 === 0;
+  let WW = unit * 13;
   
-
-  //////////////////////////////
-  /// OLYMPIC BREAD    DAILY AT YOUR DOOR  [CYCLE]
+  // Position text perfectly underneath the HELM'S word
+  push();
+  translate(0, WW * 0.06); 
   
-  var LetterWidth=unit*7/HLI.length
-  ImgX = (-LetterWidth * HLI.length) / 2;
-  for (var j = 0; j < HLI.length; j++) {
-    var ltrImage = HLI[j];
-    
-    ltrImage.resize(LetterWidth * 1.5, unit*1.5);
-    var imgXval = ImgX + LetterWidth * (j - 0.5);
-    image(ltrImage, imgXval, 0);
+  // Non-repeating randomizer for flicker frames (0 to 3)
+  if (typeof displayYellowHelm.lastFlicker === 'undefined') {
+      displayYellowHelm.lastFlicker = -1;
   }
+  
+  let whichFrame = int(random(3));
+  if (whichFrame >= displayYellowHelm.lastFlicker && displayYellowHelm.lastFlicker !== -1) {
+      whichFrame++;
+  }
+  displayYellowHelm.lastFlicker = whichFrame;
+  whichFrame = min(max(0, whichFrame), 3);
+  
+  // Select the correct frame array
+  let activeFrames = isOlympic ? OlympicNeonFrames : DailyNeonFrames;
+  
+  // Draw the pre-rendered frame
+  if (activeFrames && activeFrames.length > 0) {
+      imageMode(CENTER);
+      image(activeFrames[whichFrame], 0, 0);
+      imageMode(CORNER);
+  }
+  pop();
+  
   pop();
 }

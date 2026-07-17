@@ -62,7 +62,9 @@ let BWtext;
 let OysterReset = true;
 let OysterGroundZero = true;
 
-var HelmsLetterImages = new Array(6);
+var HelmsLetterImages = new Array(3);
+var OlympicNeonFrames = [];
+var DailyNeonFrames = [];
 
 var BridgeColors = new Array(6);
 
@@ -110,9 +112,7 @@ let HelmsSlogans = [];
 
 HelmsSlogans[0] = [" CHOICE OF OLYMPIC CHAMPIONS  ", 1, [252, 50, 2]];
 HelmsSlogans[1] = ["    OLYMPIC GAMES BAKERS      ", 0, [2, 200, 220]];
-HelmsSlogans[2] = ["OLYMPIC BREAD", 2, [3, 207, 252]];
-HelmsSlogans[3] = ["       WORLD CHAMPION         ", 0, [252, 50, 2]];
-HelmsSlogans[4] = ["DAILY AT YOUR DOOR", 2, [253, 48, 3]];
+HelmsSlogans[2] = ["       WORLD CHAMPION         ", 0, [252, 50, 2]];
 
 const wpNumber1 = "images/WPnumLet3.png";
 
@@ -154,7 +154,7 @@ function setup() {
 
   noCursor();
   SpeckledBack = createHelmsSpeckle();
-  for (var i = 0; i < 6; i++) HelmsLetterImages[i] = [];
+  for (var i = 0; i < 3; i++) HelmsLetterImages[i] = [];
   var tempImg = createImage(5, 5);
   for (var m = 0; m < 6; m++) {
     for (var c = 0; c < 30; c++) {
@@ -167,6 +167,9 @@ function setup() {
 
   canvas = createCanvas(windowWidth, windowHeight); //size(1200,800);(578, 340)
   canvas.style("display", "block");
+  
+  // Generate pre-rendered neon flickering graphics to save massive compute during draw()
+  generateNeonFrames();
   canvas.drawingContext.miterLimit = 2;
   // window.setTimeout(updateWeather0, WeatherInterval);
 
@@ -289,7 +292,7 @@ function draw() {
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
   // BOND=2, LONDON=5, HELMS=8// WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
-WhichSign=8
+// WhichSign=8
   
   if (window.isDemoMode) {
     let elapsed = millis() - window.demoModeStartTime;
@@ -423,11 +426,6 @@ function noisyCOLOR(currentValue, moveSize) {
   var cV1 = int(currentValue - moveSize * 0.3 + random(moveSize));
   return (359 + cV1) % 359;
 }
-function argsXscalar(scalar, ...args) {
-  const scaledArguments = args.map((arg) => arg * scalar);
-  // console.log(scaledArguments);
-  return scaledArguments;
-}
 function kULR() {
   return [random(255), random(255), random(255)];
 }
@@ -457,36 +455,6 @@ function newNeon3(unit,cycles, n,outColor,inColor,wig,swK){
   stroke(activeColor)
   var iDontKnow=[activeColor,SW]
   return iDontKnow
-
-}
-
-function printStats(xxx, yyy, unit,widX,lenY, extraText1) {
-  let dateN=Date.now()
-  push();
-  fill(0)
-  // rect(0,0,unit*5,unit*(8+extraText1.length ))
-  rect(0,0,unit*widX,unit*lenY)
-  // fill(kULR())
-  // ellipse(0,0,unit*5000,unit*5000)
-  strokeWeight(1);
-  textSize(15);
-
-  fill(0, 250, 0);
-  stroke(0, 250, 0);
-  var x = 2;
-  text("x: " + xxx, 50, 25 * x++);
-  text("y: " + yyy, 50, 25 * x++);
-  text("date.now(): " + dateN, 50, 25 * x++);
-  var tempSec = (dateN % 60000) / 60000;
-  text("%age of the minute [0-100]: " + round(100*tempSec,1), 50, 25 * x++);
-  text("current time seconds: " + round((dateN % 60000) / 1000, 1), 50, 25 * x++);
-  text("current time hour minute: " + hour() + ":" + minute(), 50, 25 * x++);
-  text("unit: " + unit, 50, 25 * x++);
-  text("ww: " + windowWidth, 50, 25 * x++);
-  text("wh: " + windowHeight, 50, 25 * x++);
-  for (let i=0;i<extraText1.length; i++)    text(extraText1[i], 50, 25 * x++);
-  
-  pop();
 }
 
 // Global hotkeys

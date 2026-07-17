@@ -1,7 +1,7 @@
 /* eslint-disable no-undef, no-unused, no-unused-vars */
 
 function CreateHelmLetter(HelmsSlogans) {
-  for (var j = 0; j < 5; j++) {
+  for (var j = 0; j < 3; j++) {
     var Slogan = HelmsSlogans[j][0];
     var WW = min(windowWidth * 0.5, windowHeight) / 2;
     var WW2 = WW * 0.65;
@@ -58,8 +58,7 @@ function ArcWords2(HLI, topBottom,  unit,WW, xxx, yyy) {
   pop();
 }
 
-// function showHelmsTextCrown(LittleHelms,  unit, xxx, yyy) {
-//   image(LittleHelms, -.58*unit, -1.1*unit,1.1 * unit, 1.6 * unit * 0.4);
+
 // }
 function createBigHelm() {
   var Fscale = 1 / 0.8;
@@ -81,12 +80,24 @@ function createBigHelm() {
 }
 function createHelmsSpeckle() {
   var Fscale = 1 / 0.8;
-  // var WW = windowWidth;
+  
+  // Hoist the Hlm mask creation OUT of the loop to save massive computing overhead
+  Hlm = createGraphics(
+    (windowWidth / 2) * Fscale,
+    (windowHeight / 4) * Fscale
+  );
+  Hlm.textSize((windowWidth / 8) * Fscale);
+  Hlm.stroke(250, 250, 0);
+  Hlm.strokeWeight(2);
+  Hlm.textAlign(CENTER, CENTER);
+  Hlm.text("HELM'S", (windowWidth / 4) * Fscale, (windowHeight / 8) * Fscale);
 
   yB = createGraphics((windowWidth / 2) * Fscale, (windowHeight / 4) * Fscale);
-  for (var k = 0; k < 8; k++) {
+  
+  // Reduce cycle depth from 8 frames to 5, and circles from 4700 to 3000 for faster start without losing visual quality
+  for (var k = 0; k < 5; k++) {
     yB.background(120, 50, 20);
-    for (var j = 0; j < 4700; j++) {
+    for (var j = 0; j < 3000; j++) {
       var yBcolor = random(230 + random(25));
       yB.strokeWeight = random(5);
       yB.stroke(yBcolor * 0.8, yBcolor * 0.8, 0);
@@ -96,17 +107,64 @@ function createHelmsSpeckle() {
 
     var img = createImage(yB.width, yB.height);
     img.copy(yB, 0, 0, yB.width, yB.height, 0, 0, yB.width, yB.height);
-
-    Hlm = createGraphics(
-      (windowWidth / 2) * Fscale,
-      (windowHeight / 4) * Fscale
-    );
-    Hlm.textSize((windowWidth / 8) * Fscale);
-    Hlm.stroke(250, 250, 0);
-    Hlm.strokeWeight(2);
-    Hlm.textAlign(CENTER, CENTER);
-    Hlm.text("HELM'S", (windowWidth / 4) * Fscale, (windowHeight / 8) * Fscale);
     img.mask(Hlm);
     HelmsSpeckleImages[k] = img;
   }
+}
+
+function generateNeonFrames() {
+    let Wwh = [13, 8];
+    let WW = min(windowHeight * (Wwh[0] / Wwh[1]), windowWidth) * 0.97;
+    let txtSize = WW * 0.0585;
+    
+    // Create buffers large enough to not clip the massive shadow blur
+    let bufW = WW * 0.8;
+    let bufH = txtSize * 15; 
+    
+    for (let o = 0; o < 2; o++) {
+        let isOlympic = (o === 0);
+        let neonTxt = isOlympic ? "OLYMPIC BREAD" : "DAILY AT YOUR DOOR";
+        
+        let wideGlowStr   = isOlympic ? 'rgba(0, 150, 255, 0.8)' : 'rgba(255, 69, 0, 0.8)';
+        let strongGlowStr = isOlympic ? 'rgba(0, 150, 255, 1)' : 'rgba(255, 69, 0, 1)';
+        let innerGlowStr  = isOlympic ? 'rgba(100, 200, 255, 1)' : 'rgba(255, 150, 100, 1)';
+        let strokeStr     = isOlympic ? 'rgba(0, 150, 255, 0.9)' : 'rgba(255, 69, 0, 0.9)';
+        
+        for (let frame = 0; frame < 4; frame++) {
+            let pg = createGraphics(bufW, bufH);
+            pg.textFont("Arial Narrow");
+            pg.textSize(txtSize);
+            pg.textAlign(CENTER, CENTER);
+            pg.translate(bufW / 2, bufH / 2); 
+            
+            // Randomize the glow intensity slightly to create the flicker
+            let flicker = random(0.65, 1.0);
+            
+            pg.drawingContext.shadowBlur = 195 * flicker;
+            pg.drawingContext.shadowColor = wideGlowStr;
+            pg.fill(isOlympic ? color(0, 150, 255) : color(255, 69, 0));
+            pg.noStroke();
+            for (let i = 0; i < 4; i++) pg.text(neonTxt, 0, 0);
+            
+            pg.drawingContext.shadowBlur = 104 * flicker;
+            pg.drawingContext.shadowColor = strongGlowStr;
+            for (let i = 0; i < 4; i++) pg.text(neonTxt, 0, 0);
+            
+            pg.drawingContext.shadowBlur = 39 * flicker;
+            pg.drawingContext.shadowColor = innerGlowStr;
+            pg.fill(isOlympic ? color(150, 200, 255) : color(255, 150, 100));
+            for (let i = 0; i < 3; i++) pg.text(neonTxt, 0, 0);
+            
+            pg.drawingContext.shadowBlur = 13; // Core stays relatively sharp
+            pg.drawingContext.shadowColor = innerGlowStr;
+            pg.fill(255);
+            pg.stroke(strokeStr);
+            pg.strokeWeight(WW * 0.0065);
+            pg.strokeJoin(ROUND); // Prevents sharp miter spikes on letters like A and M
+            pg.text(neonTxt, 0, 0);
+            
+            if (isOlympic) OlympicNeonFrames.push(pg);
+            else DailyNeonFrames.push(pg);
+        }
+    }
 }
