@@ -28,9 +28,6 @@ class BondSign {
     this.jsonCt = 0;
     this.bondStrokes = new getBondStrokes(this.cycle);
     this.bondFill = new getBondFill(this.cycle);
-    this.waterfall = new LightFixture(windowWidth * 0.4, windowHeight * 0.35);
-    this.parabolicLeft = new ParabolicLights(windowWidth * 0.25, windowHeight * 0.5, windowWidth * 0.15, windowHeight * 0.25);
-    this.parabolicRight = new ParabolicLights(windowWidth * 0.75, windowHeight * 0.5, windowWidth * 0.15, windowHeight * 0.25);
     
     this.streams = [];
     for (let i = 0; i < 200; i++) {
@@ -357,16 +354,6 @@ class BondSign {
       (2.33 * windowWidth) / 4
     ];
     
-    // Draw Parabolic Lights and Waterfall
-    this.parabolicLeft.update();
-    this.parabolicLeft.draw();
-    this.parabolicRight.update();
-    this.parabolicRight.draw();
-    
-    push();
-    translate(windowWidth * 0.3, windowHeight * 0.35);
-    this.waterfall.draw();
-    pop();
 
     for (var FontLayer = 0; FontLayer < 3; FontLayer++) {
       strokeWeight(StrokeScaleI[FontLayer]);

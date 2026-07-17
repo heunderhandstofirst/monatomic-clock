@@ -291,7 +291,8 @@ function draw() {
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
 // WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
-// WhichSign=5
+// 2 = 
+WhichSign=2
   
   if (window.isDemoMode) {
     let elapsed = millis() - window.demoModeStartTime;
