@@ -1,0 +1,44 @@
+name: Publish website
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Publish main to live
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Get the current main branch
+        uses: actions/checkout@v6
+        with:
+          ref: main
+
+      - name: Prepare GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Package the website
+        run: |
+          mkdir -p "$RUNNER_TEMP/site"
+          rsync -a --delete --exclude='.git' --exclude='.github' ./ "$RUNNER_TEMP/site/"
+
+      - name: Upload website files
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ${{ runner.temp }}/site
+
+      - name: Publish live
+        id: deployment
+        uses: actions/deploy-pages@v4
