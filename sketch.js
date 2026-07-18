@@ -340,7 +340,7 @@ function draw() {
 // 5 =london  
 // 8 = helms
 
-WhichSign=29;
+// WhichSign=29;
   
   if (window.isDemoMode) {
     let elapsed = millis() - window.demoModeStartTime;
