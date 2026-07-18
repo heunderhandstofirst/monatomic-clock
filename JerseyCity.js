@@ -305,17 +305,21 @@ class JerseyCity {
     }
 
     blackOutCircle(xxx,yyy){
-      strokeWeight(this.unit*1.25)
-      stroke(0)
-      noFill()
-      ellipse(0,0,this.raydius*1.414)
-      strokeWeight(0)
-      fill(0)
-      for(var i=0;i<8;i++){
-          triangle(this.raydius*cos(this.radianArrayOuter[i]),   this.raydius*sin(this.radianArrayOuter[i]),
-              this.raydius*cos(this.radianArrayOuter[i+1]),   this.raydius*sin(this.radianArrayOuter[i+1]),
-              this.raydius*cos(this.radianArrayOuter[(i+2)%8]),   this.raydius*sin(this.radianArrayOuter[(i+2)%8]))
+      fill(0);
+      stroke(0);
+      strokeWeight(1);
+      beginShape();
+      for(var i=0; i<8; i++){
+        vertex(this.raydius*cos(this.radianArrayOuter[i]), this.raydius*sin(this.radianArrayOuter[i]));
       }
+      beginContour();
+      var holeRadius = 6.5 * this.unit;
+      for(var j=60; j>=0; j--){
+        var a = j * PI * 2 / 60;
+        vertex(holeRadius*cos(a), holeRadius*sin(a));
+      }
+      endContour();
+      endShape(CLOSE);
     }
 
     horizontalLinesBehindClock(thisPCT){
