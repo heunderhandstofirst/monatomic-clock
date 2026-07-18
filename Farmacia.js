@@ -13,16 +13,27 @@ class FarmaciaSign {
     rect(-0.12 * this.D, -0.47 * this.D, 0.24 * this.D, 0.94 * this.D, rnd);
     rect(-0.47 * this.D, -0.12 * this.D, 0.94 * this.D, 0.24 * this.D, rnd);
 
+    var flickerGreenCross = 200 + random(50);
+    var flickerWhiteCross = 220 + random(34);
+
     for (var n = 0; n < 3; n++) {
       strokeWeight(this.D / (70 + n * 150));
+      
+      if (n === 0) {
+        drawingContext.shadowBlur = this.D / 25;
+        drawingContext.shadowColor = color(0, flickerGreenCross, 0);
+      } else {
+        drawingContext.shadowBlur = 0;
+      }
+
+      stroke(0, flickerGreenCross, 0);
+      if (n === 2) stroke(flickerWhiteCross);
+
       for (var v = 0; v < 4; v++) {
         var XX = [0.1, 0.075, 0.05, 0.025][v];
         var YY = [0.45, 0.425, 0.4, 0.375][v];
 
         for (var k = -1; k < 2; k = k + 2) {
-          stroke(0, 200 + random(50), 0);
-          if (n === 2) stroke(220 + random(34));
-
           line(-XX * this.D, -YY * this.D * k, XX * this.D, -YY * this.D * k);
           line(YY * this.D * k, -XX * this.D, YY * this.D * k, XX * this.D);
           for (var x = -1; x < 2; x = x + 2) {
@@ -39,127 +50,50 @@ class FarmaciaSign {
               -XX * this.D * k
             );
           }
-          push();
-          translate(0, this.oCenter[1] * 0.87);
-          farmF(this.D, signTime[2]);
-          farmA(this.D, 1, -0.31, signTime[2], 2);
-          farmR(this.D, signTime[2]);
-          farmM(this.D, signTime[2]);
-          farmA(this.D, 0.25, 0.09, signTime[2], 5);
-          farmC(this.D, signTime[2]);
-          farmI(this.D, signTime[2]);
-          farmA(this.D, 0.72, 0.42, signTime[2], 8);
 
-          pop();
         }
       }
     }
+    drawingContext.shadowBlur = 0;
+
+    // TEXT RENDERING
+    var flickerGreenText = 200 + random(50);
+    push();
+    translate(0, this.D * 0.55); // Moved back up a bit
+    textAlign(CENTER, CENTER);
+    textFont('"Segoe UI Light", "Helvetica Neue Light", sans-serif');
+    
+    var letters = "FARMACIA";
+    var fontSize = this.D * 0.15;
+    textSize(fontSize);
+    var letterSpacing = this.D * 0.12;
+    var startX = -this.D * 0.42;
+    
+    for (var nText = 0; nText < 3; nText++) {
+      if (nText === 0) {
+        drawingContext.shadowBlur = this.D / 10; // Increased shadow blur for larger glow
+        drawingContext.shadowColor = color(0, flickerGreenText, 0);
+        strokeWeight(this.D / 80); // Increased stroke thickness for a wider base glow
+        stroke(0, flickerGreenText, 0);
+        noFill();
+      } else if (nText === 1) {
+        drawingContext.shadowBlur = this.D / 25; // Add intermediate blur layer
+        strokeWeight(this.D / 200);
+        stroke(0, flickerGreenText, 0);
+        noFill();
+      } else {
+        noStroke();
+        fill(0, flickerGreenText, 0); // Green core
+      }
+      
+      for (var i = 0; i < letters.length; i++) {
+        var secThreshold = i + 1;
+        if (signTime[2] % 10 > secThreshold) {
+          text(letters[i], startX + i * letterSpacing, 0);
+        }
+      }
+    }
+    pop();
+    drawingContext.shadowBlur = 0;
   }
-}
-function farmF(MWH, secondsST) {
-  var tf = secondsST % 10 > 1;
-  if (tf) {
-    push();
-    translate(MWH * -0.45, 0);
-    line(0, 0, MWH * 0.05, 0);
-    line(0, 0, 0, MWH * 0.1);
-    line(0, MWH * 0.05, MWH * 0.025, MWH * 0.05);
-    pop();
-  }
-}
-function farmA(MWH, fs, nfs, secondsST, sec) {
-  var tf = secondsST % 10 > sec;
-  if (tf) {
-    push();
-    translate(MWH * nfs, 0);
-    line(0, 0, -MWH * 0.035, MWH * 0.1);
-    line(0, 0, MWH * 0.035, MWH * 0.1);
-    line(-MWH * 0.0135, MWH * 0.05, MWH * 0.0135, MWH * 0.05);
-    pop();
-  }
-}
-function farmR(MWH, secondsST) {
-  var tf = secondsST % 10 > 3;
-  if (tf) {
-    push();
-    fill(5);
-    translate(MWH * -0.21, 0);
-
-    line(MWH * 0.025, 0, MWH * 0.05, MWH * 0.1);
-
-    push();
-    ellipse(MWH * 0.025, MWH * 0.025, 0.05 * MWH);
-    pop();
-    push();
-    strokeWeight(0);
-    rect(MWH * 0.0, MWH * 0.0, MWH * 0.025, MWH * 0.05);
-    pop();
-    line(0, 0, MWH * 0.025, 0);
-    line(0, 0, 0, MWH * 0.1);
-    line(0, MWH * 0.05, MWH * 0.025, MWH * 0.05);
-
-    pop();
-  }
-}
-
-function farmM(MWH, secondsST) {
-  var tf = secondsST % 10 > 4;
-  if (tf) {
-    push();
-    translate(MWH * -0.09, 0);
-    line(0, 0, 0, MWH * 0.1);
-    line(MWH * 0.08, 0, MWH * 0.08, MWH * 0.1);
-    line(0, 0, MWH * 0.04, MWH * 0.1);
-    line(MWH * 0.08, 0, MWH * 0.04, MWH * 0.1);
-    pop();
-  }
-}
-function farmC(MWH, secondsST) {
-  var tf = secondsST % 10 > 6;
-  if (tf) {
-    push();
-    fill(5);
-    translate(MWH * 0.2, MWH * 0.005);
-
-    var x1 = MWH * 0.025;
-    var y1 = MWH * 0.045;
-    strokeWeight(MWH / 100);
-    fill(5);
-
-    circleNeon(x1, y1, MWH, 0.102);
-
-    ellipse(MWH * 0.075, MWH * 0.045, MWH * 0.05, MWH * 0.1);
-    pop();
-  }
-}
-function farmI(MWH, secondsST) {
-  var tf = secondsST % 10 > 7;
-
-  if (tf) {
-    push();
-    translate(MWH * 0.32, 0);
-
-    line(0, 0, 0, MWH * 0.1);
-    pop();
-  }
-}
-
-function circleNeon(x1, y1, MWH, oneOHtwo) {
-  stroke(0, 200 + random(50), 0);
-  ellipse(x1, y1, MWH * oneOHtwo);
-
-  stroke(0, 200 + random(50), 0);
-  ellipse(x1, y1, MWH * oneOHtwo * 0.95);
-
-  stroke(250);
-  ellipse(x1, y1, MWH * oneOHtwo * 0.95 * 0.95);
-
-  stroke(0, 200 + random(50), 0);
-  ellipse(x1, y1, MWH * oneOHtwo * 0.95 * 0.95 * 0.95);
-
-  stroke(0, 200 + random(50), 0);
-  ellipse(x1, y1, MWH * oneOHtwo * 0.95 * 0.95 * 0.95 * 0.95);
-
-  stroke(5);
-  ellipse(x1, y1, MWH * oneOHtwo * 0.95 * 0.95 * 0.95 * 0.95 * 0.95);
 }

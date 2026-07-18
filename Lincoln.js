@@ -27,12 +27,9 @@ class LincolnSign {
     translate(0, -this.DIM[1] * 0.1);
 
     push();
-    stroke(200);
-    strokeWeight(3);
     translate(this.oCenter[0], this.oCenter[1]);
-    // fill(0, 250, 0);
+    
     var YbottomDisplay = round(-this.DIM[1] * 0.08, 2);
-
     var visibleHite = round(this.oCenter[1] + YbottomDisplay, 0);
 
     var picW = dtSunRis.width;
@@ -45,7 +42,7 @@ class LincolnSign {
     var newW = pictureScale * picW;
     var newH = pictureScale * picH;
 
-    image(dtSunRis, -newW / 2, -newH + YbottomDisplay, newW, newH);
+    image(dtSunRis, -newW / 2, -newH + YbottomDisplay, newW, newH, 0, 0, picW, picH - 2);
     pop();
 
     translate(this.oCenter[0], this.oCenter[1]);

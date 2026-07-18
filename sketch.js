@@ -86,11 +86,6 @@ let headlinesArray = [];
 let formattedHeadlines = [];
 let NeonPreload;
 var Flicker = true;
-var weatherWWWstart = "https://api.openweathermap.org/data/2.5/weather?q=";
-var weatherWWWfinish =
-  "&mode=json&units=Imperial&cnt=7&appid=82c1267972094d5c1801e60fea29992c";
-
-const WeatherInterval = 2000;
 
 // const BoxCombos = [
 //   [0, 2, 10, 9, 0],
@@ -141,6 +136,10 @@ function preload() {
   HeinzBottleWhite = loadImage("images/HeinzBottleLavender.png");
   HeinzLabel = loadImage("images/HeinzLabel.png");
 
+  // letterImagesWithColor is an array of length 9.  Each of those 9 items are arrays of length 8.
+  // the 8 items are the same letter in different color
+
+  //////////////////////////////////////////////////////////////////
   headlinesArray = loadStrings("images/Headlines.txt");
   letterImagesWhite = letterURLs.map((url) => loadImage(url));
   const dominoWhiteURLs ="images/domino-neon.png"
@@ -149,7 +148,52 @@ function preload() {
   screenBackground();
 }
 
+function removeWhiteHalo(img) {
+  img.loadPixels();
+  for (var y = 0; y < img.height; y++) {
+    for (var x = 0; x < img.width; x++) {
+      var i = (y * img.width + x) * 4;
+      var r = img.pixels[i];
+      var g = img.pixels[i+1];
+      var b = img.pixels[i+2];
+      
+      // Lower threshold further to catch darker fringes
+      if (r > 90 && g > 90 && b > 90) {
+        var isHalo = false;
+        // Search deeper (up to 12px) and wider (up to 8px) to find the mountain slope
+        for (var dy = -3; dy <= 12; dy++) {
+          for (var dx = -8; dx <= 8; dx++) {
+            var ny = y + dy;
+            var nx = x + dx;
+            if (ny >= 0 && ny < img.height && nx >= 0 && nx < img.width) {
+              var ni = (ny * img.width + nx) * 4;
+              // Relaxed black threshold to bypass thick anti-aliasing
+              if (img.pixels[ni] < 60 && img.pixels[ni+1] < 60 && img.pixels[ni+2] < 60) {
+                isHalo = true;
+                break;
+              }
+            }
+          }
+          if (isHalo) break;
+        }
+        
+        if (isHalo) {
+          // Because we process top-down, the pixel at y-1 is already clean sky!
+          // We simply drag the clean sky color downwards to cover the halo.
+          var skyY = Math.max(0, y - 1);
+          var iSky = (skyY * img.width + x) * 4;
+          img.pixels[i] = img.pixels[iSky];
+          img.pixels[i+1] = img.pixels[iSky+1];
+          img.pixels[i+2] = img.pixels[iSky+2];
+        }
+      }
+    }
+  }
+  img.updatePixels();
+}
+
 function setup() {
+  removeWhiteHalo(dtSunRis);
   background(5, 5, 5);
 
   noCursor();
@@ -171,7 +215,7 @@ function setup() {
   // Generate pre-rendered neon flickering graphics to save massive compute during draw()
   generateNeonFrames();
   canvas.drawingContext.miterLimit = 2;
-  // window.setTimeout(updateWeather0, WeatherInterval);
+
 
   // Create a walker object
   wps = new WallauerSign();
@@ -286,13 +330,17 @@ function draw() {
   if( signHour(signTime,  6, 17)) WhichSign = 25;   // LEONARD'S DONUTS
   if( signHour(signTime,  7, 25)) WhichSign = 26;   // OREGON STAG
   if( signHour(signTime,  8, 28)) WhichSign = 27;   // MALIBU
-  if( signHour(signTime,  1,  9)) WhichSign = 28;   // JERSEY CITY CLOCK
-  if( signHour(signTime,  5,  8)) WhichSign = 29;   // DOMINO SUGAR
+  if( signHour(signTime,  5,  8)) WhichSign = 28;   // DOMINO SUGAR
+  if( signHour(signTime,  1,  9)) WhichSign = 29;   // JERSEY CITY CLOCK
   
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
-  // BOND=2, LONDON=5, HELMS=8// WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
-// WhichSign=8
+// WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
+// 2 = bond
+// 5 =london  
+// 8 = helms
+
+WhichSign=29;
   
   if (window.isDemoMode) {
     let elapsed = millis() - window.demoModeStartTime;
@@ -347,8 +395,8 @@ if (WhichSign===24) frameRate(40)
   if (WhichSign === 25) don.render(signTime);   // LEONARD'S DONUTS
   if (WhichSign === 26) wst.render(signTime);   // OREGON WHITE STAG
   if (WhichSign === 27) mbs.render(signTime);   // MALIBU
-  if (WhichSign === 28) jcc.render(signTime);   // JERSEY CITY CLOCK
-  if (WhichSign === 29) dom.render(signTime);   // DOMINO SUGAR
+  if (WhichSign === 29) jcc.render(signTime);   // JERSEY CITY CLOCK
+  if (WhichSign === 28) dom.render(signTime);   // DOMINO SUGAR
 
    
   // if (WhichSign > 48 && !window.redirectFired) {
@@ -376,14 +424,7 @@ function windowResized() {
   screenBackground();
 }
 
-function AsyncWeather0(www) {
-  Wjson = www;
-}
 
-const updateWeather0 = () => {
-  loadJSON(weatherWWWstart + "London" + weatherWWWfinish, AsyncWeather0);
-  window.setTimeout(updateWeather0, WeatherInterval);
-};
 
 function screenBackground() {
   img = createImage(windowWidth, windowHeight);
@@ -421,6 +462,9 @@ function addArray(k, arrAY) {
   var mARR = [];
   for (var i = 0; i < arrAY.length; i++) mARR[i] = arrAY[i] + k;
   return mARR;
+}
+function argsXscalar(scalar, ...args) {
+  return args.map(a => a * scalar);
 }
 function noisyCOLOR(currentValue, moveSize) {
   var cV1 = int(currentValue - moveSize * 0.3 + random(moveSize));

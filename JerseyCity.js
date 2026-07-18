@@ -11,12 +11,12 @@ class JerseyCity {
       this.WH = (this.WW * this.Wwh[1]) / this.Wwh[0];
       this.unit =this.WW/this.Wwh[0];
 
-      this.angleArray30 = []
-      this.radianArray30=[]
+      this.angleArrayOuter = []
+      this.radianArrayOuter=[]
       
-      for (var i=0;i<13;i++){this.angleArray30[i]=15+i*30}
-      for (i=0;i<13;i++){this.radianArray30[i]=PI*(15+i*30)/180}
-      this.raydius = 8*this.unit/sin(this.radianArray30[2])
+      for (var i=0;i<9;i++){this.angleArrayOuter[i]=22.5+i*45}
+      for (i=0;i<9;i++){this.radianArrayOuter[i]=PI*(22.5+i*45)/180}
+      this.raydius = 8.713*this.unit
       this.diamond5 = createGraphics(this.unit,this.unit);
       this.diamond5.strokeWeight(0);
     
@@ -201,12 +201,12 @@ class JerseyCity {
       pop()
       
     }
-    dodecahedronLines(){
-    stroke(200)   ////////////////////// DISTINCT LINES AROUND THE DODECAHEDRON
+    octagonLines(){
+    stroke(200)   ////////////////////// DISTINCT LINES AROUND THE OCTAGON
       strokeWeight(this.unit/20)
-      for(var i=0;i<12;i++)   {line(
-              this.raydius*cos(this.radianArray30[i]),   this.raydius*sin(this.radianArray30[i]),
-              this.raydius*cos(this.radianArray30[i+1]), this.raydius*sin(this.radianArray30[i+1])        )
+      for(var i=0;i<8;i++)   {line(
+              this.raydius*cos(this.radianArrayOuter[i]),   this.raydius*sin(this.radianArrayOuter[i]),
+              this.raydius*cos(this.radianArrayOuter[i+1]), this.raydius*sin(this.radianArrayOuter[i+1])        )
       }
     }
     girders(){
@@ -308,13 +308,13 @@ class JerseyCity {
       strokeWeight(this.unit*1.25)
       stroke(0)
       noFill()
-      ellipse(0,0,this.raydius*1.73)
+      ellipse(0,0,this.raydius*1.414)
       strokeWeight(0)
       fill(0)
-      for(var i=0;i<12;i++){
-          triangle(this.raydius*cos(this.radianArray30[i]),   this.raydius*sin(this.radianArray30[i]),
-              this.raydius*cos(this.radianArray30[i+1]),   this.raydius*sin(this.radianArray30[i+1]),
-              this.raydius*cos(this.radianArray30[(i+2)%12]),   this.raydius*sin(this.radianArray30[(i+2)%12]))
+      for(var i=0;i<8;i++){
+          triangle(this.raydius*cos(this.radianArrayOuter[i]),   this.raydius*sin(this.radianArrayOuter[i]),
+              this.raydius*cos(this.radianArrayOuter[i+1]),   this.raydius*sin(this.radianArrayOuter[i+1]),
+              this.raydius*cos(this.radianArrayOuter[(i+2)%8]),   this.raydius*sin(this.radianArrayOuter[(i+2)%8]))
       }
     }
 
@@ -332,15 +332,15 @@ class JerseyCity {
     var lightRadius=this.raydius*.98
     strokeWeight(0)
     fill(255,255,0)
-    for (var i=0;i<12;i++){
-      var rise=(lightRadius*(sin(this.radianArray30[i+1])-sin(this.radianArray30[i])))/22
-      var run=(lightRadius*(cos(this.radianArray30[i+1])-cos(this.radianArray30[i])))/22
-      for(var j=0;j<22;j++){
+    for (var i=0;i<8;i++){
+      var rise=(lightRadius*(sin(this.radianArrayOuter[i+1])-sin(this.radianArrayOuter[i])))/33
+      var run=(lightRadius*(cos(this.radianArrayOuter[i+1])-cos(this.radianArrayOuter[i])))/33
+      for(var j=0;j<33;j++){
         
         var bl=205+(55*(random(10)%2))
         for (var k=0;k<10;k++){
           newNeon2(this.unit,10,k,[bl/1.5,bl/1.5,0],[bl,bl,0],.1,.6)
-          ellipse((run*j)+lightRadius*cos(this.radianArray30[i]), (rise*j)+lightRadius*sin(this.radianArray30[i]),this.unit/12)
+          ellipse((run*j)+lightRadius*cos(this.radianArrayOuter[i]), (rise*j)+lightRadius*sin(this.radianArrayOuter[i]),this.unit/12)
         }
       }
     }
@@ -380,7 +380,7 @@ class JerseyCity {
       this.redOblisks()       ///////// 5 MINUTE RED OBLISKS = these change color over the course of 1 minute
       this.displayRungs()        
       this.displayHands(this.hourHand, this.minuteHand, signTime,xxx)
-      this.dodecahedronLines()
+      this.octagonLines()
       
       translate(0,2*this.unit)
       var xk=17
