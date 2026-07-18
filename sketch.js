@@ -148,7 +148,52 @@ function preload() {
   screenBackground();
 }
 
+function removeWhiteHalo(img) {
+  img.loadPixels();
+  for (var y = 0; y < img.height; y++) {
+    for (var x = 0; x < img.width; x++) {
+      var i = (y * img.width + x) * 4;
+      var r = img.pixels[i];
+      var g = img.pixels[i+1];
+      var b = img.pixels[i+2];
+      
+      // Lower threshold further to catch darker fringes
+      if (r > 90 && g > 90 && b > 90) {
+        var isHalo = false;
+        // Search deeper (up to 12px) and wider (up to 8px) to find the mountain slope
+        for (var dy = -3; dy <= 12; dy++) {
+          for (var dx = -8; dx <= 8; dx++) {
+            var ny = y + dy;
+            var nx = x + dx;
+            if (ny >= 0 && ny < img.height && nx >= 0 && nx < img.width) {
+              var ni = (ny * img.width + nx) * 4;
+              // Relaxed black threshold to bypass thick anti-aliasing
+              if (img.pixels[ni] < 60 && img.pixels[ni+1] < 60 && img.pixels[ni+2] < 60) {
+                isHalo = true;
+                break;
+              }
+            }
+          }
+          if (isHalo) break;
+        }
+        
+        if (isHalo) {
+          // Because we process top-down, the pixel at y-1 is already clean sky!
+          // We simply drag the clean sky color downwards to cover the halo.
+          var skyY = Math.max(0, y - 1);
+          var iSky = (skyY * img.width + x) * 4;
+          img.pixels[i] = img.pixels[iSky];
+          img.pixels[i+1] = img.pixels[iSky+1];
+          img.pixels[i+2] = img.pixels[iSky+2];
+        }
+      }
+    }
+  }
+  img.updatePixels();
+}
+
 function setup() {
+  removeWhiteHalo(dtSunRis);
   background(5, 5, 5);
 
   noCursor();
@@ -285,14 +330,17 @@ function draw() {
   if( signHour(signTime,  6, 17)) WhichSign = 25;   // LEONARD'S DONUTS
   if( signHour(signTime,  7, 25)) WhichSign = 26;   // OREGON STAG
   if( signHour(signTime,  8, 28)) WhichSign = 27;   // MALIBU
-  if( signHour(signTime,  1,  9)) WhichSign = 28;   // JERSEY CITY CLOCK
-  if( signHour(signTime,  5,  8)) WhichSign = 29;   // DOMINO SUGAR
+  if( signHour(signTime,  5,  8)) WhichSign = 28;   // DOMINO SUGAR
+  if( signHour(signTime,  1,  9)) WhichSign = 29;   // JERSEY CITY CLOCK
   
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
 // WhichSign=int(((Date.now() % 300000)/1000)/(300/29))
-// 2 = 
-WhichSign=2
+// 2 = bond
+// 5 =london  
+// 8 = helms
+
+// WhichSign=29;
   
   if (window.isDemoMode) {
     let elapsed = millis() - window.demoModeStartTime;
@@ -347,8 +395,8 @@ if (WhichSign===24) frameRate(40)
   if (WhichSign === 25) don.render(signTime);   // LEONARD'S DONUTS
   if (WhichSign === 26) wst.render(signTime);   // OREGON WHITE STAG
   if (WhichSign === 27) mbs.render(signTime);   // MALIBU
-  if (WhichSign === 28) jcc.render(signTime);   // JERSEY CITY CLOCK
-  if (WhichSign === 29) dom.render(signTime);   // DOMINO SUGAR
+  if (WhichSign === 29) jcc.render(signTime);   // JERSEY CITY CLOCK
+  if (WhichSign === 28) dom.render(signTime);   // DOMINO SUGAR
 
    
   // if (WhichSign > 48 && !window.redirectFired) {
@@ -414,6 +462,9 @@ function addArray(k, arrAY) {
   var mARR = [];
   for (var i = 0; i < arrAY.length; i++) mARR[i] = arrAY[i] + k;
   return mARR;
+}
+function argsXscalar(scalar, ...args) {
+  return args.map(a => a * scalar);
 }
 function noisyCOLOR(currentValue, moveSize) {
   var cV1 = int(currentValue - moveSize * 0.3 + random(moveSize));

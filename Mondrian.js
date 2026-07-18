@@ -49,31 +49,7 @@ class MondrianRectangle {
       }
     }
 
-    let currentTimeSeconds =(Date.now() % 60000) / 1000
-    let fadeBASE=0
-    let colorFADE=0
-    let row=0
-    let col=0
-    
-    for (let i = 0; i < 13; i++) {
-      let cellStartSecond=3.75*i
-      let cellEndSecond=(cellStartSecond+10)%60
-      if(currentTimeSeconds>cellStartSecond && currentTimeSeconds<cellEndSecond) {
-       
-        fadeBASE = min(10,max(-.01,currentTimeSeconds-cellStartSecond))
-        colorFADE = sin(abs(abs((fadeBASE % 10)-5)-5)*PI/10)
-        row = this.fadeRow[i];
-        col = this.fadeCol[i];
-        ddd=this.colorGrid[row][col] ;
-        // let darkenAmount = colorFADE; // 0 = original color, 1 = fully black
-        let adjustedLightness = 40 * (1 - colorFADE); // Reduces the 40% lightness proportionally
-        fill(color("hsla(" + ddd + ", 70%, " + adjustedLightness + "%, 1)"));
-
-        rect(this.eachCubeW * col, this.eachCubeH * row, this.eachCubeW, this.eachCubeH);
-      }
-    }
-
-      let extraText=["Mondrian","fadeBase: " + fadeBASE,"colorFADE: " + colorFADE,"row: " + row,"col: " + col,"ddd: " + ddd,"time: " + signTime]
+      let extraText=["Mondrian","time: " + signTime]
       if (1 === 2) printStats(xxx, yyy, this.unit,2,3.5, extraText)
   }
 }

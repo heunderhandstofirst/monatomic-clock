@@ -29,16 +29,11 @@ class DressSign {
     this.grBT.background(0);
     this.grBT.scale(1, flip[5]);
 
-    this.grBT.strokeWeight(this.H[0] / 800);
-    this.grBT.stroke(250, 125, 0);
+    this.grBT.noStroke();
     this.grBT.fill(this.background);
 
     this.grBT.rect(flip[7], 0, this.W[2], this.H[0]); //            VERTICAL
-    this.grBT.line(flip[7], 1, this.W[2] + flip[7], 1);
-    this.grBT.line(flip[7], this.H[0] - 1, this.W[2] + flip[7], this.H[0] - 1);
     this.grBT.rect(0, this.H[0] / 32, this.W[0] * 4.35, this.H[2]); // HORIZONTAL
-    this.grBT.line(0, 1 + this.H[3], this.W[0] * 4.35, 1 + this.H[3]); // HORIZONTAL
-    this.grBT.line(0, this.H[5], this.W[0] * 4.35, this.H[5]); // HORIZONTAL
 
     for (var n = 0; n < 8; n++) {
       var boxH = this.H[4] * (this.FabricBox[1][n] - this.FabricBox[0][n]);
@@ -444,7 +439,7 @@ function getFlipper(startMilli, TF, grBT, H, W, sTime) {
   }
 
   flipper[6] = 0;
-  if (flipper[4] > 0) flipper[6] = (W[0] * 5) / 4;
+  if (flipper[4] > 0) flipper[6] = (W[0] * 7) / 4;
   flipper[7] = flipper[6] + (W[0] * 3) / 4;
 
   flipper[8] = second();
