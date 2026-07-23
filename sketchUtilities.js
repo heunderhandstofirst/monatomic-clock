@@ -37,10 +37,23 @@ function newRectOverlay(unitSize, xCount, yCount,digitScalar) {
   }
 
   function prismaticSky(psWidth,psHeight, nudge){
-    var thisPct = 360*(Date.now()%60000/60000)
-    for (var i =-nudge;i<psHeight+nudge;i++){ 
-      var bgColor =int((thisPct+i/25) % 360)   // background color will fade across spectrum during the minute
-      stroke(color("hsla(" + bgColor + ", 95%, 20%, 1)"));
-      line(-nudge,i,psWidth+nudge,i)
-    } 
+    let ctx = drawingContext;
+    let thisPct = 360 * (Date.now() % 60000 / 60000);
+    
+    let yStart = -nudge;
+    let yEnd = psHeight + nudge;
+    let grad = ctx.createLinearGradient(0, yStart, 0, yEnd);
+    
+    // Add multiple color stops to correctly interpolate through the HSL spectrum smoothly
+    let numStops = 10;
+    for (let j = 0; j <= numStops; j++) {
+      let t = j / numStops;
+      let i = yStart + t * (yEnd - yStart);
+      let bgColor = (thisPct + i / 25) % 360;
+      if (bgColor < 0) bgColor += 360;
+      grad.addColorStop(t, `hsla(${bgColor}, 95%, 20%, 1)`);
     }
+    
+    ctx.fillStyle = grad;
+    ctx.fillRect(-nudge, yStart, psWidth + nudge * 2, yEnd - yStart);
+  }
