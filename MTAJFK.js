@@ -22,13 +22,13 @@ class MTAsubwayJFK {
     let wireCount = 24;
     for (var i = 0; i < wireCount; i++) girderSpace[i] = ((0.99 + 0.01 * random(2)) * i * WH[0]) / wireCount;
 
-    let swing = (this.step*speed)%(windowWidth)
+    let swing = ((this.step * speed) % windowWidth + windowWidth) % windowWidth;
     let colWidth=WH[0]/ 32
     let strapX
     stroke(70, 93, 81);
     strokeWeight(colWidth);
   
-    for (var k = -1; k < 4; k++) {
+    for (var k = -2; k < 4; k++) {
       strapX=(-windowWidth*.5)+swing+k*windowWidth/2
       line(strapX, -100, strapX, WH[1]); // VERTICAL GIRDERS
     }
@@ -40,15 +40,16 @@ class MTAsubwayJFK {
     
     stroke(20);
     strokeWeight(windowHeight/200);
-    for(k=-1;k<4;k++){  //  DRAW THE STRAPS ON BOTH SIDES OF EACH GIRDER FOR EACH HORIZONTAL CABLE
+    for(k=-2;k<4;k++){  //  DRAW THE STRAPS ON BOTH SIDES OF EACH GIRDER FOR EACH HORIZONTAL CABLE
       strapX=(-windowWidth*.5)+swing+k*windowWidth/2
       for(t=0;t<wireCount;t++){
         line(strapX-colWidth/2, girderSpace[t] - 15, strapX-colWidth/2, girderSpace[t] + 15);
         line(strapX+colWidth/2, girderSpace[t] - 15, strapX+colWidth/2, girderSpace[t] + 15);
       }
     } 
-    let bleekerSwing2=(-windowWidth*.5)+((speed*this.step)%(windowWidth*1))+windowWidth/8
+    let bleekerSwing2 = (-windowWidth*.5) + (((speed * this.step) % windowWidth + windowWidth) % windowWidth) + windowWidth/8;
     var subwaySign=[this.Bleeker, this.Chambers,this.Shea][subwayLine]
+    image(subwaySign,bleekerSwing2-windowWidth,windowHeight/2.5,windowWidth/4,windowWidth/6)
     image(subwaySign,bleekerSwing2-windowWidth/2,windowHeight/2.5,windowWidth/4,windowWidth/6)
     image(subwaySign,bleekerSwing2+(0*0*0*0*0),windowHeight/2.5,windowWidth/4,windowWidth/6)
     image(subwaySign,bleekerSwing2+windowWidth/2,windowHeight/2.5,windowWidth/4,windowWidth/6)
@@ -61,20 +62,26 @@ class MTAsubwayJFK {
     var xxx = 5 + round((25 * mouseX) / windowWidth, 0);
     var yyy =.1 + round((.2 * mouseY) / windowHeight, 3);
 
-    this.createGirder2(this.logoN,30)
-    var iTop =-2 + random(4)+((windowHeight-this.FAR.height)/2)
-    var scnds = (Date.now() % 10000) / 10000;
-    const vvv = windowWidth / 2 + this.MID.width * scnds;
+    var viewerRealSpeed = 12; // Express train moves forward
+    var adjacentRealSpeed = 8; // Local train moves forward (slower)
+    
+    var wallScreenSpeed = -viewerRealSpeed; // Wall moves left on screen at -12
+    var relSpeed = adjacentRealSpeed - viewerRealSpeed; // Local moves left on screen at -4
+    
+    this.createGirder2(this.logoN, wallScreenSpeed);
+    var iTop =-2 + random(4)+((windowHeight-this.FAR.height)/2);
      
     if(5===5/1){
     
-      for (var k = -2; k < 2; k++)
-        image(this.FAR, k* this.FAR.width +windowWidth / 2 + this.FAR.width * scnds, iTop);
+      var farShift = (relSpeed * (this.FAR.width / this.MID.width) * this.step) % this.FAR.width;
+      for (var k = -3; k < 3; k++)
+        image(this.FAR, k* this.FAR.width + windowWidth / 2 + farShift, iTop);
       
-      iTop=(-3+random(6))+((windowHeight-this.MID.height)/2)
+      iTop=(-3+random(6))+((windowHeight-this.MID.height)/2);
       
-      for (var t = -2; t < 1; t++) {
-        var doorX = t * this.MID.width + windowWidth / 2 + this.MID.width * scnds;;
+      var midShift = (relSpeed * this.step) % this.MID.width;
+      for (var t = -3; t < 3; t++) {
+        var doorX = t * this.MID.width + windowWidth / 2 + midShift;
             
         image(this.MID, doorX, iTop);
         image(this.LG1[this.logoN], doorX + this.MID.width * .195, this.MID.height * .157);
@@ -82,11 +89,12 @@ class MTAsubwayJFK {
         image(this.logoX[0],   doorX + this.MID.width * .183, this.MID.height*.15);
         image(this.logoX[1],   doorX + this.MID.width * .8, this.MID.height* .15);
       }
-      closeGirder(this.step);
+      closeGirder(wallScreenSpeed * this.step * 1.5);
 
-      var newTop= -3 + random(6)+((windowHeight-this.NEAR.height)/2)
-      image(this.NEAR, +windowWidth * 0.5, newTop);
-      image(this.NEAR, windowWidth/2-this.NEAR.width,newTop);
+      var newTop= -3 + random(6)+((windowHeight-this.NEAR.height)/2);
+      var newLeft = -3 + random(6);
+      image(this.NEAR, windowWidth * 0.5 + newLeft, newTop);
+      image(this.NEAR, windowWidth/2 - this.NEAR.width + newLeft, newTop);
     }
     if(5===5/2){
       strokeWeight(1)
@@ -218,11 +226,12 @@ function logo() {
   return logoReturns;
 }
 
-function closeGirder(step) {
+function closeGirder(pixelShift) {
   fill(70, 93, 81);
   stroke(10);
   strokeWeight(windowWidth / 150);
-  var midGirderX = (1 / 24) * windowWidth * (step % 28);
+  var spacing = windowWidth * 1.5;
+  var midGirderX = ((pixelShift % spacing) + spacing) % spacing - windowWidth * 0.25;
   rect(midGirderX, 0, windowWidth / 20, windowHeight);
   fill(150);
   strokeWeight(0);

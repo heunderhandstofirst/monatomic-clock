@@ -58,6 +58,8 @@ let OregonFoto;
 let StagOnly;
 let MPSignFont;  // MALIBU SIGN TEXT
 let BWtext;
+let stomatolRedImage;
+let stomatolCycleImages = [];
 
 let OysterReset = true;
 let OysterGroundZero = true;
@@ -135,6 +137,16 @@ function preload() {
   Catsup = loadImage("images/catsup22.png");
   HeinzBottleWhite = loadImage("images/HeinzBottleLavender.png");
   HeinzLabel = loadImage("images/HeinzLabel.png");
+  stomatolRedImage = loadImage("images/stomatol_red.png");
+  stomatolCycleImages[0] = loadImage("images/StomatolCycle/Stomatol.png");
+  stomatolCycleImages[1] = loadImage("images/StomatolCycle/Stomatol_S.png");
+  stomatolCycleImages[2] = loadImage("images/StomatolCycle/Stomatol_ST.png");
+  stomatolCycleImages[3] = loadImage("images/StomatolCycle/Stomatol_STO.png");
+  stomatolCycleImages[4] = loadImage("images/StomatolCycle/Stomatol_STOM.png");
+  stomatolCycleImages[5] = loadImage("images/StomatolCycle/Stomatol_STOMA.png");
+  stomatolCycleImages[6] = loadImage("images/StomatolCycle/Stomatol_STOMAT.png");
+  stomatolCycleImages[7] = loadImage("images/StomatolCycle/Stomatol_STOMATO.png");
+  stomatolCycleImages[8] = loadImage("images/StomatolCycle/Stomatol_STOMATOL.png");
 
   // letterImagesWithColor is an array of length 9.  Each of those 9 items are arrays of length 8.
   // the 8 items are the same letter in different color
@@ -248,6 +260,7 @@ function setup() {
   bre = new BunnySign(); // BUNNY RABBIT EARS
   jcc = new JerseyCity(); // JERSEY CITY CLOCK
   dom = new DominoSign(); // Domino Sugar
+  stom = new StomatolSign(); // STOMATOL
 
 
 
@@ -332,6 +345,7 @@ function draw() {
   if( signHour(signTime,  8, 28)) WhichSign = 27;   // MALIBU
   if( signHour(signTime,  5,  8)) WhichSign = 28;   // DOMINO SUGAR
   if( signHour(signTime,  1,  9)) WhichSign = 29;   // JERSEY CITY CLOCK
+  if( signHour(signTime,  3, 11)) WhichSign = 30;   // STOMATOL
   
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
@@ -340,7 +354,8 @@ function draw() {
 // 5 =london  
 // 8 = helms
 
-// WhichSign=29;
+// WhichSign=24;
+// WhichSign=30;
   
   if (window.isDemoMode) {
     let elapsed = millis() - window.demoModeStartTime;
@@ -397,6 +412,7 @@ if (WhichSign===24) frameRate(40)
   if (WhichSign === 27) mbs.render(signTime);   // MALIBU
   if (WhichSign === 29) jcc.render(signTime);   // JERSEY CITY CLOCK
   if (WhichSign === 28) dom.render(signTime);   // DOMINO SUGAR
+  if (WhichSign === 30) stom.render(signTime); // STOMATOL
 
    
   // if (WhichSign > 48 && !window.redirectFired) {
