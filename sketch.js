@@ -60,6 +60,7 @@ let MPSignFont;  // MALIBU SIGN TEXT
 let BWtext;
 let stomatolRedImage;
 let stomatolCycleImages = [];
+let copeSign;
 
 let OysterReset = true;
 let OysterGroundZero = true;
@@ -87,6 +88,14 @@ let dominoImagesWithColor=[];
 let headlinesArray = [];
 let formattedHeadlines = [];
 let NeonPreload;
+let mcsorleysLogoWhite;
+let dominoOrangeImage;
+let colgateLogoImage;
+let oysterImage;
+let bondImage;
+let rabbitImage;
+let thermometerHeinzImage;
+let britexImage;
 var Flicker = true;
 
 // const BoxCombos = [
@@ -135,10 +144,30 @@ function preload() {
   HeinzBottle = loadImage("images/HeinzBottle.png");
   HeinzLetters= loadImage("images/heinz-logo-black-and-white.png");
   Catsup = loadImage("images/catsup22.png");
-  HeinzBottleWhite = loadImage("images/HeinzBottleLavender.png");
-  HeinzLabel = loadImage("images/HeinzLabel.png");
-  stomatolRedImage = loadImage("images/stomatol_red.png");
-  stomatolCycleImages[0] = loadImage("images/StomatolCycle/Stomatol.png");
+  let fallback = (name) => () => console.log(name + " missing");
+  HeinzBottleWhite = loadImage("images/HeinzBottleLavender.png", () => {}, fallback("HeinzBottleLavender.png"));
+  HeinzLabel = loadImage("images/HeinzLabel.png", () => {}, fallback("HeinzLabel.png"));
+  helmsImage = loadImage("images/thermometer/Helms.png", () => {}, fallback("Helms.png"));
+  bwLogoImage = loadImage("images/thermometer/BWorangeLetters.png", () => {}, fallback("BWorangeLetters.png"));
+  lincolnImage = loadImage("images/thermometer/Lincoln.png", () => {}, fallback("Lincoln.png"));
+  hihoImage = loadImage("images/thermometer/HiHo.png", () => {}, fallback("HiHo.png"));
+  citgoImage = loadImage("images/thermometer/Citgo.png", () => {}, fallback("Citgo.png"));
+  wallauerImage = loadImage("images/thermometer/Wallauer.png", () => {}, fallback("Wallauer.png"));
+  padreImage = loadImage("images/thermometer/Padre.png", () => {}, fallback("Padre.png"));
+  portlandImage = loadImage("images/thermometer/Portland.png", () => {}, fallback("Portland.png"));
+  urthImage = loadImage("images/thermometer/Urth.png", () => {}, fallback("Urth.png"));
+  cactusImage = loadImage("images/thermometer/Cactus.png", () => {}, fallback("Cactus.png"));
+  // tvImage = loadImage("images/thermometer/TV.png", () => {}, fallback("TV.png"));
+  bondImage = loadImage("images/thermometer/Bond.png", () => {}, fallback("Bond.png"));
+  rabbitImage = loadImage("images/thermometer/Rabbit.png", () => {}, fallback("Rabbit.png"));
+  mcsorleysGreenImage = loadImage("images/thermometer/McSorleysGreen.png", () => {}, fallback("McSorleysGreen.png"));
+  dominoOrangeImage = loadImage("images/thermometer/Domino.png", () => {}, fallback("Domino.png"));
+  colgateLogoImage = loadImage("images/thermometer/Colgate.png", () => {}, fallback("Colgate.png"));
+  thermometerHeinzImage = loadImage("images/Thermometer/Heinz.png", () => {}, fallback("Heinz.png"));
+  britexImage = loadImage("images/Thermometer/Britex.png", () => {}, fallback("Britex.png"));
+  oysterImage = loadImage("images/thermometer/oyster.png", () => {}, fallback("oyster.png"));
+  stomatolRedImage = loadImage("images/thermometer/stomatol_red.png", () => {}, fallback("stomatol_red.png"));
+  stomatolCycleImages[0] = loadImage("images/StomatolCycle/Stomatol.png", () => {}, fallback("Stomatol.png"));
   stomatolCycleImages[1] = loadImage("images/StomatolCycle/Stomatol_S.png");
   stomatolCycleImages[2] = loadImage("images/StomatolCycle/Stomatol_ST.png");
   stomatolCycleImages[3] = loadImage("images/StomatolCycle/Stomatol_STO.png");
@@ -261,6 +290,7 @@ function setup() {
   jcc = new JerseyCity(); // JERSEY CITY CLOCK
   dom = new DominoSign(); // Domino Sugar
   stom = new StomatolSign(); // STOMATOL
+  copeSign = new Cope(); // COPE
 
 
 
@@ -315,6 +345,7 @@ function draw() {
   var Hsecs = signTime[1] * 60 + signTime[2];
   var W1 = int(Hsecs / signTime[4]); // signTime 4 =  number of seconds to show each sign
   WhichSign = W1 % 12;
+
   SwitchSign = WhichSign !== PreviousSign;
   if (SwitchSign) NewSign = true;
   PreviousSign = WhichSign;
@@ -346,6 +377,7 @@ function draw() {
   if( signHour(signTime,  5,  8)) WhichSign = 28;   // DOMINO SUGAR
   if( signHour(signTime,  1,  9)) WhichSign = 29;   // JERSEY CITY CLOCK
   if( signHour(signTime,  3, 11)) WhichSign = 30;   // STOMATOL
+  if( signHour(signTime,  5, 12)) WhichSign = 31;   // COPE
   
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
@@ -354,12 +386,9 @@ function draw() {
 // 5 =london  
 // 8 = helms
 
-// WhichSign=24;
-// WhichSign=30;
-  
   if (window.isDemoMode) {
     let elapsed = millis() - window.demoModeStartTime;
-    WhichSign = Math.floor(elapsed / 15000) % 30; // 30 signs (0 to 29), 15s each
+    WhichSign = Math.floor(elapsed / 15000) % 32; // 32 signs (0 to 31), 15s each
   }
   // Here we are fixing these problems
 //////////////////////////////////////////////////////////////////////////
@@ -413,6 +442,7 @@ if (WhichSign===24) frameRate(40)
   if (WhichSign === 29) jcc.render(signTime);   // JERSEY CITY CLOCK
   if (WhichSign === 28) dom.render(signTime);   // DOMINO SUGAR
   if (WhichSign === 30) stom.render(signTime); // STOMATOL
+  if (WhichSign === 31) copeSign.render(signTime); // COPE
 
    
   // if (WhichSign > 48 && !window.redirectFired) {

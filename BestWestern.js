@@ -15,7 +15,7 @@ class CrownSign {
     // screenBackground();
     background(NeonPreload);
 
-    var Ocenter = [windowWidth / 2, windowHeight / 2];
+    var Ocenter = [windowWidth * 0.24, windowHeight * 0.74];
     var WW = min(windowHeight * 1.25, windowWidth) * 0.95;
     var WH = WW / 1.25;
     var W36 = WH / 36;

@@ -68,7 +68,6 @@ function WhiteLines(
     if (offRow === i && offCol === 4) stroke(0);
     // LINE 5
     line(LineMark - TopBot, YC, LineMark2 - LineCurve, YC);
-
     //}
   }
 }
