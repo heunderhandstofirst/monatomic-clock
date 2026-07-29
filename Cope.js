@@ -1,6 +1,48 @@
 class Cope {
   constructor() {
     this.name = "COPE";
+    this.logoMap = {
+      "colgate": typeof colgateLogoImage !== 'undefined' ? colgateLogoImage : null,
+      "best_western": typeof bwLogoImage !== 'undefined' ? bwLogoImage : null,
+      "lincoln": typeof lincolnImage !== 'undefined' ? lincolnImage : null,
+      "portland": typeof portlandImage !== 'undefined' ? portlandImage : null,
+      "hiho": typeof hihoImage !== 'undefined' ? hihoImage : null,
+      "helms": typeof helmsImage !== 'undefined' ? helmsImage : null,
+      "urth": typeof urthImage !== 'undefined' ? urthImage : null,
+      "domino": typeof dominoOrangeImage !== 'undefined' ? dominoOrangeImage : null,
+      "stomatol": typeof stomatolRedImage !== 'undefined' ? stomatolRedImage : null,
+      "citgo": typeof citgoImage !== 'undefined' ? citgoImage : null,
+      "cactus": typeof cactusImage !== 'undefined' ? cactusImage : null,
+      "wallauer": typeof wallauerImage !== 'undefined' ? wallauerImage : null,
+      "padre": typeof padreImage !== 'undefined' ? padreImage : null,
+      "bond": typeof bondImage !== 'undefined' ? bondImage : null,
+      "rabbit": typeof rabbitImage !== 'undefined' ? rabbitImage : null,
+      "heinz": typeof thermometerHeinzImage !== 'undefined' ? thermometerHeinzImage : null,
+      "britex": typeof britexImage !== 'undefined' ? britexImage : null,
+      "mcsorleys": typeof mcsorleysGreenImage !== 'undefined' ? mcsorleysGreenImage : null,
+      "oyster": typeof oysterImage !== 'undefined' ? oysterImage : null
+    };
+
+    this.hardcodedPlacements = [
+      { name: "best_western", wall: "Left", x: 1, y: 5 },
+      { name: "colgate", wall: "Left", x: 3, y: 38 },
+      { name: "domino", wall: "Left", x: 3, y: 20, size: "span_40" },
+      { name: "helms", wall: "Left", x: 3, y: 80, size: "small" },
+      { name: "hiho", wall: "Left", x: 32, y: 4 },
+      { name: "portland", wall: "Left", x: 40, y: 40 },
+      { name: "urth", wall: "Left", x: 23, y: 53, size: "span" },
+      { name: "britex", wall: "Left", x: 65, y: 8, size: "large_150" },
+      { name: "bond", wall: "Right", x: 1, y: 3 },
+      { name: "citgo", wall: "Right", x: 30, y: 30 },
+      { name: "padre", wall: "Right", x: 5, y: 80 },
+      { name: "rabbit", wall: "Right", x: 40, y: 70 },
+      { name: "lincoln", wall: "Right", x: 35, y: 5 },
+      { name: "cactus", wall: "Right", x: 15, y: 30 },
+      { name: "wallauer", wall: "Right", x: 3, y: 33 },
+      { name: "heinz", wall: "Right", x: 55, y: 25 },
+      { name: "mcsorleys", wall: "LeftRoof", stretch: true, rx: 18, rs: 37, rt: -15 },
+      { name: "oyster", wall: "RightRoof", stretch: true, rx: 18, rs: 37, rt: -15 }
+    ];
   }
 
   render(signTime) {
@@ -393,50 +435,6 @@ class Cope {
     let stdH = height * 0.15;
     let spanW = width * 0.28;
 
-    let logoMap = {
-      "colgate": typeof colgateLogoImage !== 'undefined' ? colgateLogoImage : null,
-      "best_western": typeof bwLogoImage !== 'undefined' ? bwLogoImage : null,
-      "lincoln": typeof lincolnImage !== 'undefined' ? lincolnImage : null,
-      "portland": typeof portlandImage !== 'undefined' ? portlandImage : null,
-      "hiho": typeof hihoImage !== 'undefined' ? hihoImage : null,
-      "helms": typeof helmsImage !== 'undefined' ? helmsImage : null,
-      "urth": typeof urthImage !== 'undefined' ? urthImage : null,
-      "domino": typeof dominoOrangeImage !== 'undefined' ? dominoOrangeImage : null,
-      "stomatol": typeof stomatolRedImage !== 'undefined' ? stomatolRedImage : null,
-      "citgo": typeof citgoImage !== 'undefined' ? citgoImage : null,
-      "cactus": typeof cactusImage !== 'undefined' ? cactusImage : null,
-      "wallauer": typeof wallauerImage !== 'undefined' ? wallauerImage : null,
-      "padre": typeof padreImage !== 'undefined' ? padreImage : null,
-      "bond": typeof bondImage !== 'undefined' ? bondImage : null,
-      "rabbit": typeof rabbitImage !== 'undefined' ? rabbitImage : null,
-      "heinz": typeof thermometerHeinzImage !== 'undefined' ? thermometerHeinzImage : null,
-      "britex": typeof britexImage !== 'undefined' ? britexImage : null,
-      "mcsorleys": typeof mcsorleysGreenImage !== 'undefined' ? mcsorleysGreenImage : null,
-      "oyster": typeof oysterImage !== 'undefined' ? oysterImage : null
-    };
-
-    // The display is now strictly driven by this array table, exactly matching your requested list.
-    // Stomatol has been omitted.
-    let hardcodedPlacements = [
-      { name: "best_western", wall: "Left", x: 1, y: 5 },
-      { name: "colgate", wall: "Left", x: 3, y: 38 },
-      { name: "domino", wall: "Left", x: 3, y: 20, size: "span_40" },
-      { name: "helms", wall: "Left", x: 3, y: 80, size: "small" },
-      { name: "hiho", wall: "Left", x: 32, y: 4 },
-      { name: "portland", wall: "Left", x: 35, y: 40 },
-      { name: "urth", wall: "Left", x: 23, y: 53, size: "span" },
-      { name: "britex", wall: "Left", x: 65, y: 8, size: "large_150" },
-      { name: "bond", wall: "Right", x: 1, y: 3 },
-      { name: "citgo", wall: "Right", x: 30, y: 30 },
-      { name: "padre", wall: "Right", x: 5, y: 80 },
-      { name: "rabbit", wall: "Right", x: 40, y: 70 },
-      { name: "lincoln", wall: "Right", x: 35, y: 5 },
-      { name: "cactus", wall: "Right", x: 15, y: 30 },
-      { name: "wallauer", wall: "Right", x: 3, y: 33 },
-      { name: "heinz", wall: "Right", x: 55, y: 25 },
-      { name: "mcsorleys", wall: "LeftRoof", stretch: true, rx: 18, rs: 37, rt: -15 },
-      { name: "oyster", wall: "RightRoof", stretch: true, rx: 18, rs: 37, rt: -15 }
-    ];
 
     // Helper to draw 3-sided neon blue lines on the roof (negative y space)
     let drawRoofBox = (xStart, xSpan, yTop, isRightWall) => {
@@ -466,9 +464,9 @@ class Cope {
       pop();
     };
 
-    for (let i = 0; i < hardcodedPlacements.length; i++) {
-      let p = hardcodedPlacements[i];
-      let img = logoMap[p.name];
+    for (let i = 0; i < this.hardcodedPlacements.length; i++) {
+      let p = this.hardcodedPlacements[i];
+      let img = this.logoMap[p.name];
       if (!img) continue;
 
       if (p.wall === "LeftRoof" || p.wall === "RightRoof") {

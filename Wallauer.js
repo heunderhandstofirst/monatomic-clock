@@ -5,6 +5,50 @@ class WallauerSign {
     this.fallingColors = [0, 0, 61, 124, 240, 300, 20, 180];
     this.comments = [];
     for (var j = 0; j < 60; j++) this.comments[j] = "";
+    
+    this.charChar = "ABCDEFCHIJKLMNOPQRSTUVWXYZ!@#$%^&*()<>?:[]1234567890-=";
+    this.T1 = [
+      " H A R L E M   L I N E   D E P A R T U R E S",
+      " N E W   H A V E N   L I N E   D E P A R T U R E S"
+    ];
+    this.T4 = [
+      "SNOW",
+      "TREES",
+      "DOWNLINE",
+      "REPAIRS",
+      "TORNADO",
+      "CARonTRX",
+      "RAIN",
+      "DELAYED",
+      "SLEET",
+      "EN-ROUTE",
+      "FIRE",
+      "ANIMAL",
+      "WEATHER",
+      "ICE",
+      "FOG"
+    ];
+    this.T3 = [
+      [
+        "110 MOUNT VERNON ",
+        "109 FLEETWOOD    ",
+        " 27 BRONXVILLE   ",
+        " 28 TUCKAHOE     ",
+        " 29 CRESTWOOD    ",
+        " 30 SCARSDALE    "
+      ],
+      [
+        "175 FORDHAM      ",
+        "108 NEW ROCHELLE ",
+        " 24 STAMFORD     ",
+        "189 GLENBROOK    ",
+        " 13 SPRINGDALE   ",
+        "  8 TALMADGE HILL",
+        "  5 NEW CANAAN   "
+      ]
+    ];
+    this.T2 =
+      "TIME         TRK        DESTINATION                       REMARKS";
   }
   render(signTime) {
     this.step = this.step + 1;
@@ -36,11 +80,6 @@ class WallauerSign {
     drawCurlyLine(logoWW, logoWH, blobParam, blobHight, this.fallingColors); // COLORED LINES IN THE BLOB INCLUDING WHITE EDGES ON TOP
     pop();
     translate((-WW * 3) / 16, 0);
-    var charChar = "ABCDEFCHIJKLMNOPQRSTUVWXYZ!@#$%^&*()<>?:[]1234567890-=";
-    var T1 = [
-      " H A R L E M   L I N E   D E P A R T U R E S",
-      " N E W   H A V E N   L I N E   D E P A R T U R E S"
-    ];
     var timer = [];
     // var abc = join(["   ", hour()], "");
     var abc = join(["   ", signTime[0]], "");
@@ -52,48 +91,10 @@ class WallauerSign {
       var ddd = ccc.substring(lll - 2, lll);
       timer[j] = join([bbb, ddd], "");
     }
-    var T4 = [
-      "SNOW",
-      "TREES",
-      "DOWNLINE",
-      "REPAIRS",
-      "TORNADO",
-      "CARonTRX",
-      "RAIN",
-      "DELAYED",
-      "SLEET",
-      "EN-ROUTE",
-      "FIRE",
-      "ANIMAL",
-      "WEATHER",
-      "ICE",
-      "FOG"
-    ];
-    var T3 = [
-      [
-        "110 MOUNT VERNON ",
-        "109 FLEETWOOD    ",
-        " 27 BRONXVILLE   ",
-        " 28 TUCKAHOE     ",
-        " 29 CRESTWOOD    ",
-        " 30 SCARSDALE    "
-      ],
-      [
-        "175 FORDHAM      ",
-        "108 NEW ROCHELLE ",
-        " 24 STAMFORD     ",
-        "189 GLENBROOK    ",
-        " 13 SPRINGDALE   ",
-        "  8 TALMADGE HILL",
-        "  5 NEW CANAAN   "
-      ]
-    ];
-    var T2 =
-      "TIME         TRK        DESTINATION                       REMARKS";
     var leftS = (-WW * 4.75) / 16;
     var boxW = (WW * 5) / 8 / 31;
     if (signTime[2] <= signTime[1])
-      this.comments[signTime[1] % 5] = T4[int(random(T4.length))];
+      this.comments[signTime[1] % 5] = this.T4[int(random(this.T4.length))];
 
     for (var m = 0; m < 2; m++) {
       var boardOffset = (m * WH) / 2;
@@ -103,12 +104,12 @@ class WallauerSign {
       rect(leftS, boardOffset + (-WH * 8) / 16, (WW * 10) / 16, WH / 16);
       fill(150);
       textSize(WW / 40);
-      text(T1[m], leftS, boardOffset + (-WH * 7.3) / 16);
+      text(this.T1[m], leftS, boardOffset + (-WH * 7.3) / 16);
       fill(0);
       rect(leftS, boardOffset + (-WH * 7.0) / 16, (WW * 10) / 16, WH / 18);
       textSize(WW / 48);
       fill(150);
-      text(T2, leftS, boardOffset + (-WH * 6.4) / 16);
+      text(this.T2, leftS, boardOffset + (-WH * 6.4) / 16);
 
       stroke(150);
       strokeWeight(1);
@@ -121,7 +122,7 @@ class WallauerSign {
         var thisMinComment = this.comments[one213];
 
         if (one213 !== signTime[1] % 5) thisMinComment = "";
-        var ppp = join([timer[one213], T3[m][k]], " ") + " " + thisMinComment;
+        var ppp = join([timer[one213], this.T3[m][k]], " ") + " " + thisMinComment;
         stroke(150);
         for (j = 0; j < 31; j++) {
           stroke(150);
@@ -133,7 +134,7 @@ class WallauerSign {
           var L2draw = ppp[j];
           var iii = random(53);
           if (signTime[2] < 1 + one213 && j > 4 && j !== 8 && j !== 22)
-            L2draw = charChar.substring(iii, iii + 1);
+            L2draw = this.charChar.substring(iii, iii + 1);
 
           // if (one213 === minute() % 5) {
           if (one213 === signTime[1] % 5) {

@@ -177,44 +177,51 @@ class CrownSign {
   }
 }
 
+const BW_COLORS = [
+  0,
+  [0, 0, 0],
+  0,
+  [200, 10, 40],
+  [200, 200, 0]
+];
+const BW_RADII_DIVISORS = [0, 11, 13, 20, 0, 0];
+
 function drawtopCircles( WH,  midY,  C1,  C2,  startCircle,  endCircle,  tNc,  minMan,  signTime) {
   push();
   strokeWeight(0);
   var circle2hiLite = signTime[1] % 5;
-  var minHand = [0, 1, 2, 3, 4];
-  minHand[circle2hiLite] = 4;
+  
+  BW_COLORS[2] = [tNc];
 
-  var radii = [0, WH / 11, WH / 13, WH / 20, 0, 0];
-  var cColors = [0, [0, 0, 0], [tNc], [200, 10, 40], [200, 200, 0]];
   for (var p = startCircle; p < endCircle; p++) {
     var GreenButton = minMan === 1 && p === 3;
     var colorI = p;
+    var rad = BW_RADII_DIVISORS[p] ? WH / BW_RADII_DIVISORS[p] : 0;
 
     if (GreenButton && 2 === circle2hiLite) colorI = 4;
-
-    fill(cColors[colorI][0], cColors[colorI][1], cColors[colorI][2]);
-    ellipse(0, midY, radii[p]);
+    fill(BW_COLORS[colorI][0], BW_COLORS[colorI][1], BW_COLORS[colorI][2]);
+    ellipse(0, midY, rad);
     colorI = p;
 
     if (GreenButton && 3 === circle2hiLite) colorI = 4;
-    fill(cColors[colorI][0], cColors[colorI][1], cColors[colorI][2]);
-    ellipse(+C1[0], C1[1], radii[p]);
+    fill(BW_COLORS[colorI][0], BW_COLORS[colorI][1], BW_COLORS[colorI][2]);
+    ellipse(+C1[0], C1[1], rad);
     colorI = p;
 
     if (GreenButton && 4 === circle2hiLite) colorI = 4;
-    fill(cColors[colorI][0], cColors[colorI][1], cColors[colorI][2]);
-    ellipse(+C2[0], C2[1], radii[p]);
+    fill(BW_COLORS[colorI][0], BW_COLORS[colorI][1], BW_COLORS[colorI][2]);
+    ellipse(+C2[0], C2[1], rad);
     colorI = p;
 
     if (GreenButton && 1 === circle2hiLite) colorI = 4;
-    fill(cColors[colorI][0], cColors[colorI][1], cColors[colorI][2]);
-    ellipse(-C1[0], C1[1], radii[p]);
+    fill(BW_COLORS[colorI][0], BW_COLORS[colorI][1], BW_COLORS[colorI][2]);
+    ellipse(-C1[0], C1[1], rad);
     colorI = p;
 
     if (GreenButton && 0 === circle2hiLite) colorI = 4;
-    fill(cColors[colorI][0], cColors[colorI][1], cColors[colorI][2]);
+    fill(BW_COLORS[colorI][0], BW_COLORS[colorI][1], BW_COLORS[colorI][2]);
 
-    ellipse(-C2[0], C2[1], radii[p]);
+    ellipse(-C2[0], C2[1], rad);
   }
   pop();
 }
