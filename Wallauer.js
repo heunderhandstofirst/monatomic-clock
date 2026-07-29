@@ -69,15 +69,15 @@ class WallauerSign {
     push();
     translate((WW * 5.5) / 16, -WH / 4);
     rotate(-PI / 5.5);
-    var canFaceHite = drawCanTopBottom(logoWH, bigFlowColor); /// 1-0  Fill light Blue
-    putNum1(logoWH, wpNumberone, canFaceHite);
+    var canFaceHite = drawCanTopBottom(WH, bigFlowColor); /// 1-0  Fill light Blue
+    putNum1(WH, wpNumberone, canFaceHite);
     pop();
 
     push();
     translate((WW * 5.5) / 16, -WH / 3);
-    var blobParam = drawTheBlob(logoWW, logoWH, bigFlowColor);
+    var blobParam = drawTheBlob(WW, WH, bigFlowColor);
     var blobHight = blobParam[1][1] - blobParam[0];
-    drawCurlyLine(logoWW, logoWH, blobParam, blobHight, this.fallingColors); // COLORED LINES IN THE BLOB INCLUDING WHITE EDGES ON TOP
+    drawCurlyLine(WW, WH, blobParam, blobHight, this.fallingColors); // COLORED LINES IN THE BLOB INCLUDING WHITE EDGES ON TOP
     pop();
     translate((-WW * 3) / 16, 0);
     var timer = [];
