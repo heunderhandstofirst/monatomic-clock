@@ -91,5 +91,19 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(drawGenerativeBackground);
     }
 
+    // 3. Image Carousels
+    const carousels = document.querySelectorAll('.image-carousel');
+    carousels.forEach(carousel => {
+        const images = carousel.querySelectorAll('.carousel-img');
+        if (images.length <= 1) return;
+        
+        let currentIndex = 0;
+        setInterval(() => {
+            images[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + 1) % images.length;
+            images[currentIndex].classList.add('active');
+        }, 3000);
+    });
+
     drawGenerativeBackground();
 });
