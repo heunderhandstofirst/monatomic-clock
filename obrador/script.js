@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(drawGenerativeBackground);
     }
 
-    // 3. Image Carousels
+    // 3. Image Carousels (Standard)
     const carousels = document.querySelectorAll('.image-carousel');
     carousels.forEach(carousel => {
         const images = carousel.querySelectorAll('.carousel-img');
@@ -104,6 +104,70 @@ document.addEventListener('DOMContentLoaded', () => {
             images[currentIndex].classList.add('active');
         }, 3000);
     });
+
+    // 4. Studio Carousel Custom Sequence
+    const studioCarousel = document.querySelector('.studio-carousel');
+    if (studioCarousel) {
+        const p1 = studioCarousel.querySelector('.profile-1');
+        const p4 = studioCarousel.querySelector('.profile-4');
+        const p3 = studioCarousel.querySelector('.profile-3');
+        const p5 = studioCarousel.querySelector('.profile-5');
+        const p2 = studioCarousel.querySelector('.profile-2');
+        const p6 = studioCarousel.querySelector('.profile-6');
+        const p8 = studioCarousel.querySelector('.profile-8');
+        const p7 = studioCarousel.querySelector('.profile-7');
+
+        const allStudioImgs = [p1, p4, p3, p5, p2, p6, p8, p7];
+        
+        const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+        const BB = 2000; // 2 seconds
+
+        async function runStudioSequence() {
+            while (true) {
+                allStudioImgs.forEach(img => img.classList.remove('active'));
+                
+                // Show 1 and 3
+                p1.classList.add('active');
+                p3.classList.add('active');
+                await delay(BB);
+                
+                // Fade 1 out, replace with 4
+                p1.classList.remove('active');
+                p4.classList.add('active');
+                await delay(BB);
+                
+                // Fade 3 out, replace with 5
+                p3.classList.remove('active');
+                p5.classList.add('active');
+                await delay(BB);
+                
+                // Fade out both
+                p4.classList.remove('active');
+                p5.classList.remove('active');
+                
+                // cycle in 2
+                p2.classList.add('active');
+                await delay(BB);
+                
+                // cycle in 6
+                p2.classList.remove('active');
+                p6.classList.add('active');
+                await delay(BB);
+                
+                // cycle in 8
+                p6.classList.remove('active');
+                p8.classList.add('active');
+                await delay(BB);
+                
+                // cycle in 7
+                p8.classList.remove('active');
+                p7.classList.add('active');
+                await delay(BB);
+            }
+        }
+        
+        runStudioSequence();
+    }
 
     drawGenerativeBackground();
 });
