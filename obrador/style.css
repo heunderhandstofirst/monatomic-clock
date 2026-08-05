@@ -563,11 +563,11 @@ footer {
     align-items: center;
 }
 
-.footer-brand {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 2rem;
-    color: var(--text-primary);
+.footer-signature {
+    height: 40px;
+    width: auto;
+    display: block;
+    opacity: 0.8;
 }
 
 .footer-contact {
