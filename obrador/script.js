@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const allStudioImgs = [p1, p4, p3, p5, p2, p6, p8, p7];
         
         const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-        const BB = 2000; // 2 seconds
+        const BB = 3000; // 3 seconds
 
         async function runStudioSequence() {
             while (true) {
