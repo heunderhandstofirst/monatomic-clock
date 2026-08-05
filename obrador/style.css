@@ -505,7 +505,7 @@ img.carousel-img.active {
 /* Competencies Section */
 .dual-column {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 2fr 3fr;
     gap: var(--spacing-lg);
 }
 
