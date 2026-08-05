@@ -412,8 +412,8 @@ h1, h2, h3, h4, h5 {
     transform: scale(1.05);
 }
 
-.work-image img.contain-img {
-    object-fit: contain;
+img.contain-img {
+    object-fit: contain !important;
     padding: var(--spacing-sm);
 }
 
