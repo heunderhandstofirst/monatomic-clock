@@ -1,36 +1,42 @@
 /* eslint-disable no-undef, no-unused, no-unused-vars */
 
-let cs; // CITGO
-let hf; // HERCULES
-let wps; // WALLAUER
-let bcs; // BOND
-let pcs; // SCHWEPPES
-let mts; // MARTINI
-let drs; // BRITEX
-let lndnS; // LONDON
-let dss; // DIM SUM
-let hhs; // HIHO
-let hcs; // HELMS
-let hnz; // HEINZ
-let phs; // PADRE
-let bws; // BEST WESTERN
-let tpx; // TEST PATTERN
-let tcx; // TUCSON CACTUS
-let mbx; // MANHATTAN BRIDGE
-let uoh; // UNION OYSTER HOUSE
-let mcss; // McSORLEYS
-let fars; // FARMACIA
-let lhws; // LINCOLN HARDWARE
-let mndrn; // MONDRIAN
-let MTA; // MTA to JFK
-let don; // LEONARD'S DONUT SHOP
-let wst; // WHITE STAG
-let bre; // BUNNY RABBIT EARS
-let mbs; // MALIBU PIER
-let jcc; // JERSEY CITY CLOCK
-let dom; // DOMINO SUGAR
+const SignClasses = {
+  0: WallauerSign,
+  1: CitgoSign2,
+  2: BondSign,
+  3: SchweppesSign,
+  4: MartiniSign,
+  5: LondonSign,
+  6: DimSumSign,
+  7: HiHoSign,
+  8: BakerySign,
+  9: PadreSign,
+  10: CrownSign,
+  11: TestPattern,
+  12: HeinzSign,
+  13: UnionOysterHouse,
+  14: UrthCafe,
+  15: AleSign,
+  16: FarmaciaSign,
+  17: HerculesFloor,
+  18: LincolnSign,
+  19: MondrianRectangle,
+  20: BunnySign,
+  21: TusconCactus,
+  22: ManhattanBridge,
+  23: DressSign,
+  24: MTAsubwayJFK,
+  25: DonutSign,
+  26: StagSign,
+  27: MalibuSign,
+  28: DominoSign,
+  29: JerseyCity,
+  30: StomatolSign,
+  31: Cope
+};
 
-
+let currentSignInstance = null;
+let currentSignIndex = -1;
 let SwitchSign;
 const backgroundImageURL = "images/background.png";
 const downTown60PIC = "images/P3K.png";
@@ -258,42 +264,7 @@ function setup() {
   canvas.drawingContext.miterLimit = 2;
 
 
-  // Create a walker object
-  wps = new WallauerSign();
-  cs = new CitgoSign2();
-  hf = new HerculesFloor();
-  bcs = new BondSign();
-  pcs = new SchweppesSign();
-  mts = new MartiniSign();
-  mndrn = new MondrianRectangle();
-  lndnS = new LondonSign();
-  dss = new DimSumSign();
-  hhs = new HiHoSign();
-  hcs = new BakerySign();
-  hnz= new HeinzSign();
-  phs = new PadreSign();
-  bws = new CrownSign();
-  tps = new TestPattern();
-  tcx = new TusconCactus();
-  mbx = new ManhattanBridge();
-  uoh = new UnionOysterHouse();
-  urth = new UrthCafe();
-  mcss = new AleSign();
-  fars = new FarmaciaSign(); // FARMACIA
-  lhws = new LincolnSign(); // LINCOLN
-  drs = new DressSign(); //BRITEX
-  MTA = new MTAsubwayJFK(); // MTA to JFK
-  don = new DonutSign(); // Leonard's Donuts
-  wst=new StagSign(); // Oregon Stag
-  mbs = new MalibuSign(); // MALIBU Sign
-  bre = new BunnySign(); // BUNNY RABBIT EARS
-  jcc = new JerseyCity(); // JERSEY CITY CLOCK
-  dom = new DominoSign(); // Domino Sugar
-  stom = new StomatolSign(); // STOMATOL
-  copeSign = new Cope(); // COPE
-
-
-
+  // Complications are now lazily instantiated in draw()
   window.redirectFired = false;
 
   schweppesLetterColors = [
@@ -336,6 +307,17 @@ function setup() {
       return "";
     }).filter(line => line.length > 0);
   }
+
+  window.isSetupComplete = true;
+  window.activeSignCanvases = [];
+  const origCreateGraphics = window.createGraphics;
+  window.createGraphics = function(w, h, renderer) {
+    let pg = origCreateGraphics(w, h, renderer);
+    if (window.isSetupComplete) {
+      window.activeSignCanvases.push(pg);
+    }
+    return pg;
+  };
 }
 
 function draw() {
@@ -346,17 +328,14 @@ function draw() {
   var W1 = int(Hsecs / signTime[4]); // signTime 4 =  number of seconds to show each sign
   WhichSign = W1 % 12;
 
-  SwitchSign = WhichSign !== PreviousSign;
-  if (SwitchSign) NewSign = true;
-  PreviousSign = WhichSign;
 
   clear();
   background(5, 5, 5);
 
   if (signTime[1] === 5) window.redirectFired = false;
-  every6Hours = 1 === signTime[0] % 4 && signTime[1] === 57;
+  let dailyReset = signTime[0] === 3 && signTime[1] === 57;
   if (signTime[1] === 59) window.redirectFired = false;
-  if (every6Hours && signTime[2] < 3) WhichSign = 50;
+  if (dailyReset && signTime[2] < 3) WhichSign = 50;
 
   if( signHour(signTime,  4, 57)) WhichSign = 12;   // HEINZ 
   if( signHour(signTime, 11, 13)) WhichSign = 13;   // OYSTER HOUSE
@@ -386,10 +365,36 @@ function draw() {
 // 5 =london  
 // 8 = helms
 
-  if (window.isDemoMode) {
+  if (window.isFilmMode) {
+    let elapsed = millis() - window.filmModeStartTime;
+    WhichSign = Math.floor(elapsed / 5625) % 32;
+  } else if (window.isDemoMode) {
     let elapsed = millis() - window.demoModeStartTime;
     WhichSign = Math.floor(elapsed / 15000) % 32; // 32 signs (0 to 31), 15s each
+  } else if (window.isCarriageBarnMode) {
+    let elapsed = millis() - window.carriageBarnStartTime;
+    const carriageBarnSigns = [0, 1, 2, 3, 5, 7, 8, 9, 10, 11, 12, 14, 16, 18, 19, 22, 23, 24, 26, 27, 29, 30, 31];
+    const durationPerSign = 180000 / carriageBarnSigns.length; // ~7.8s each to fit the set in 180s total
+    WhichSign = carriageBarnSigns[Math.floor(elapsed / durationPerSign) % carriageBarnSigns.length];
   }
+
+  SwitchSign = WhichSign !== currentSignIndex;
+  if (SwitchSign) {
+    if (window.activeSignCanvases) {
+      window.activeSignCanvases.forEach(pg => { if (pg && typeof pg.remove === 'function') pg.remove(); });
+      window.activeSignCanvases = [];
+    }
+    
+    let SignClass = SignClasses[WhichSign];
+    if (SignClass) {
+      currentSignInstance = new SignClass();
+    } else {
+      currentSignInstance = null;
+    }
+    currentSignIndex = WhichSign;
+    NewSign = true;
+  }
+  
   // Here we are fixing these problems
 //////////////////////////////////////////////////////////////////////////
 // frameRate(15);
@@ -407,42 +412,12 @@ if (WhichSign===24) frameRate(40)
     OysterReset = true;
   }
 
-  if (WhichSign === 0) wps.render(signTime); // WALLAUER
-  if (WhichSign === 1) {
-    cs.increment();
-    // frameRate(10)
-    cs.render(signTime); //CITGO
+  if (currentSignInstance) {
+    if (WhichSign === 1 && typeof currentSignInstance.increment === 'function') {
+      currentSignInstance.increment();
+    }
+    currentSignInstance.render(signTime);
   }
-  if (WhichSign === 2) bcs.render(signTime);    // BOND
-  if (WhichSign === 3) pcs.render(signTime);    // SCHWEPPES
-  if (WhichSign === 4) mts.render(signTime);    // MARTINI
-  if (WhichSign === 5) lndnS.render(signTime);  // LONDON
-  if (WhichSign === 6) dss.render(signTime);    // DIM SUM
-  if (WhichSign === 7) hhs.render(signTime);    // HIHO
-  if (WhichSign === 8) hcs.render(signTime);    // HELMS
-  if (WhichSign === 9) phs.render(signTime);    // PADRE
-  if (WhichSign === 10) bws.render(signTime);   // BEST WESTERN
-  if (WhichSign === 11) tps.render(signTime);   // TEST PATTERN
-  if (WhichSign === 12) hnz.render(signTime);   // HEINZ BOTTLE
-  if (WhichSign === 13) uoh.render(signTime);   // UNION OYSTER HOUSE
-  if (WhichSign === 14) urth.render(signTime);  // URTH
-  if (WhichSign === 15) mcss.render(signTime);  // McSorley
-  if (WhichSign === 16) fars.render(signTime);  // FARMACIA
-  if (WhichSign === 17) hf.render(signTime);    // HERCULES
-  if (WhichSign === 18) lhws.render(signTime);  // LINCOLN
-  if (WhichSign === 19) mndrn.render(signTime); // MONDRIAN
-  if (WhichSign === 20) bre.render(signTime);   // STEAMBOAT RABBIT EARS
-  if (WhichSign === 21) tcx.render(signTime);   // TUSCON CACTUS
-  if (WhichSign === 22) mbx.render(signTime);   // MANHATTAN BRIDGE
-  if (WhichSign === 23) drs.render(signTime);   // BRITEX FABRICS
-  if (WhichSign === 24) MTA.render(signTime);   // JFK SUBWAY
-  if (WhichSign === 25) don.render(signTime);   // LEONARD'S DONUTS
-  if (WhichSign === 26) wst.render(signTime);   // OREGON WHITE STAG
-  if (WhichSign === 27) mbs.render(signTime);   // MALIBU
-  if (WhichSign === 29) jcc.render(signTime);   // JERSEY CITY CLOCK
-  if (WhichSign === 28) dom.render(signTime);   // DOMINO SUGAR
-  if (WhichSign === 30) stom.render(signTime); // STOMATOL
-  if (WhichSign === 31) copeSign.render(signTime); // COPE
 
    
   // if (WhichSign > 48 && !window.redirectFired) {
@@ -550,16 +525,50 @@ function newNeon3(unit,cycles, n,outColor,inColor,wig,swK){
 // Global hotkeys
 window.isDemoMode = false;
 window.demoModeStartTime = 0;
+window.isFilmMode = false;
+window.filmModeStartTime = 0;
+window.isCarriageBarnMode = false;
+window.carriageBarnStartTime = 0;
 
 function keyPressed() {
   // Ctrl + J to toggle Demo Mode
   if (keyIsDown(CONTROL) && (key === 'j' || key === 'J')) {
     window.isDemoMode = !window.isDemoMode;
     if (window.isDemoMode) {
+      window.isFilmMode = false;
+      window.isCarriageBarnMode = false;
       window.demoModeStartTime = millis();
       console.log("Demo Mode ON: Showing each complication for 15s");
     } else {
       console.log("Demo Mode OFF");
+    }
+    return false; // Prevent default browser behavior
+  }
+  
+  // Ctrl + F to toggle Film Mode
+  if (keyIsDown(CONTROL) && (key === 'f' || key === 'F')) {
+    window.isFilmMode = !window.isFilmMode;
+    if (window.isFilmMode) {
+      window.isDemoMode = false;
+      window.isCarriageBarnMode = false;
+      window.filmModeStartTime = millis();
+      console.log("Film Mode ON: Showing each complication for 5.625s");
+    } else {
+      console.log("Film Mode OFF");
+    }
+    return false; // Prevent default browser behavior
+  }
+  
+  // Ctrl + B to toggle Carriage Barn Mode
+  if (keyIsDown(CONTROL) && (key === 'b' || key === 'B')) {
+    window.isCarriageBarnMode = !window.isCarriageBarnMode;
+    if (window.isCarriageBarnMode) {
+      window.isDemoMode = false;
+      window.isFilmMode = false;
+      window.carriageBarnStartTime = millis();
+      console.log("Carriage Barn Mode ON: Showing selected complications for 180s");
+    } else {
+      console.log("Carriage Barn Mode OFF");
     }
     return false; // Prevent default browser behavior
   }

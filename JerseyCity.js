@@ -22,13 +22,20 @@ class JerseyCity {
     
       this.theRungs=[]
       this.rungCount=12
-      for (i=0; i<this.rungCount*2;i++){
-        var YlevelSIN=((abs((this.rungCount*2)-i))-this.rungCount)/this.rungCount
-        this.theRungs[i]=this.drawRung(YlevelSIN,100,i)
-      }
-      this.theRungs2=[]
-      this.fillInRungs=[.82,.89,.94,.975, .994,1, -.82, -.89, -.94, -.975, -.994]    
-      for (i=0;i<this.fillInRungs.length;i++) this.theRungs2[i]=this.drawRung(this.fillInRungs[i],100,i)
+      
+      this.staticBg = createGraphics(this.WW, this.WH);
+      this.staticBg.translate(this.WW / 2, this.WH / 2 - 2 * this.unit);
+      
+      this.foregroundBg = createGraphics(this.WW, this.WH);
+      this.foregroundBg.translate(this.WW / 2, this.WH / 2 - 2 * this.unit);
+      
+      this.girdersStatic();
+      this.displayRungsStatic();
+      this.octagonLinesStatic();
+      
+      this.bulbOff = this.createLightBulb(205);
+      this.bulbOn = this.createLightBulb(260);
+
       this.drawHands()        
     }  
    
@@ -201,28 +208,29 @@ class JerseyCity {
       pop()
       
     }
-    octagonLines(){
-    stroke(200)   ////////////////////// DISTINCT LINES AROUND THE OCTAGON
-      strokeWeight(this.unit/20)
-      for(var i=0;i<8;i++)   {line(
+    octagonLinesStatic(){
+      this.foregroundBg.stroke(200)   ////////////////////// DISTINCT LINES AROUND THE OCTAGON
+      this.foregroundBg.strokeWeight(this.unit/20)
+      for(var i=0;i<8;i++)   {
+        this.foregroundBg.line(
               this.raydius*cos(this.radianArrayOuter[i]),   this.raydius*sin(this.radianArrayOuter[i]),
               this.raydius*cos(this.radianArrayOuter[i+1]), this.raydius*sin(this.radianArrayOuter[i+1])        )
       }
     }
-    girders(){
-      push()
-      fill(50)
-      strokeWeight(0)
+    girdersStatic(){
+      this.staticBg.push()
+      this.staticBg.fill(50)
+      this.staticBg.strokeWeight(0)
       
       for(var i=-1;i<2;i=i+2){
-        rect(this.unit*i*8,0,-i*this.unit*.5,this.unit*50)
-        rect(this.unit*i*3.2,this.unit*-7,-i*this.unit*.5,this.unit*50)
+        this.staticBg.rect(this.unit*i*8,0,-i*this.unit*.5,this.unit*50)
+        this.staticBg.rect(this.unit*i*3.2,this.unit*-7,-i*this.unit*.5,this.unit*50)
       }
-      strokeWeight(this.unit/5)
-      stroke(50)
-      line(-this.unit*7.8,this.unit*2,this.unit*7.8,-this.unit*2)
-      line(this.unit*7.8,this.unit*2,-this.unit*7.8,-this.unit*2)
-      pop()
+      this.staticBg.strokeWeight(this.unit/5)
+      this.staticBg.stroke(50)
+      this.staticBg.line(-this.unit*7.8,this.unit*2,this.unit*7.8,-this.unit*2)
+      this.staticBg.line(this.unit*7.8,this.unit*2,-this.unit*7.8,-this.unit*2)
+      this.staticBg.pop()
     }
 
     drawRung(YlevelSIN, colorOI ,i){
@@ -248,51 +256,59 @@ class JerseyCity {
         this.steps.line(x1+xSwivel,y2,x2+xSwivel,y2)
         this.steps.line(x2,y1,x2+xSwivel,y2)
       }
-      return this.steps
+      var img = this.steps.get();
+      this.steps.remove();
+      return img;
 
     }
 
-    displayRungs(){
+    displayRungsStatic(){
       var raydius = this.unit*7.3 
-      strokeWeight(20)
-      fill(0,0,155)
+      this.foregroundBg.strokeWeight(20)
+      this.foregroundBg.fill(0,0,155)
      
       for (var i=3; i<(this.rungCount*2)-2;i++){
           var YlevelSIN=((abs((this.rungCount*2)-i))-this.rungCount)/this.rungCount
           var COSCOS = cos(asin(YlevelSIN))
           var SINSIN = sin(asin(YlevelSIN))
           
-          push()
-          translate(-.575*this.unit,-.5*this.unit)
-          image(this.theRungs[i],raydius*COSCOS, raydius*SINSIN)  //,this.steps.width,this.steps.height)
+          var rungImg = this.drawRung(YlevelSIN, 100, i);
           
-          translate(1.175*this.unit,1*this.unit)
+          this.foregroundBg.push()
+          this.foregroundBg.translate(-.575*this.unit,-.5*this.unit)
+          this.foregroundBg.image(rungImg,raydius*COSCOS, raydius*SINSIN)  //,this.steps.width,this.steps.height)
           
-          rotate(PI)
-          image(this.theRungs[i],raydius*COSCOS, raydius*SINSIN)  //,this.steps.width,this.steps.height)
+          this.foregroundBg.translate(1.175*this.unit,1*this.unit)
           
-          pop()  
+          this.foregroundBg.rotate(PI)
+          this.foregroundBg.image(rungImg,raydius*COSCOS, raydius*SINSIN)  //,this.steps.width,this.steps.height)
+          
+          this.foregroundBg.pop()  
         }  
         
-        for (i=0; i<this.theRungs2.length;i++){
-          YlevelSIN=this.fillInRungs[i]
+        this.fillInRungs=[.82,.89,.94,.975, .994,1, -.82, -.89, -.94, -.975, -.994]
+        for (var i=0; i<this.fillInRungs.length;i++){
+          var YlevelSIN=this.fillInRungs[i]
           var COSCOS = cos(asin(YlevelSIN))
           var SINSIN = sin(asin(YlevelSIN))
           
-          push()
-          translate(-.575*this.unit,-.5*this.unit)
-          image(this.theRungs2[i],raydius*COSCOS, raydius*SINSIN)  //,this.steps.width,this.steps.height)
+          var rungImg = this.drawRung(YlevelSIN, 100, i);
+          
+          this.foregroundBg.push()
+          this.foregroundBg.translate(-.575*this.unit,-.5*this.unit)
+          this.foregroundBg.image(rungImg,raydius*COSCOS, raydius*SINSIN)  //,this.steps.width,this.steps.height)
         
-          translate(1.175*this.unit,1*this.unit)
-          rotate(PI)
-          image(this.theRungs2[i],raydius*COSCOS, raydius*SINSIN)  //,this.steps.width,this.steps.height)     
-          pop()  
+          this.foregroundBg.translate(1.175*this.unit,1*this.unit)
+          this.foregroundBg.rotate(PI)
+          this.foregroundBg.image(rungImg,raydius*COSCOS, raydius*SINSIN)  //,this.steps.width,this.steps.height)     
+          this.foregroundBg.pop()  
         } 
     }
 
     
     redOblisks(xxx){
       var percentSeconds=(Date.now()%60000)/60000
+      this.diamond5.clear();
       this.diamond5.fill(237,percentSeconds*237,0, 255);
       this.diamond5.quad(this.unit * .375, this.unit*.8, this.unit * .625, this.unit*.8, this.unit * .575, this.unit * .15, this.unit*.425, this.unit * .15);
       this.diamond5.triangle(this.unit * .375, this.unit*.8,this.unit*.5,this.unit,this.unit * .625, this.unit*.8)
@@ -332,36 +348,57 @@ class JerseyCity {
         line(-this.unit*lineLR, this.unit*i/5,this.unit*lineLR, this.unit*i/5)   }        /////   END OF HORIZONTAL LINES IN THE FACE
     }
 
+    createLightBulb(bl) {
+      var bulb = createGraphics(this.unit / 3, this.unit / 3);
+      bulb.translate(bulb.width / 2, bulb.height / 2);
+      for (var k = 0; k < 10; k++) {
+        var cycles = 10;
+        var wig = 0.1;
+        var swK = 0.6;
+        var outColor = [bl/1.5,bl/1.5,0];
+        var inColor = [bl,bl,0];
+        var lnCycles = log(cycles*cycles);
+        var pct = log(max(1,k*k))/lnCycles;
+        var wiggle = [(1-wig)+random(wig*2),(1-wig)+random(wig*2),(1-wig)+random(wig*2)];
+        var SW = this.unit*(cycles-k)*swK*.01;
+        bulb.strokeWeight(SW);
+        var rInOutDelta = wiggle[0]*(inColor[0]-outColor[0]);
+        var gInOutDelta = wiggle[1]*(inColor[1]-outColor[1]);
+        var bInOutDelta = wiggle[2]*(inColor[2]-outColor[2]);
+        var activeColor = [outColor[0]+rInOutDelta*pct,outColor[1]+gInOutDelta*pct,outColor[2]+bInOutDelta*pct];
+        bulb.stroke(activeColor);
+        bulb.fill(activeColor);
+        bulb.ellipse(0, 0, this.unit*.1*(10-k)/10);
+      }
+      var img = bulb.get();
+      bulb.remove();
+      return img;
+    }
+
     blinking264(){
-    var lightRadius=this.raydius*.98
-    strokeWeight(0)
-    fill(255,255,0)
-    for (var i=0;i<8;i++){
-      var rise=(lightRadius*(sin(this.radianArrayOuter[i+1])-sin(this.radianArrayOuter[i])))/33
-      var run=(lightRadius*(cos(this.radianArrayOuter[i+1])-cos(this.radianArrayOuter[i])))/33
-      for(var j=0;j<33;j++){
-        
-        var bl=205+(55*(random(10)%2))
-        for (var k=0;k<10;k++){
-          newNeon2(this.unit,10,k,[bl/1.5,bl/1.5,0],[bl,bl,0],.1,.6)
-          ellipse((run*j)+lightRadius*cos(this.radianArrayOuter[i]), (rise*j)+lightRadius*sin(this.radianArrayOuter[i]),this.unit/12)
+      var lightRadius=this.raydius*.98
+      imageMode(CENTER);
+      for (var i=0;i<8;i++){
+        var rise=(lightRadius*(sin(this.radianArrayOuter[i+1])-sin(this.radianArrayOuter[i])))/33
+        var run=(lightRadius*(cos(this.radianArrayOuter[i+1])-cos(this.radianArrayOuter[i])))/33
+        for(var j=0;j<33;j++){
+          var bl=205+(55*(random(10)%2))
+          var bulb = bl > 240 ? this.bulbOn : this.bulbOff;
+          image(bulb, (run*j)+lightRadius*cos(this.radianArrayOuter[i]), (rise*j)+lightRadius*sin(this.radianArrayOuter[i]));
         }
       }
+      imageMode(CORNER);
     }
-  }
  
     sixtyMinuteLights(xxx,yyy){
       var raydius=6.625
+      imageMode(CENTER);
       for (var i=0;i<60;i++){        
         var bl=200+(55*(random(1000)%2))
-        fill(bl,bl,0)  
-
-        for (var k =0; k<10;k++){
-          strokeWeight(0)
-          newNeon2(this.unit,10,k,[bl/2,bl/2,0],[bl,bl,0],.1,.6)
-          ellipse(this.unit*raydius*cos(i*6*PI/180),this.unit*raydius*sin(i*6*PI/180), this.unit*.1*(10-k)/10)
-        }
+        var bulb = bl > 240 ? this.bulbOn : this.bulbOff;
+        image(bulb, this.unit*raydius*cos(i*6*PI/180), this.unit*raydius*sin(i*6*PI/180));
       }
+      imageMode(CORNER);
     }
 
     render(signTime) {
@@ -376,15 +413,23 @@ class JerseyCity {
       translate(windowWidth / 2 , windowHeight / 2)   ////  CENTER THE WORK
       
       translate(0,-2*this.unit) // move to the middle of the clock
-      this.girders()     ///// GIRDERS
+      
+      push()
+      translate(-this.WW/2, -this.WH/2 + 2*this.unit)
+      image(this.staticBg, 0, 0);
+      pop()
+      
       this.horizontalLinesBehindClock(thisPct/360)
       this.blackOutCircle(xxx,yyy)
+      
+      push()
+      translate(-this.WW/2, -this.WH/2 + 2*this.unit)
+      image(this.foregroundBg, 0, 0);
+      pop()
       this.blinking264()     //// MINI BLINKING LIGHTS ALONG CIRCUMFERENCE
       this.sixtyMinuteLights(xxx)    //////////  INNER MINUTE MARKERS these flicker
       this.redOblisks()       ///////// 5 MINUTE RED OBLISKS = these change color over the course of 1 minute
-      this.displayRungs()        
       this.displayHands(this.hourHand, this.minuteHand, signTime,xxx)
-      this.octagonLines()
       
       translate(0,2*this.unit)
       var xk=17

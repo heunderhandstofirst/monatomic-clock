@@ -2,7 +2,7 @@
 class BunnySign {
     constructor() {
       background(0);
-      this.Wwh = [28, 26]; // RELATIVE WIDTH and HEIGHT OF SIGN
+      this.Wwh = [28, 23]; // RELATIVE WIDTH and HEIGHT OF SIGN
       this.WH = windowHeight;
       this.WW = min(this.WH * (this.Wwh[0] / this.Wwh[1]), windowWidth) * 0.97;
       this.WH = (this.WW * this.Wwh[1]) / this.Wwh[0];

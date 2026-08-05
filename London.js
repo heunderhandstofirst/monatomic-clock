@@ -32,7 +32,7 @@ class LondonSign {
     this.midYWH = this.WH / 2;
     this.midXWH = this.WW / 2;
     
-    this.CircCent = 0.15;
+    this.CircCent = 0.175;
   
     floaters(signTime, this.PickleData, this.WH, this.step, this.iris);  // FLOATS THE GHERKIN AND THE EYE BEHIND THE TOWER
     
@@ -67,7 +67,7 @@ class LondonSign {
       this.Tower3 = initialize0HS(3);
     }
 
-    for (k = 0; k < 2; k++) {
+    for (var k = 0; k < 2; k++) {
       if (k === 0) {
         LetImgA = [this.Tower0, this.Tower1][order];
         LetImgB = [this.Tower2, this.Tower3][order];
@@ -109,7 +109,7 @@ function colorAltTower(altTower99, AcolorX, bckGrnd, Ymid, midYWH, midXWH, CircC
   altTower99.stroke(getThisSideBackGround(bckGrnd));
   altTower99.rect(0, 0, 2000, 2000);
   altTower99.push();
-  altTower99.translate(0, towerWidth * 0.085);
+  altTower99.translate(0, 0);
 
   drawOXOgrid(Ymid, letterWidth, altTower99, midYWH, midXWH, towerWidth);
   formCircles(letterWidth, altTower99, CircCent, towerWidth, bckGrnd);  
@@ -155,7 +155,7 @@ function floaters(signTime, PickleData, WH, step, iris) {
 
     // 40 second full rotation
     var smoothAngle = ((Date.now() % 40000) / 40000) * TWO_PI;
-    drawPickle(PickleData, LLLL, 50, smoothAngle);
+    drawPickle(PickleData, LLLL, 0, smoothAngle);
   } else {
     // Eye specific travel distance based on its much wider radius
     var innerCir = windowHeight / 6;

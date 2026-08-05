@@ -131,7 +131,7 @@ function theXbox(boxRadius, X, order, newColorX,  xMID,WH) {
     push();
 
     strokeWeight(lineStrokeWeight[d ]);
-    for (k = 0; k < 23; k++)
+    for (k = 0; k < 24; k++)
       if (k !== 0 && k !== 17) line(GGG[k][0], GGG[k][1], GGG[k][2], GGG[k][3]);
 
     var colorBlock=order[d]%2

@@ -27,7 +27,20 @@ class CitgoSign2 {
       this.NeonDim=25
       this.whiteBlink=[]
       for ( var t=0;t<this.NeonDim;t++){ 
-          this.whiteBlink[t]=newNeon3(this.unit,this.NeonDim,t,0,255,0,1.5)                }
+          this.whiteBlink[t]=newNeon3(this.unit,this.NeonDim,t,0,255,0,1.15)                }
+          
+      // Pre-render the neon line to optimize performance
+      this.maxStroke = this.whiteBlink[0][1];
+      this.lineLen = this.rectDim * 0.99 - this.unit * 0.1;
+      let gw = ceil(this.lineLen + this.maxStroke + 2);
+      let gh = ceil(this.maxStroke * 2 + 2);
+      this.lineGraphics = createGraphics(gw, gh);
+      this.lineGraphics.translate(this.maxStroke / 2 + 1, this.maxStroke + 1);
+      for (var t = 0; t < this.NeonDim; t++) {
+        this.lineGraphics.stroke(this.whiteBlink[t][0]);
+        this.lineGraphics.strokeWeight(this.whiteBlink[t][1]);
+        this.lineGraphics.line(0, 0, this.lineLen, 0);
+      }
         
     }
   
@@ -51,14 +64,11 @@ class CitgoSign2 {
       var wiggle=[]
       for (var k=0;k<nLines;k++) wiggle[k]=(-1+random(2))/40
      
-      for (var t=0;t<this.NeonDim;t++){ 
-        stroke(this.whiteBlink[t][0])
-        strokeWeight(this.whiteBlink[t][1])   
-        for (var k=0;k<nLines;k++){
-            var yBar=(this.rectDim*(.5+k +wiggle[k]))/this.NumLines
-            line(this.unit*.1,yBar,this.rectDim*.99,yBar)
+      var xStart = this.unit * 0.1 - (this.maxStroke / 2 + 1);
+      for (var k=0;k<nLines;k++){
+          var yBar=(this.rectDim*(.5+k +wiggle[k]))/this.NumLines
+          image(this.lineGraphics, xStart, yBar - (this.maxStroke + 1));
       }
-    }
       ////////////////////////////////////////////
 
       ////////////////  BLINKING MINUTES
@@ -80,7 +90,7 @@ class CitgoSign2 {
       const BVC0=multArray(this.rectDim,[.205, .40, .6, .795])
       const BVC1=multArray(this.rectDim, [.21, .405, .595, .79])
       const BVC2 =multArray(this.rectDim, [.217, .41, .59, .783])    
-      for(t=1;t<5;t++){
+      for(var t=1;t<5;t++){
         yBar=(3*this.rectDim/this.NumLines)
         var xBar=(t*this.rectDim/5)
         line(xBar,yBar,xBar,yBar+(this.rectDim*37/this.NumLines))
@@ -119,11 +129,12 @@ class CitgoSign2 {
       // Black Triangle to blank out white lines
       fill(1);
       stroke(1, 1, 1);
+      strokeWeight(this.whiteBlink[this.NeonDim - 1][1] * 2.5);
   
       var MidXadj = this.unit/20;
       var MidYadj = MidXadj * MidXadj/2;
       var MidY = windowHeight * 0.45;
-      BotY = MidY + 0.5 * (Tcount * this.RadiusInc); //+ Adjuster * 20 * this.RadiusInc;
+      var BotY = MidY + 0.5 * (Tcount * this.RadiusInc); //+ Adjuster * 20 * this.RadiusInc;
       var XXXX = this.RadiusInc * 10 * sqrt(3);
       triangle(this.MidX, MidY - Tcount * this.RadiusInc, this.MidX - XXXX, BotY, this.MidX + XXXX, BotY);
   

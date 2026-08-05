@@ -30,7 +30,7 @@ class Cope {
       { name: "helms", wall: "Left", x: 3, y: 80, size: "small" },
       { name: "hiho", wall: "Left", x: 32, y: 4 },
       { name: "portland", wall: "Left", x: 40, y: 40 },
-      { name: "urth", wall: "Left", x: 23, y: 53, size: "span" },
+      { name: "urth", wall: "Left", x: 23, y: 33, size: "span_150" },
       { name: "britex", wall: "Left", x: 65, y: 8, size: "large_150" },
       { name: "bond", wall: "Right", x: 1, y: 3 },
       { name: "citgo", wall: "Right", x: 30, y: 30 },
@@ -480,6 +480,7 @@ class Cope {
         let h = stdH;
         if (p.size === "small") { w = stdW * 0.75; h = stdH * 0.75; }
         else if (p.size === "span") { w = spanW; h = stdH; }
+        else if (p.size === "span_150") { w = spanW * 1.5; h = stdH * 1.5; }
         else if (p.size === "span_40") { w = spanW * 0.4; h = stdH * 0.4; }
         else if (p.size === "large_150") { w = stdW * 1.5; h = stdH * 1.5; }
         let isRight = (p.wall === "Right");
