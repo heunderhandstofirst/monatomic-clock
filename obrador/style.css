@@ -652,3 +652,65 @@ footer {
         display: none;
     }
 }
+
+/* Tooltip Styles */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-content {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    border: 1px solid var(--grid-color);
+    padding: 1.5rem;
+    border-radius: 4px;
+    width: 450px;
+    max-width: 90vw;
+    z-index: 100;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    text-align: left;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    pointer-events: none;
+}
+
+.tooltip-container:hover .tooltip-content {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(-15px);
+}
+
+.tooltip-content h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    text-align: center;
+    line-height: 1.4;
+}
+
+.tooltip-content p {
+    margin-bottom: 1rem;
+}
+
+.tooltip-content ul {
+    margin-left: 1.5rem;
+    margin-bottom: 0;
+}
+
+.tooltip-content li {
+    margin-bottom: 0.8rem;
+}
+
+@media (max-width: 768px) {
+    .tooltip-content {
+        left: 50%;
+    }
+}
