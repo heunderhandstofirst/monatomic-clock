@@ -570,6 +570,14 @@ footer {
     opacity: 0.8;
 }
 
+.footer-society {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
 .footer-contact {
     display: flex;
     gap: var(--spacing-md);
