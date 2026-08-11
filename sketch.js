@@ -32,7 +32,8 @@ const SignClasses = {
   28: DominoSign,
   29: JerseyCity,
   30: StomatolSign,
-  31: Cope
+  31: Cope,
+  32: AmpelmannSign
 };
 
 let currentSignInstance = null;
@@ -357,6 +358,7 @@ function draw() {
   if( signHour(signTime,  1,  9)) WhichSign = 29;   // JERSEY CITY CLOCK
   if( signHour(signTime,  3, 11)) WhichSign = 30;   // STOMATOL
   if( signHour(signTime,  5, 12)) WhichSign = 31;   // COPE
+  if( signHour(signTime, 20, 26)) WhichSign = 32;   // AMPELMANN
   
 //////////////////////////////////////////////////////////////////////////
 // Which signTime = [hour(), minute(), second(), 60, 300];
@@ -377,6 +379,8 @@ function draw() {
     const durationPerSign = 180000 / carriageBarnSigns.length; // ~7.8s each to fit the set in 180s total
     WhichSign = carriageBarnSigns[Math.floor(elapsed / durationPerSign) % carriageBarnSigns.length];
   }
+
+  // WhichSign = 32; // Temporarily set for design
 
   SwitchSign = WhichSign !== currentSignIndex;
   if (SwitchSign) {
@@ -419,8 +423,7 @@ if (WhichSign===24) frameRate(40)
     currentSignInstance.render(signTime);
   }
 
-   
-  // if (WhichSign > 48 && !window.redirectFired) {
+    // if (WhichSign > 48 && !window.redirectFired) {
   //   window.redirectFired = true;
   //   document.location = "https://q4v86.csb.app/";
   // }
