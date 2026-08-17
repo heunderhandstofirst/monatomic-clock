@@ -96,7 +96,7 @@ class StagSign {
     }
   }
   function stagSpeckle(ssW, ssH, stagOnly, blinkMonth) {
-    let StagLines = [];
+    var StagLines = [];
     yB = createGraphics(ssW, ssH);
     yB.strokeWeight(windowWidth / 256);
   
@@ -117,6 +117,7 @@ class StagSign {
       img.mask(stagOnly);
       StagLines[k] = img;
     }
+    yB.remove();
     return StagLines;
   }
   

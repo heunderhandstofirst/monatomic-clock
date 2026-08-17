@@ -454,12 +454,12 @@ function span2(sqsz, Ocenter, mse) {
     p2 = createVector(XL[k], YL);
 
     for (var t = 0; t < 81; t++) {
-      let x1 = lerp(p0.x, p1.x, t / 80);
-      let y1 = lerp(p0.y, p1.y, t / 80);
-      let x2 = lerp(p1.x, p2.x, t / 80);
-      let y2 = lerp(p1.y, p2.y, t / 80);
-      let x = lerp(x1, x2, t / 80);
-      let y = lerp(y1, y2, t / 80);
+      var x1 = lerp(p0.x, p1.x, t / 80);
+      var y1 = lerp(p0.y, p1.y, t / 80);
+      var x2 = lerp(p1.x, p2.x, t / 80);
+      var y2 = lerp(p1.y, p2.y, t / 80);
+      var x = lerp(x1, x2, t / 80);
+      var y = lerp(y1, y2, t / 80);
       bigX[k][t] = x;
       bigY[k][t] = y;
     }
@@ -479,12 +479,12 @@ function span2(sqsz, Ocenter, mse) {
 
     for (var t8 = 0; t8 < 4; t8++) {
       for (t = 0; t < 81; t++) {
-        let tx1 = lerp(t0.x, t1.x, t / 80);
-        let ty1 = lerp(t0.y, t1.y, t / 80);
-        let tx2 = lerp(t1.x, t2.x, t / 80);
-        let ty2 = lerp(t1.y, t2.y, t / 80);
-        let x = lerp(tx1, tx2, t / 80);
-        let y = lerp(ty1, ty2, t / 80);
+        var tx1 = lerp(t0.x, t1.x, t / 80);
+        var ty1 = lerp(t0.y, t1.y, t / 80);
+        var tx2 = lerp(t1.x, t2.x, t / 80);
+        var ty2 = lerp(t1.y, t2.y, t / 80);
+        var x = lerp(tx1, tx2, t / 80);
+        var y = lerp(ty1, ty2, t / 80);
         topX[k][t] = x;
         topY[k][t] = y;
       }
@@ -498,12 +498,12 @@ function span2(sqsz, Ocenter, mse) {
   v1 = createVector(topLR, topYL - sqsz * -vvv);
   v2 = createVector(XR[3], topYR);
 
-  let tx1 = lerp(v0.x, v1.x, ds3);
-  let ty1 = lerp(v0.y, v1.y, ds3);
-  let tx2 = lerp(v1.x, v2.x, ds3);
-  let ty2 = lerp(v1.y, v2.y, ds3);
-  let x = lerp(tx1, tx2, ds3);
-  let y = lerp(ty1, ty2, ds3);
+  var tx1 = lerp(v0.x, v1.x, ds3);
+  var ty1 = lerp(v0.y, v1.y, ds3);
+  var tx2 = lerp(v1.x, v2.x, ds3);
+  var ty2 = lerp(v1.y, v2.y, ds3);
+  var x = lerp(tx1, tx2, ds3);
+  var y = lerp(ty1, ty2, ds3);
 
   push();
   strokeWeight(0);

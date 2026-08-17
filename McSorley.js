@@ -10,11 +10,11 @@ class AleSign {
       (windowWidth - hhh / 0.7) / 2,
       (windowHeight - hhh) / 2   ]; //  THIS IS THE 10 x 7 RECTANGLE with Edging
 
-    var Sign1= loadImage("images/McS32.png")
-    var Sign2= loadImage("images/McS34.png")
-    var Sign4= loadImage("images/McS36.png")
-    var Sign3= loadImage("images/McS37.png")
-    // this.McSsigns = [ loadImage("images/McS32.png"), loadImage("images/McS34.png")];
+    var Sign1= loadImage("images/McSorleys/McS32.png")
+    var Sign2= loadImage("images/McSorleys/McS34.png")
+    var Sign4= loadImage("images/McSorleys/McS36.png")
+    var Sign3= loadImage("images/McSorleys/McS37.png")
+    // this.McSsigns = [ loadImage("images/McSorleys/McS32.png"), loadImage("images/McSorleys/McS34.png")];
     this.McSsigns = [Sign1, Sign2, Sign3, Sign4];
 
     this.signDisplayWidth=this.frame[0]*.95
@@ -123,9 +123,9 @@ function makeDoorMat(frame) {
   var matTB = getTop(frame, [0.89, 0.93]);
   img = createImage(int(matLR[2]), int(matTB[2]));
   img.loadPixels();
-  for (let x = 0; x < img.width; x++) {
-    for (let y = 0; y < img.height; y++) {
-      let a = map(y, 0, img.height, 255, 0);
+  for (var x = 0; x < img.width; x++) {
+    for (var y = 0; y < img.height; y++) {
+      var a = map(y, 0, img.height, 255, 0);
       img.set(x, y, [80, 40, 4, a]);
     }
   }

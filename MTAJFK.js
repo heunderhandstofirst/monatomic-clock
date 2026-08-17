@@ -2,8 +2,8 @@
 class MTAsubwayJFK {
   constructor() {
     this.Bleeker= loadImage("images/Bleeker3.png")
-    this.Shea= loadImage("images/Shea.png")
-    this.Chambers= loadImage("images/Chambers.png")
+    this.Shea= loadImage("images/MTA/Shea.png")
+    this.Chambers= loadImage("images/MTA/Chambers.png")
     this.step = 0;
     this.FAR = displayFarWindow(1, 180,  "Far");
     this.MID = displayFarWindow(1.22, 50,  "Mid");
@@ -16,15 +16,15 @@ class MTAsubwayJFK {
   createGirder2(subwayLine, speed){
     background(120, 50, 20);
     textSize(25)
-    let WH=[windowWidth,windowHeight*1.2]
+    var WH=[windowWidth,windowHeight*1.2]
      
-    let girderSpace = []; 
-    let wireCount = 24;
+    var girderSpace = []; 
+    var wireCount = 24;
     for (var i = 0; i < wireCount; i++) girderSpace[i] = ((0.99 + 0.01 * random(2)) * i * WH[0]) / wireCount;
 
-    let swing = ((this.step * speed) % windowWidth + windowWidth) % windowWidth;
-    let colWidth=WH[0]/ 32
-    let strapX
+    var swing = ((this.step * speed) % windowWidth + windowWidth) % windowWidth;
+    var colWidth=WH[0]/ 32
+    var strapX
     stroke(70, 93, 81);
     strokeWeight(colWidth);
   
@@ -33,7 +33,7 @@ class MTAsubwayJFK {
       line(strapX, -100, strapX, WH[1]); // VERTICAL GIRDERS
     }
 
-    // let wireWidth=WH[1]/96
+    // var wireWidth=WH[1]/96
     stroke(50);
     strokeWeight(WH[1]/96);
     for (var t=0;t<wireCount;t++) line(-100,girderSpace[t],windowWidth*1.1,girderSpace[t])
@@ -47,7 +47,7 @@ class MTAsubwayJFK {
         line(strapX+colWidth/2, girderSpace[t] - 15, strapX+colWidth/2, girderSpace[t] + 15);
       }
     } 
-    let bleekerSwing2 = (-windowWidth*.5) + (((speed * this.step) % windowWidth + windowWidth) % windowWidth) + windowWidth/8;
+    var bleekerSwing2 = (-windowWidth*.5) + (((speed * this.step) % windowWidth + windowWidth) % windowWidth) + windowWidth/8;
     var subwaySign=[this.Bleeker, this.Chambers,this.Shea][subwayLine]
     image(subwaySign,bleekerSwing2-windowWidth,windowHeight/2.5,windowWidth/4,windowWidth/6)
     image(subwaySign,bleekerSwing2-windowWidth/2,windowHeight/2.5,windowWidth/4,windowWidth/6)

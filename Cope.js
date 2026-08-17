@@ -54,33 +54,33 @@ class Cope {
     // prismaticSky(width, height * 0.7, height * 0.2);
 
     push();
-    let bottomW = width * 0.0075; // Width at the bottom
-    let topW = width * 0.002;    // Tapers to a very thin tip
-    let startY = height * 0.60666; // Moved up 6% from 0.66666
-    let endY = height * 0.19;      // Moved up 6% from 0.25
-    let centerX = width / 2;
+    var bottomW = width * 0.0075; // Width at the bottom
+    var topW = width * 0.002;    // Tapers to a very thin tip
+    var startY = height * 0.60666; // Moved up 6% from 0.66666
+    var endY = height * 0.19;      // Moved up 6% from 0.25
+    var centerX = width / 2;
 
-    let blueStartY = endY - height * 0.05;
-    let blueLength = width * 0.1;
-    let bdx = blueLength * 0.7071; // cos(45 deg)
-    let bdy = blueLength * 0.7071; // sin(45 deg)
-    let leftInnerX = centerX - topW / 2;
-    let rightInnerX = centerX + topW / 2;
-    let leftOutX = leftInnerX - bdx;
-    let leftOutY = blueStartY + bdy;
-    let rightOutX = rightInnerX + bdx;
-    let rightOutY = blueStartY + bdy;
+    var blueStartY = endY - height * 0.05;
+    var blueLength = width * 0.1;
+    var bdx = blueLength * 0.7071; // cos(45 deg)
+    var bdy = blueLength * 0.7071; // sin(45 deg)
+    var leftInnerX = centerX - topW / 2;
+    var rightInnerX = centerX + topW / 2;
+    var leftOutX = leftInnerX - bdx;
+    var leftOutY = blueStartY + bdy;
+    var rightOutX = rightInnerX + bdx;
+    var rightOutY = blueStartY + bdy;
 
-    let oldS = width * 0.15; // Reduced from 0.25 to bring lines 5 and 6 closer to center
-    let oldDiamondCenterY = startY + (oldS * Math.SQRT2) / 2;
-    let oldDiamondLeftX = centerX - (oldS * Math.SQRT2) / 2;
-    let oldDiamondRightX = centerX + (oldS * Math.SQRT2) / 2;
+    var oldS = width * 0.15; // Reduced from 0.25 to bring lines 5 and 6 closer to center
+    var oldDiamondCenterY = startY + (oldS * Math.SQRT2) / 2;
+    var oldDiamondLeftX = centerX - (oldS * Math.SQRT2) / 2;
+    var oldDiamondRightX = centerX + (oldS * Math.SQRT2) / 2;
 
     // Helper function to draw a seamless pill shape
-    let drawThermometer = (x, yBottom, yTop, wBottom, wTop) => {
-      let R = wBottom / 2;
-      let r = wTop / 2;
-      let d = yBottom - yTop;
+    var drawThermometer = (x, yBottom, yTop, wBottom, wTop) => {
+      var R = wBottom / 2;
+      var r = wTop / 2;
+      var d = yBottom - yTop;
       
       if (d <= 0.01) {
         drawingContext.beginPath();
@@ -89,7 +89,7 @@ class Cope {
         return;
       }
       
-      let theta = Math.asin((R - r) / d);
+      var theta = Math.asin((R - r) / d);
       
       drawingContext.beginPath();
       // Bottom arc, from right tangent to left tangent (clockwise)
@@ -106,14 +106,14 @@ class Cope {
     noFill();
     strokeWeight(width * 0.005);
     
-    for (let i = 0; i < 6; i++) {
-      let d = width * (0.11 - i * 0.012); // Tightly packed: 0.006 radius step vs 0.005 stroke
-      let h = (i * 60 + (millis() / 20)) % 360; 
+    for (var i = 0; i < 6; i++) {
+      var d = width * (0.11 - i * 0.012); // Tightly packed: 0.006 radius step vs 0.005 stroke
+      var h = (i * 60 + (millis() / 20)) % 360; 
       
       stroke(h, 100, 60, 1);
       drawingContext.shadowBlur = 25; // More vibrant neon glow
       drawingContext.shadowColor = color(h, 100, 50, 1).toString();
-      let circleOffsetY = height * 0.03; // Move circles down slightly less (up 1%)
+      var circleOffsetY = height * 0.03; // Move circles down slightly less (up 1%)
       circle(centerX, blueStartY + circleOffsetY, d);
     }
     pop();
@@ -132,9 +132,9 @@ class Cope {
 
     // Calculate current temperature based on seconds
     // Raise and lower over the course of a minute (0->60->0 mapped to sec)
-    let sec = signTime[2] + (millis() % 1000) / 1000;
-    let t = (sec < 30) ? (sec * 2) : ((60 - sec) * 2); 
-    let currentTemp = -20 + (5 / 6) * t; 
+    var sec = signTime[2] + (millis() % 1000) / 1000;
+    var t = (sec < 30) ? (sec * 2) : ((60 - sec) * 2); 
+    var currentTemp = -20 + (5 / 6) * t; 
 
     // Clamp currentTemp just in case
     currentTemp = constrain(currentTemp, -20, 30);
@@ -145,38 +145,38 @@ class Cope {
     textFont('sans-serif');
     
     randomSeed(12345); // Stable randomness for markers
-    for (let T = -20; T <= 30; T++) {
-      let isMajor = (T % 10 === 0);
-      let isMinor = (T % 5 === 0 && !isMajor);
+    for (var T = -20; T <= 30; T++) {
+      var isMajor = (T % 10 === 0);
+      var isMinor = (T % 5 === 0 && !isMajor);
       
-      let lineLength = isMajor ? width * 0.03 : (isMinor ? width * 0.02 : width * 0.01);
+      var lineLength = isMajor ? width * 0.03 : (isMinor ? width * 0.02 : width * 0.01);
       strokeWeight(isMajor ? 3 : 1.5);
       
-      let currentY = map(T, -20, 30, startY, endY) + random(-height * 0.00075, height * 0.00075);
-      let currentW = map(T, -20, 30, bottomW, topW) + random(-width * 0.0005, width * 0.0005);
+      var currentY = map(T, -20, 30, startY, endY) + random(-height * 0.00075, height * 0.00075);
+      var currentW = map(T, -20, 30, bottomW, topW) + random(-width * 0.0005, width * 0.0005);
       
       // 45 degrees downwards and outwards, with slight angle and length randomness (reduced 75%)
-      let angleL = Math.PI / 4 + random(-0.0375, 0.0375); 
-      let lenL = lineLength * random(0.95, 1.05);
-      let dxLeft = lenL * Math.cos(angleL);
-      let dyLeft = lenL * Math.sin(angleL);
+      var angleL = Math.PI / 4 + random(-0.0375, 0.0375); 
+      var lenL = lineLength * random(0.95, 1.05);
+      var dxLeft = lenL * Math.cos(angleL);
+      var dyLeft = lenL * Math.sin(angleL);
       
-      let angleR = Math.PI / 4 + random(-0.0375, 0.0375);
-      let lenR = lineLength * random(0.95, 1.05);
-      let dxRight = lenR * Math.cos(angleR);
-      let dyRight = lenR * Math.sin(angleR);
+      var angleR = Math.PI / 4 + random(-0.0375, 0.0375);
+      var lenR = lineLength * random(0.95, 1.05);
+      var dxRight = lenR * Math.cos(angleR);
+      var dyRight = lenR * Math.sin(angleR);
       
-      let leftX1 = centerX - currentW / 2;
-      let leftY1 = currentY;
-      let leftX2 = leftX1 - dxLeft;
-      let leftY2 = leftY1 + dyLeft;
+      var leftX1 = centerX - currentW / 2;
+      var leftY1 = currentY;
+      var leftX2 = leftX1 - dxLeft;
+      var leftY2 = leftY1 + dyLeft;
       
-      let rightX1 = centerX + currentW / 2;
-      let rightY1 = currentY;
-      let rightX2 = rightX1 + dxRight;
-      let rightY2 = rightY1 + dyRight;
+      var rightX1 = centerX + currentW / 2;
+      var rightY1 = currentY;
+      var rightX2 = rightX1 + dxRight;
+      var rightY2 = rightY1 + dyRight;
       
-      let isLit = T <= currentTemp;
+      var isLit = T <= currentTemp;
 
       if (isLit) {
         drawingContext.shadowBlur = 10;
@@ -212,8 +212,8 @@ class Cope {
     fill(30, 5, 5); 
     drawThermometer(centerX, startY, endY, bottomW, topW);
 
-    let tempY = map(currentTemp, -20, 30, startY, endY);
-    let tempW = map(currentTemp, -20, 30, bottomW, topW);
+    var tempY = map(currentTemp, -20, 30, startY, endY);
+    var tempW = map(currentTemp, -20, 30, bottomW, topW);
 
     // Setup red neon glow for the core thermometer
     drawingContext.shadowBlur = Math.max(15, width * 0.03);
@@ -222,10 +222,10 @@ class Cope {
 
     // Draw outer red core as a series of stacked circles (drawn top to bottom)
     fill(255, 50, 0);
-    for (let tempStep = 30; tempStep >= -20; tempStep -= 0.5) {
+    for (var tempStep = 30; tempStep >= -20; tempStep -= 0.5) {
       if (tempStep <= currentTemp) {
-        let cy = map(tempStep, -20, 30, startY, endY);
-        let cw = map(tempStep, -20, 30, bottomW, topW);
+        var cy = map(tempStep, -20, 30, startY, endY);
+        var cw = map(tempStep, -20, 30, bottomW, topW);
         circle(centerX, cy, cw);
       }
     }
@@ -233,10 +233,10 @@ class Cope {
     // Draw inner bright core (gold) as stacked circles (drawn top to bottom)
     drawingContext.shadowBlur = 10;
     fill(255, 215, 0); // Gold
-    for (let tempStep = 30; tempStep >= -20; tempStep -= 0.5) {
+    for (var tempStep = 30; tempStep >= -20; tempStep -= 0.5) {
       if (tempStep <= currentTemp) {
-        let cy = map(tempStep, -20, 30, startY, endY);
-        let cw = map(tempStep, -20, 30, bottomW, topW);
+        var cy = map(tempStep, -20, 30, startY, endY);
+        var cw = map(tempStep, -20, 30, bottomW, topW);
         circle(centerX, cy, cw);
       }
     }
@@ -255,17 +255,17 @@ class Cope {
     pop();
     
     // Draw neon signs on exterior walls
-    let signW = width * 0.15;
+    var signW = width * 0.15;
     
     // Helper function to draw a bounded logo and its debug grid rectangle
-    let drawBoundedLogo = (img, x, gridW, y, gridH, isRightWall, index, stretchFull = false) => {
+    var drawBoundedLogo = (img, x, gridW, y, gridH, isRightWall, index, stretchFull = false) => {
       // Base widths and heights
-      let tightW = gridW;
-      let tightH = gridH;
+      var tightW = gridW;
+      var tightH = gridH;
 
       if (img) {
-        let imgAspect = img.width / img.height;
-        let boxAspect = gridW / gridH;
+        var imgAspect = img.width / img.height;
+        var boxAspect = gridW / gridH;
 
         if (stretchFull) {
           tightW = gridW;
@@ -279,30 +279,30 @@ class Cope {
         }
 
         // Calculate exact uStart and vStart using the new 0-100 system starting from lines 5 and 6
-        let uStart, vStart;
+        var uStart, vStart;
         if (isRightWall) {
-          let uMaxRight = width - roofStartXRight;
-          let vMaxRight = startY - centerX - roofStartYRight + roofStartXRight; // Keeping original vertical scale
+          var uMaxRight = width - roofStartXRight;
+          var vMaxRight = startY - centerX - roofStartYRight + roofStartXRight; // Keeping original vertical scale
           uStart = x * (uMaxRight / 100);
           vStart = y * (vMaxRight / 100);
         } else {
-          let uMaxLeft = roofStartXLeft; // Screen edge is at 0
-          let vMaxLeft = startY + centerX - roofStartXLeft - roofStartYLeft;
+          var uMaxLeft = roofStartXLeft; // Screen edge is at 0
+          var vMaxLeft = startY + centerX - roofStartXLeft - roofStartYLeft;
           uStart = x * (uMaxLeft / 100);
           vStart = y * (vMaxLeft / 100);
         }
         
         push();
         if (isRightWall) {
-          let pTopLeft = getScreenCoord(uStart, vStart, true);
-          let slope6 = (oldDiamondRightX - rightOutX) / (oldDiamondCenterY - rightOutY);
-          let localSlopeCorner = map(pTopLeft.x, centerX, rightOutX, 0, slope6, true);
+          var pTopLeft = getScreenCoord(uStart, vStart, true);
+          var slope6 = (oldDiamondRightX - rightOutX) / (oldDiamondCenterY - rightOutY);
+          var localSlopeCorner = map(pTopLeft.x, centerX, rightOutX, 0, slope6, true);
           translate(pTopLeft.x, pTopLeft.y);
           applyMatrix(1, 1, localSlopeCorner, 1, 0, 0);
         } else {
-          let pTopRight = getScreenCoord(uStart + tightW, vStart, false);
-          let slope5 = (oldDiamondLeftX - leftOutX) / (oldDiamondCenterY - leftOutY);
-          let localSlopeCorner = map(pTopRight.x, leftOutX, centerX, slope5, 0, true);
+          var pTopRight = getScreenCoord(uStart + tightW, vStart, false);
+          var slope5 = (oldDiamondLeftX - leftOutX) / (oldDiamondCenterY - leftOutY);
+          var localSlopeCorner = map(pTopRight.x, leftOutX, centerX, slope5, 0, true);
           translate(pTopRight.x, pTopRight.y);
           applyMatrix(1, -1, localSlopeCorner, 1, 0, 0);
         }
@@ -315,18 +315,18 @@ class Cope {
     };
 
     // Helper function to get exact perspective coordinates for points on the walls
-    let getScreenCoord = (u, v, isRightWall) => {
+    var getScreenCoord = (u, v, isRightWall) => {
       if (isRightWall) {
-        let base_x = roofStartXRight + u;
-        let base_y = roofStartYRight + u;
-        let slope6 = (oldDiamondRightX - rightOutX) / (oldDiamondCenterY - rightOutY);
-        let localSlope = map(base_x, centerX, rightOutX, 0, slope6, true);
+        var base_x = roofStartXRight + u;
+        var base_y = roofStartYRight + u;
+        var slope6 = (oldDiamondRightX - rightOutX) / (oldDiamondCenterY - rightOutY);
+        var localSlope = map(base_x, centerX, rightOutX, 0, slope6, true);
         return { x: base_x + v * localSlope, y: base_y + v };
       } else {
-        let base_x = roofStartXLeft - u;
-        let base_y = roofStartYLeft + u;
-        let slope5 = (oldDiamondLeftX - leftOutX) / (oldDiamondCenterY - leftOutY);
-        let localSlope = map(base_x, leftOutX, centerX, slope5, 0, true);
+        var base_x = roofStartXLeft - u;
+        var base_y = roofStartYLeft + u;
+        var slope5 = (oldDiamondLeftX - leftOutX) / (oldDiamondCenterY - leftOutY);
+        var localSlope = map(base_x, leftOutX, centerX, slope5, 0, true);
         return { x: base_x + v * localSlope, y: base_y + v };
       }
     };
@@ -339,24 +339,24 @@ class Cope {
     drawingContext.shadowColor = 'rgba(0, 200, 255, 1)';
     
     // Helper to draw breaks in the neon lines
-    let drawBreaks = (x1, y1, x2, y2) => {
+    var drawBreaks = (x1, y1, x2, y2) => {
       push();
       drawingContext.shadowBlur = 0;
       stroke(0);
       strokeWeight(8); // wider breaks
-      let dx = x2 - x1;
-      let dy = y2 - y1;
-      let len = Math.sqrt(dx * dx + dy * dy);
-      let uX = dx / len;
-      let uY = dy / len;
-      let gapLen = height * 0.006; // shortened by 60% (from 0.015)
+      var dx = x2 - x1;
+      var dy = y2 - y1;
+      var len = Math.sqrt(dx * dx + dy * dy);
+      var uX = dx / len;
+      var uY = dy / len;
+      var gapLen = height * 0.006; // shortened by 60% (from 0.015)
       
-      let m1X = x1 + dx / 3;
-      let m1Y = y1 + dy / 3;
+      var m1X = x1 + dx / 3;
+      var m1Y = y1 + dy / 3;
       line(m1X - uX * gapLen/2, m1Y - uY * gapLen/2, m1X + uX * gapLen/2, m1Y + uY * gapLen/2);
       
-      let m2X = x1 + dx * 2/3;
-      let m2Y = y1 + dy * 2/3;
+      var m2X = x1 + dx * 2/3;
+      var m2Y = y1 + dy * 2/3;
       line(m2X - uX * gapLen/2, m2Y - uY * gapLen/2, m2X + uX * gapLen/2, m2Y + uY * gapLen/2);
       pop();
     };
@@ -375,7 +375,7 @@ class Cope {
     line(rightOutX, rightOutY, oldDiamondRightX, oldDiamondCenterY);
     drawBreaks(rightOutX, rightOutY, oldDiamondRightX, oldDiamondCenterY);
 
-    let oldDiamondBottomY = oldDiamondCenterY + (oldS * Math.SQRT2) / 2;
+    var oldDiamondBottomY = oldDiamondCenterY + (oldS * Math.SQRT2) / 2;
 
     // Line 7: Left bottom of diamond
     line(oldDiamondLeftX, oldDiamondCenterY, centerX, oldDiamondBottomY);
@@ -384,73 +384,73 @@ class Cope {
     line(oldDiamondRightX, oldDiamondCenterY, centerX, oldDiamondBottomY);
 
     // New Rooflines: start at the side blue lines and extend outwards off-screen at 45 degrees
-    let roofOffsetY = height * 0.02;
+    var roofOffsetY = height * 0.02;
     
     // Left roofline (Line 1)
-    let leftSideDx = oldDiamondLeftX - leftOutX;
-    let leftSideDy = oldDiamondCenterY - leftOutY;
-    let roofStartYLeft = leftOutY + roofOffsetY;
-    let roofStartXLeft = leftOutX + leftSideDx * (roofOffsetY / leftSideDy);
+    var leftSideDx = oldDiamondLeftX - leftOutX;
+    var leftSideDy = oldDiamondCenterY - leftOutY;
+    var roofStartYLeft = leftOutY + roofOffsetY;
+    var roofStartXLeft = leftOutX + leftSideDx * (roofOffsetY / leftSideDy);
     
-    let roofExtendLeftDx = roofStartXLeft + width * 0.1; // Extend well past left edge
-    let roofEndXLeft = -width * 0.1;
-    let roofEndYLeft = roofStartYLeft + roofExtendLeftDx; // 45 deg means dy = dx
+    var roofExtendLeftDx = roofStartXLeft + width * 0.1; // Extend well past left edge
+    var roofEndXLeft = -width * 0.1;
+    var roofEndYLeft = roofStartYLeft + roofExtendLeftDx; // 45 deg means dy = dx
     
     line(roofStartXLeft, roofStartYLeft, roofEndXLeft, roofEndYLeft);
     drawBreaks(roofStartXLeft, roofStartYLeft, roofEndXLeft, roofEndYLeft);
 
     // Right roofline (Line 2)
-    let rightSideDx = oldDiamondRightX - rightOutX;
-    let rightSideDy = oldDiamondCenterY - rightOutY;
-    let roofStartYRight = rightOutY + roofOffsetY;
-    let roofStartXRight = rightOutX + rightSideDx * (roofOffsetY / rightSideDy);
+    var rightSideDx = oldDiamondRightX - rightOutX;
+    var rightSideDy = oldDiamondCenterY - rightOutY;
+    var roofStartYRight = rightOutY + roofOffsetY;
+    var roofStartXRight = rightOutX + rightSideDx * (roofOffsetY / rightSideDy);
     
-    let roofExtendRightDx = width * 1.1 - roofStartXRight; // Extend well past right edge
-    let roofEndXRight = width * 1.1;
-    let roofEndYRight = roofStartYRight + roofExtendRightDx;
+    var roofExtendRightDx = width * 1.1 - roofStartXRight; // Extend well past right edge
+    var roofEndXRight = width * 1.1;
+    var roofEndYRight = roofStartYRight + roofExtendRightDx;
     
     line(roofStartXRight, roofStartYRight, roofEndXRight, roofEndYRight);
     drawBreaks(roofStartXRight, roofStartYRight, roofEndXRight, roofEndYRight);
     
     // --- Grid System Units ---
     // The X-axis (0-100) now spans from Lines 5/6 (x=0) to the Screen Edge (x=100)
-    let uMaxLeft = roofStartXLeft; 
-    let vMaxLeft = startY + centerX - roofStartXLeft - roofStartYLeft; 
-    let uBlockLeft = uMaxLeft / 100;
-    let vBlockLeft = vMaxLeft / 100;
-    let uOffsetLeft = 0; // Starts exactly at roofStartXLeft (u=0)
+    var uMaxLeft = roofStartXLeft; 
+    var vMaxLeft = startY + centerX - roofStartXLeft - roofStartYLeft; 
+    var uBlockLeft = uMaxLeft / 100;
+    var vBlockLeft = vMaxLeft / 100;
+    var uOffsetLeft = 0; // Starts exactly at roofStartXLeft (u=0)
 
-    let uMaxRight = width - roofStartXRight; 
-    let vMaxRight = startY - centerX - roofStartYRight + roofStartXRight; 
-    let uBlockRight = uMaxRight / 100;
-    let vBlockRight = vMaxRight / 100;
-    let uOffsetRight = 0; // Starts exactly at roofStartXRight (u=0)
+    var uMaxRight = width - roofStartXRight; 
+    var vMaxRight = startY - centerX - roofStartYRight + roofStartXRight; 
+    var uBlockRight = uMaxRight / 100;
+    var vBlockRight = vMaxRight / 100;
+    var uOffsetRight = 0; // Starts exactly at roofStartXRight (u=0)
     
     // --- 14 Bounded Logos Layout ---
     // Instead of a rigid grid, we define each logo by its start coordinates (closest to the wall's top inner origin)
     // and its structural width/height.
     
     // Default logo sizes
-    let stdW = width * 0.13;
-    let stdH = height * 0.15;
-    let spanW = width * 0.28;
+    var stdW = width * 0.13;
+    var stdH = height * 0.15;
+    var spanW = width * 0.28;
 
 
     // Helper to draw 3-sided neon blue lines on the roof (negative y space)
-    let drawRoofBox = (xStart, xSpan, yTop, isRightWall) => {
-      let uOffset = isRightWall ? uOffsetRight : uOffsetLeft;
-      let uB = isRightWall ? uBlockRight : uBlockLeft;
-      let vB = isRightWall ? vBlockRight : vBlockLeft;
+    var drawRoofBox = (xStart, xSpan, yTop, isRightWall) => {
+      var uOffset = isRightWall ? uOffsetRight : uOffsetLeft;
+      var uB = isRightWall ? uBlockRight : uBlockLeft;
+      var vB = isRightWall ? vBlockRight : vBlockLeft;
       
-      let u1 = uOffset + xStart * uB;
-      let u2 = uOffset + (xStart + xSpan) * uB;
-      let v1 = 0; // Roofline
-      let v2 = yTop * vB; // Height of the box
+      var u1 = uOffset + xStart * uB;
+      var u2 = uOffset + (xStart + xSpan) * uB;
+      var v1 = 0; // Roofline
+      var v2 = yTop * vB; // Height of the box
       
-      let p1 = getScreenCoord(u1, v1, isRightWall); // Inner bottom
-      let p2 = getScreenCoord(u1, v2, isRightWall); // Inner top
-      let p3 = getScreenCoord(u2, v2, isRightWall); // Outer top
-      let p4 = getScreenCoord(u2, v1, isRightWall); // Outer bottom
+      var p1 = getScreenCoord(u1, v1, isRightWall); // Inner bottom
+      var p2 = getScreenCoord(u1, v2, isRightWall); // Inner top
+      var p3 = getScreenCoord(u2, v2, isRightWall); // Outer top
+      var p4 = getScreenCoord(u2, v1, isRightWall); // Outer bottom
       
       push();
       stroke(0, 200, 255); // Neon blue
@@ -464,33 +464,33 @@ class Cope {
       pop();
     };
 
-    for (let i = 0; i < this.hardcodedPlacements.length; i++) {
-      let p = this.hardcodedPlacements[i];
-      let img = this.logoMap[p.name];
+    for (var i = 0; i < this.hardcodedPlacements.length; i++) {
+      var p = this.hardcodedPlacements[i];
+      var img = this.logoMap[p.name];
       if (!img) continue;
 
       if (p.wall === "LeftRoof" || p.wall === "RightRoof") {
-        let isRight = (p.wall === "RightRoof");
-        let block = isRight ? uBlockRight : uBlockLeft;
-        let vblock = isRight ? vBlockRight : vBlockLeft;
+        var isRight = (p.wall === "RightRoof");
+        var block = isRight ? uBlockRight : uBlockLeft;
+        var vblock = isRight ? vBlockRight : vBlockLeft;
         drawRoofBox(p.rx, p.rs, p.rt, isRight);
         drawBoundedLogo(img, p.rx, p.rs * block, p.rt, -p.rt * vblock, isRight, i + 1, p.stretch);
       } else {
-        let w = stdW;
-        let h = stdH;
+        var w = stdW;
+        var h = stdH;
         if (p.size === "small") { w = stdW * 0.75; h = stdH * 0.75; }
         else if (p.size === "span") { w = spanW; h = stdH; }
         else if (p.size === "span_150") { w = spanW * 1.5; h = stdH * 1.5; }
         else if (p.size === "span_40") { w = spanW * 0.4; h = stdH * 0.4; }
         else if (p.size === "large_150") { w = stdW * 1.5; h = stdH * 1.5; }
-        let isRight = (p.wall === "Right");
+        var isRight = (p.wall === "Right");
         drawBoundedLogo(img, p.x, w, p.y, h, isRight, i + 1, false);
       }
     }
 
     // The large diamond (rotated square) has S = width * 0.5. Its top vertex is at (centerX, startY).
-    let S = width * 0.5;
-    let diamondCenterY = startY + (S * Math.SQRT2) / 2;
+    var S = width * 0.5;
+    var diamondCenterY = startY + (S * Math.SQRT2) / 2;
 
     pop();
     

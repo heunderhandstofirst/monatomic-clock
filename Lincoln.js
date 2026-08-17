@@ -314,7 +314,7 @@ function breeze(greyBack, DIM) {
 }
 
 function lineXY(XX, YY, DIM) {
-  let ShapeCount = XX.length - 1;
+  var ShapeCount = XX.length - 1;
   push();
   fill(0);
   stroke(0);

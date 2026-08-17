@@ -36,41 +36,41 @@ const SignClasses = {
   32: AmpelmannSign
 };
 
-let currentSignInstance = null;
-let currentSignIndex = -1;
-let SwitchSign;
+var currentSignInstance = null;
+var currentSignIndex = -1;
+var SwitchSign;
 const backgroundImageURL = "images/background.png";
 const downTown60PIC = "images/P3K.png";
 const letterURLs = [
-  "images/Schw-SS.png",
-  "images/Schw-c.png",
-  "images/Schw-h.png",
-  "images/Schw-w.png",
-  "images/Schw-e.png",
-  "images/Schw-p.png",
-  "images/Schw-p.png",
-  "images/Schw-e.png",
-  "images/Schw-s.png"
+  "images/Schweppes/Schw-SS.png",
+  "images/Schweppes/Schw-c.png",
+  "images/Schweppes/Schw-h.png",
+  "images/Schweppes/Schw-w.png",
+  "images/Schweppes/Schw-e.png",
+  "images/Schweppes/Schw-p.png",
+  "images/Schweppes/Schw-p.png",
+  "images/Schweppes/Schw-e.png",
+  "images/Schweppes/Schw-s.png"
 ];
 
-let goldenRatio = ( 1 + (5^.5))/2
+var goldenRatio = ( 1 + (5^.5))/2
 
 // IMAGE FILES
-let wpNumberone;
-let LittleHelms;
-let SpeckledBack;
+var wpNumberone;
+var LittleHelms;
+var SpeckledBack;
 var HelmsSpeckleImages = [];
-let StagFoto;
-let OregonFoto;
-let StagOnly;
-let MPSignFont;  // MALIBU SIGN TEXT
-let BWtext;
-let stomatolRedImage;
-let stomatolCycleImages = [];
-let copeSign;
+var StagFoto;
+var OregonFoto;
+var StagOnly;
+var MPSignFont;  // MALIBU SIGN TEXT
+var BWtext;
+var stomatolRedImage;
+var stomatolCycleImages = [];
+var copeSign;
 
-let OysterReset = true;
-let OysterGroundZero = true;
+var OysterReset = true;
+var OysterGroundZero = true;
 
 var HelmsLetterImages = new Array(3);
 var OlympicNeonFrames = [];
@@ -78,50 +78,38 @@ var DailyNeonFrames = [];
 
 var BridgeColors = new Array(6);
 
-let BridgeHue = [0, 0, 0, 0];
-let BridgeHue1 = [0, 0, 0, 0];
-let BridgeHue2 = [0, 0, 0, 0];
-let BridgeHue3 = [0, 0, 0, 0];
-let BridgeHue4 = [0, 0, 0, 0];
-let BridgeHue5 = [0, 0, 0, 0];
+var BridgeHue = [0, 0, 0, 0];
+var BridgeHue1 = [0, 0, 0, 0];
+var BridgeHue2 = [0, 0, 0, 0];
+var BridgeHue3 = [0, 0, 0, 0];
+var BridgeHue4 = [0, 0, 0, 0];
+var BridgeHue5 = [0, 0, 0, 0];
 
 
 var PreviousSign;
 var NewSign = true;
-let schweppesLetterColors;
-let letterImagesWhite = [];
-let letterImagesWithColor = [];
-let dominoImagesWithColor=[];
-let headlinesArray = [];
-let formattedHeadlines = [];
-let NeonPreload;
-let mcsorleysLogoWhite;
-let dominoOrangeImage;
-let colgateLogoImage;
-let oysterImage;
-let bondImage;
-let rabbitImage;
-let thermometerHeinzImage;
-let britexImage;
+var schweppesLetterColors;
+var letterImagesWhite = [];
+var letterImagesWithColor = [];
+var dominoImagesWithColor=[];
+var headlinesArray = [];
+var formattedHeadlines = [];
+var NeonPreload;
+var mcsorleysLogoWhite;
+var dominoOrangeImage;
+var colgateLogoImage;
+var oysterImage;
+var bondImage;
+var rabbitImage;
+var thermometerHeinzImage;
+var britexImage;
 var Flicker = true;
 
-// const BoxCombos = [
-//   [0, 2, 10, 9, 0],
-//   [1, 6, 11, 2, 1],
-//   [11, 7, 3, 5, 11],
-//   [10, 5, 4, 8, 10],
-//   [2, 11, 5, 10, 2]
-// ];
 
-// let CGspot; //= someArrays(0); // USED IN THE CACTUS
-// let HHspot; //= someArrays(1); // USED IN THE CACTUS
-// let GGspot; //= someArrays(2); // USED IN THE CACTUS
-// let DDspot; //= someArrays(3); // USED IN THE CACTUS
-// let CCspot; //= someArrays(4); // USED IN THE CACTUS
 
 const helmLittleURL = "images/HelmsF.png";
 
-let HelmsSlogans = [];
+var HelmsSlogans = [];
 
 HelmsSlogans[0] = [" CHOICE OF OLYMPIC CHAMPIONS  ", 1, [252, 50, 2]];
 HelmsSlogans[1] = ["    OLYMPIC GAMES BAKERS      ", 0, [2, 200, 220]];
@@ -136,24 +124,24 @@ function preload() {
   BWtext = loadImage("images/BWorangeLetters.png");
 
   dtSunRis = loadImage(downTown60PIC);
-  StagFoto = loadImage("images/StagTransparent.png");
-  OregonFoto = loadImage("images/StateOutline.png");
-  StagOnly = loadImage("images/StagOnlyTransparent.png");
+  StagFoto = loadImage("images/Portland/StagTransparent.png");
+  OregonFoto = loadImage("images/Portland/StateOutline.png");
+  StagOnly = loadImage("images/Portland/StagOnlyTransparent.png");
   MPSignFont = loadImage("images/MalibuFontE.png");
   ContinentalUSAImage = loadImage("images/ContinentalUSA.png");
   
-  RedBunny = loadImage("images/BunnyTransparent.png");
-  WhiteBunny = loadImage("images/AWhiteBunny.png");
-  BunnyFace = loadImage("images/TransparentBRface.png");
-  RabbitWords = loadImage("images/REwords.png");
-  RabbitTreeLine = loadImage("images/TreeLine.png");
-  HeinzShell = loadImage("images/HeinzShell.png");
-  HeinzBottle = loadImage("images/HeinzBottle.png");
-  HeinzLetters= loadImage("images/heinz-logo-black-and-white.png");
-  Catsup = loadImage("images/catsup22.png");
-  let fallback = (name) => () => console.log(name + " missing");
-  HeinzBottleWhite = loadImage("images/HeinzBottleLavender.png", () => {}, fallback("HeinzBottleLavender.png"));
-  HeinzLabel = loadImage("images/HeinzLabel.png", () => {}, fallback("HeinzLabel.png"));
+  RedBunny = loadImage("images/Bunny/BunnyTransparent.png");
+  WhiteBunny = loadImage("images/Bunny/AWhiteBunny.png");
+  BunnyFace = loadImage("images/Bunny/TransparentBRface.png");
+  RabbitWords = loadImage("images/Bunny/REwords.png");
+  RabbitTreeLine = loadImage("images/Bunny/TreeLine.png");
+  HeinzShell = loadImage("images/Heinz/HeinzShell.png");
+  HeinzBottle = loadImage("images/Heinz/HeinzBottle.png");
+  HeinzLetters= loadImage("images/Heinz/heinz-logo-black-and-white.png");
+  Catsup = loadImage("images/Heinz/catsup22.png");
+  var fallback = (name) => () => console.log(name + " missing");
+  HeinzBottleWhite = loadImage("images/Heinz/HeinzBottleLavender.png", () => {}, fallback("HeinzBottleLavender.png"));
+  HeinzLabel = loadImage("images/Heinz/HeinzLabel.png", () => {}, fallback("HeinzLabel.png"));
   helmsImage = loadImage("images/Thermometer/Helms.png", () => {}, fallback("Helms.png"));
   bwLogoImage = loadImage("images/Thermometer/BWorangeLetters.png", () => {}, fallback("BWorangeLetters.png"));
   lincolnImage = loadImage("images/Thermometer/Lincoln.png", () => {}, fallback("Lincoln.png"));
@@ -190,7 +178,7 @@ function preload() {
   //////////////////////////////////////////////////////////////////
   headlinesArray = loadStrings("images/Headlines.txt");
   letterImagesWhite = letterURLs.map((url) => loadImage(url));
-  const dominoWhiteURLs ="images/domino-neon.png"
+  const dominoWhiteURLs ="images/Domino/domino-neon.png"
   
   dominoWhite=loadImage(dominoWhiteURLs)
   screenBackground();
@@ -282,10 +270,10 @@ function setup() {
 
   frameRate(25);
 
-  for (let letterIndex = 0; letterIndex < letterImagesWhite.length;letterIndex += 1) {
+  for (var letterIndex = 0; letterIndex < letterImagesWhite.length;letterIndex += 1) {
     const colorVariationsOfIndividualLetter = new Array(schweppesLetterColors.length);
     colorVariationsOfIndividualLetter.fill(letterImagesWhite[letterIndex].get());
-    for (let colorIndex = 0; colorIndex < schweppesLetterColors.length;colorIndex += 1) {
+    for (var colorIndex = 0; colorIndex < schweppesLetterColors.length;colorIndex += 1) {
       const whiteImageColorWorkingCopy = colorVariationsOfIndividualLetter[colorIndex];
       const buffer = createGraphics(letterImagesWhite[letterIndex].width, letterImagesWhite[letterIndex].height);
       buffer.tint(schweppesLetterColors[colorIndex]);
@@ -297,12 +285,12 @@ function setup() {
 
   if (headlinesArray && headlinesArray.length > 0) {
     formattedHeadlines = headlinesArray.map(rawLine => {
-      let line = rawLine.replace(/\0/g, '').replace(/^[\uFEFF\uFFFE]+/g, '');
-      let parts = line.split("\t");
+      var line = rawLine.replace(/\0/g, '').replace(/^[\uFEFF\uFFFE]+/g, '');
+      var parts = line.split("\t");
       if (parts.length >= 3) {
-        let headline = parts[0].trim().replace(/^"|"$/g, '');
-        let date = parts[1].trim().replace(/^"|"$/g, '');
-        let source = parts[2].trim().replace(/^"|"$/g, '');
+        var headline = parts[0].trim().replace(/^"|"$/g, '');
+        var date = parts[1].trim().replace(/^"|"$/g, '');
+        var source = parts[2].trim().replace(/^"|"$/g, '');
         return `${source} - ${date} - ${headline}`;
       }
       return "";
@@ -313,7 +301,7 @@ function setup() {
   window.activeSignCanvases = [];
   const origCreateGraphics = window.createGraphics;
   window.createGraphics = function(w, h, renderer) {
-    let pg = origCreateGraphics(w, h, renderer);
+    var pg = origCreateGraphics(w, h, renderer);
     if (window.isSetupComplete) {
       window.activeSignCanvases.push(pg);
     }
@@ -334,7 +322,7 @@ function draw() {
   background(5, 5, 5);
 
   if (signTime[1] === 5) window.redirectFired = false;
-  let dailyReset = signTime[0] === 3 && signTime[1] === 57;
+  var dailyReset = signTime[0] === 3 && signTime[1] === 57;
   if (signTime[1] === 59) window.redirectFired = false;
   if (dailyReset && signTime[2] < 3) WhichSign = 50;
 
@@ -351,7 +339,7 @@ function draw() {
   if( signHour(signTime,  9, 18)) WhichSign = 22;   // MANHATTAN BRIDGE
   if( signHour(signTime,  7, 29)) WhichSign = 23;   // BRITEX
   if( signHour(signTime, 12,  4)) WhichSign = 24;   // MTA JFK
-  if( signHour(signTime,  6, 17)) WhichSign = 25;   // LEONARD'S DONUTS
+  if( signHour(signTime,  6, 11)) WhichSign = 25;   // LEONARD'S DONUTS
   if( signHour(signTime,  7, 25)) WhichSign = 26;   // OREGON STAG
   if( signHour(signTime,  8, 28)) WhichSign = 27;   // MALIBU
   if( signHour(signTime,  5,  8)) WhichSign = 28;   // DOMINO SUGAR
@@ -368,20 +356,20 @@ function draw() {
 // 8 = helms
 
   if (window.isFilmMode) {
-    let elapsed = millis() - window.filmModeStartTime;
-    WhichSign = Math.floor(elapsed / 5625) % 32;
+    var elapsed = millis() - window.filmModeStartTime;
+    var numSigns = Object.keys(SignClasses).length;
+    WhichSign = Math.floor(elapsed / 5625) % numSigns;
   } else if (window.isDemoMode) {
-    let elapsed = millis() - window.demoModeStartTime;
-    WhichSign = Math.floor(elapsed / 15000) % 32; // 32 signs (0 to 31), 15s each
+    var elapsed = millis() - window.demoModeStartTime;
+    var numSigns = Object.keys(SignClasses).length;
+    WhichSign = Math.floor(elapsed / 10000) % numSigns; // 10s each
   } else if (window.isCarriageBarnMode) {
-    let elapsed = millis() - window.carriageBarnStartTime;
-    const carriageBarnSigns = [0, 1, 2, 3, 5, 7, 8, 9, 10, 11, 12, 14, 16, 18, 19, 22, 23, 24, 26, 27, 29, 30, 31];
-    const durationPerSign = 180000 / carriageBarnSigns.length; // ~7.8s each to fit the set in 180s total
+    var elapsed = millis() - window.carriageBarnStartTime;
+    const carriageBarnSigns = [0, 1, 2, 3, 5, 7, 8, 9, 10, 11, 12, 14, 16, 18, 19, 22, 23, 24, 26, 27, 29, 30, 31, 32];
+    const durationPerSign = 6000; // 6s each
     WhichSign = carriageBarnSigns[Math.floor(elapsed / durationPerSign) % carriageBarnSigns.length];
   }
-
   // WhichSign = 32; // Temporarily set for design
-
   SwitchSign = WhichSign !== currentSignIndex;
   if (SwitchSign) {
     if (window.activeSignCanvases) {
@@ -389,7 +377,7 @@ function draw() {
       window.activeSignCanvases = [];
     }
     
-    let SignClass = SignClasses[WhichSign];
+    var SignClass = SignClasses[WhichSign];
     if (SignClass) {
       currentSignInstance = new SignClass();
     } else {
@@ -422,11 +410,6 @@ if (WhichSign===24) frameRate(40)
     }
     currentSignInstance.render(signTime);
   }
-
-    // if (WhichSign > 48 && !window.redirectFired) {
-  //   window.redirectFired = true;
-  //   document.location = "https://q4v86.csb.app/";
-  // }
 }
 function signHour(signTime, eastern, minUTE) {
   // RETURNS TRUE IF THE DESIRED HOUR (AM/PM) IS VALID IN EASTERN, PACIFIC, OR GMT TIMEZONES
@@ -446,6 +429,19 @@ function signHour(signTime, eastern, minUTE) {
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
   screenBackground();
+  
+  // Re-create the Helms speckle graphics to match the new window dimensions
+  if (typeof createHelmsSpeckle === 'function') {
+    SpeckledBack = createHelmsSpeckle();
+  }
+  
+  // Re-instantiate the current sign so any graphics cached in its constructor (like BigHelm) are re-rendered at the correct size
+  if (typeof SignClasses !== 'undefined' && typeof currentSignIndex !== 'undefined') {
+    var SignClass = SignClasses[currentSignIndex];
+    if (SignClass) {
+      currentSignInstance = new SignClass();
+    }
+  }
 }
 
 
@@ -453,9 +449,9 @@ function windowResized() {
 function screenBackground() {
   img = createImage(windowWidth, windowHeight);
   img.loadPixels();
-  for (let x = 0; x < img.width; x++) {
-    for (let y = 0; y < img.height; y++) {
-      let a = map(y, 0, img.height, 255, 0);
+  for (var x = 0; x < img.width; x++) {
+    for (var y = 0; y < img.height; y++) {
+      var a = map(y, 0, img.height, 255, 0);
       img.set(x, y, [0, 76, 102, a]); // Reduced vibrancy by 50%
     }
   }

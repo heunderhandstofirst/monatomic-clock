@@ -30,7 +30,7 @@ class BondSign {
     this.bondFill = new getBondFill(this.cycle);
     
     this.streams = [];
-    for (let i = 0; i < 200; i++) {
+    for (var i = 0; i < 200; i++) {
       this.streams.push({
         xOffset: Math.random(),
         yOffset: Math.random(),
@@ -78,7 +78,7 @@ class BondSign {
     var strokeScale = 24;
     var BondXstart = windowWidth / 8;
     var BondYstart = windowHeight * 0.78 - strokeScale / 2;
-    let zipLineY = windowHeight - (strokeScale * 5.5) / 2;
+    var zipLineY = windowHeight - (strokeScale * 5.5) / 2;
     
     // ==========================================
     // --- OPTION 1: WATERFALL STREAKS RENDERING (DOWNWARD) ---
@@ -86,7 +86,7 @@ class BondSign {
     /*
     if (!this.rainStreaks) {
       this.rainStreaks = [];
-      for (let i = 0; i < 80; i++) {
+      for (var i = 0; i < 80; i++) {
         this.rainStreaks.push({
           x: Math.random(),
           y: Math.random(),
@@ -99,8 +99,8 @@ class BondSign {
     
     drawingContext.shadowBlur = 0;
     strokeCap(ROUND);
-    for (let i = 0; i < this.rainStreaks.length; i++) {
-      let streak = this.rainStreaks[i];
+    for (var i = 0; i < this.rainStreaks.length; i++) {
+      var streak = this.rainStreaks[i];
       streak.y += streak.speed;
       
       if (streak.y > 1.0) {
@@ -109,9 +109,9 @@ class BondSign {
         streak.speed = Math.random() * 0.015 + 0.015;
       }
       
-      let xPos = streak.x * windowWidth;
-      let yStart = streak.y * zipLineY;
-      let yEnd = (streak.y + streak.length) * zipLineY;
+      var xPos = streak.x * windowWidth;
+      var yStart = streak.y * zipLineY;
+      var yEnd = (streak.y + streak.length) * zipLineY;
       if (yEnd > zipLineY) yEnd = zipLineY;
       
       stroke(180, 240, 255, streak.alpha);
@@ -128,7 +128,7 @@ class BondSign {
     // Simulates the chaotic splash and spray of a heavy waterfall
     if (!this.mistParticles) {
       this.mistParticles = [];
-      for (let i = 0; i < 150; i++) { // Dense mist
+      for (var i = 0; i < 150; i++) { // Dense mist
         this.mistParticles.push({
           x: Math.random(),
           y: Math.random(),
@@ -142,8 +142,8 @@ class BondSign {
     
     drawingContext.shadowBlur = 0;
     noStroke();
-    for (let i = 0; i < this.mistParticles.length; i++) {
-      let p = this.mistParticles[i];
+    for (var i = 0; i < this.mistParticles.length; i++) {
+      var p = this.mistParticles[i];
       p.y += p.speedY;
       p.x += p.speedX; // Fan out
       p.life += 0.05;
@@ -156,11 +156,11 @@ class BondSign {
         p.life = 0;
       }
       
-      let xPos = p.x * windowWidth;
-      let yPos = p.y * zipLineY;
+      var xPos = p.x * windowWidth;
+      var yPos = p.y * zipLineY;
       
       // Calculate opacity: they get more visible as they fall towards the bottom
-      let alpha = (p.y * 150) + (Math.sin(p.life) * 50); 
+      var alpha = (p.y * 150) + (Math.sin(p.life) * 50); 
       
       fill(200, 240, 255, alpha); // Soft pale cyan mist
       circle(xPos, yPos, p.size);
@@ -173,9 +173,9 @@ class BondSign {
     if (!this.bubbleSets) {
       this.bubbleSets = [];
       // Create 40 vertical bursts
-      for (let i = 0; i < 40; i++) {
-        let numBubbles = Math.floor(Math.random() * 5) + 6; // 6 to 10 bubbles per burst for a more realistic look
-        let burst = {
+      for (var i = 0; i < 40; i++) {
+        var numBubbles = Math.floor(Math.random() * 5) + 6; // 6 to 10 bubbles per burst for a more realistic look
+        var burst = {
           xOffset: Math.floor(Math.random() * 50) / 50, // Quantize to 50 columns
           yOffset: Math.random() * 0.8 + 0.2, // Start randomly lower down
           life: Math.random() * Math.PI,
@@ -185,7 +185,7 @@ class BondSign {
           bubbles: []
         };
         burst.hue = burst.xOffset * 255;
-        for (let b = 0; b < numBubbles; b++) {
+        for (var b = 0; b < numBubbles; b++) {
           burst.bubbles.push({
             yShift: (Math.random() - 0.5) * 0.08, // Small vertical offset from burst center
             maxSize: Math.random() * 4 + 2 // Reduced maximum bubble diameter by 50%
@@ -197,8 +197,8 @@ class BondSign {
 
     drawingContext.shadowBlur = 0; // Explicitly disable shadow blur to guarantee maximum performance
     colorMode(HSB, 255);
-    for (let i = 0; i < this.bubbleSets.length; i++) {
-      let b = this.bubbleSets[i];
+    for (var i = 0; i < this.bubbleSets.length; i++) {
+      var b = this.bubbleSets[i];
       // Travel upward at a faster pace
       b.yOffset -= (b.speed * 1.5) / zipLineY; 
       b.life += b.lifeSpeed;
@@ -212,21 +212,21 @@ class BondSign {
         b.hue = b.xOffset * 255;
       }
       
-      let x = b.xOffset * windowWidth;
+      var x = b.xOffset * windowWidth;
       // Fade alpha smoothly from 0 to 200 and back to 0
-      let alpha = Math.sin(b.life) * 200;
+      var alpha = Math.sin(b.life) * 200;
       
-      for (let j = 0; j < b.bubbles.length; j++) {
-        let bub = b.bubbles[j];
-        let y = (b.yOffset + bub.yShift) * zipLineY;
+      for (var j = 0; j < b.bubbles.length; j++) {
+        var bub = b.bubbles[j];
+        var y = (b.yOffset + bub.yShift) * zipLineY;
         
         // Calculate a gentle side-to-side sway within a strict 1% total band (0.5% each way)
         // b.life * 2 ensures one full smooth oscillation, j*0.5 gently offsets the bubbles from each other
-        let xSway = Math.sin(b.life * 2 + j * 0.5) * (windowWidth * 0.005);
-        let currentX = x + xSway;
+        var xSway = Math.sin(b.life * 2 + j * 0.5) * (windowWidth * 0.005);
+        var currentX = x + xSway;
         
         // Size scales smoothly from 0 -> maxSize -> 0
-        let currentSize = Math.sin(b.life) * bub.maxSize;
+        var currentSize = Math.sin(b.life) * bub.maxSize;
         
         // Main bubble body: Transparent with a solid white border
         noFill();
@@ -244,9 +244,9 @@ class BondSign {
     // --- END WATERFALL BURSTS ---
 
     // --- DRAW VERTICAL LIGHT BEAMS ---
-    let beamHeight = 0.36 * windowHeight; // Increased height by 80% (from 0.20 to 0.36)
-    let zipLineTop = zipLineY - (strokeScale * 5.5) / 2;
-    let rectTop = zipLineTop - beamHeight;
+    var beamHeight = 0.36 * windowHeight; // Increased height by 80% (from 0.20 to 0.36)
+    var zipLineTop = zipLineY - (strokeScale * 5.5) / 2;
+    var rectTop = zipLineTop - beamHeight;
     
     // Initialize or resize the offscreen graphics buffer for the static vertical lines
     if (typeof window.bondStaticPg === 'undefined' || 
@@ -261,15 +261,15 @@ class BondSign {
       window.bondStaticPgExpectedBeamHeight = beamHeight;
       
       window.bondStaticPg.clear(); // Transparent background
-      let ctx = window.bondStaticPg.drawingContext;
+      var ctx = window.bondStaticPg.drawingContext;
       ctx.lineWidth = 1;
       
       // Draw one line per horizontal pixel
-      for (let x = 0; x < windowWidth; x++) {
-        let pct = x / windowWidth;
-        let cssHue = pct * 360; // Spectrum from left to right
+      for (var x = 0; x < windowWidth; x++) {
+        var pct = x / windowWidth;
+        var cssHue = pct * 360; // Spectrum from left to right
         
-        let grad = ctx.createLinearGradient(0, 0, 0, beamHeight);
+        var grad = ctx.createLinearGradient(0, 0, 0, beamHeight);
         // Top matches the background perfectly by fading to transparent
         grad.addColorStop(0, 'rgba(0,0,0,0)'); 
         // Bottom is solid spectrum color
@@ -285,21 +285,21 @@ class BondSign {
     
     // Draw the static light curtain in vertical slices to create a wave effect
     // By squashing the image, the top edge drops down and ripples, while the bottom stays anchored
-    let sliceWidth = 5;
-    for (let x = 0; x < windowWidth; x += sliceWidth) {
+    var sliceWidth = 5;
+    for (var x = 0; x < windowWidth; x += sliceWidth) {
       // Calculate an organic undulating wave
-      let wave1 = Math.sin(x * 0.005 + this.step * 0.05);
-      let wave2 = Math.cos(x * 0.011 - this.step * 0.07);
-      let combinedWave = (wave1 + wave2) / 2; // Range [-1, 1]
+      var wave1 = Math.sin(x * 0.005 + this.step * 0.05);
+      var wave2 = Math.cos(x * 0.011 - this.step * 0.07);
+      var combinedWave = (wave1 + wave2) / 2; // Range [-1, 1]
       
       // Map wave to [0, 1] so 0 is the flat cap, and 1 is pushed downward
-      let normalizedWave = (combinedWave + 1) / 2; 
+      var normalizedWave = (combinedWave + 1) / 2; 
       
       // Max downward push is 40% of the total height
-      let waveOffset = normalizedWave * (beamHeight * 0.40);
+      var waveOffset = normalizedWave * (beamHeight * 0.40);
       
       // The destination height squashes to keep the bottom anchored
-      let currentHeight = beamHeight - waveOffset;
+      var currentHeight = beamHeight - waveOffset;
       
       // p5.js image signature: img, dx, dy, dWidth, dHeight, sx, sy, sWidth, sHeight
       image(
@@ -321,24 +321,24 @@ class BondSign {
     var circleY = windowHeight * 0.18; 
     
     // Define clockRadius up here so it can be used for the background bars
-    let clockRadius = (windowWidth / 22) * 1.5; // Increased by 50%
+    var clockRadius = (windowWidth / 22) * 1.5; // Increased by 50%
     
     // Draw 5 grey bars dropping from behind the clock down to behind the zip line
-    let barWidth = (clockRadius * 2) * 0.05; // 5% of clock diameter
-    let barOffsets = [-0.3, -0.15, 0, 0.15, 0.3]; // offsets as a fraction of clockRadius
+    var barWidth = (clockRadius * 2) * 0.05; // 5% of clock diameter
+    var barOffsets = [-0.3, -0.15, 0, 0.15, 0.3]; // offsets as a fraction of clockRadius
     
     drawingContext.shadowBlur = 0;
     fill(100);
     noStroke();
-    for (let offset of barOffsets) {
-      let bx = circleX + offset * clockRadius - barWidth / 2;
+    for (var offset of barOffsets) {
+      var bx = circleX + offset * clockRadius - barWidth / 2;
       
       // Calculate Y coordinate on the circular edge
-      let circleEdgeY = circleY - Math.sqrt(Math.pow(clockRadius, 2) - Math.pow(offset * clockRadius, 2));
+      var circleEdgeY = circleY - Math.sqrt(Math.pow(clockRadius, 2) - Math.pow(offset * clockRadius, 2));
       // Peek slightly over the top
-      let by = circleEdgeY - clockRadius * 0.15;
+      var by = circleEdgeY - clockRadius * 0.15;
       
-      let bh = zipLineTop - by; // Drop down to zipLineTop
+      var bh = zipLineTop - by; // Drop down to zipLineTop
       rect(bx, by, barWidth, bh);
     }
 
@@ -359,8 +359,8 @@ class BondSign {
       strokeWeight(StrokeScaleI[FontLayer]);
       for (var WhichLetter = 0; WhichLetter < 4; WhichLetter++) {
         var Letter2print = BondText.substring(WhichLetter, WhichLetter + 1);
-        let myFill = getBondFill(FontLayer, CC[WhichLetter]);
-        let myStroke = getBondStrokes(FontLayer, CC[WhichLetter]);
+        var myFill = getBondFill(FontLayer, CC[WhichLetter]);
+        var myStroke = getBondStrokes(FontLayer, CC[WhichLetter]);
         
         fill(myFill);
         stroke(myStroke);
@@ -425,13 +425,13 @@ class BondSign {
 
     // Windows  under temp
     ///////////////////////////////////////////////////////////////////
-    let headlineStr = "";
+    var headlineStr = "";
     if (typeof formattedHeadlines !== 'undefined' && formattedHeadlines.length > 0) {
-      let N = formattedHeadlines.length;
-      let startIndex = (month() + signTime[0] + Math.floor(signTime[1] / 5)) % N;
+      var N = formattedHeadlines.length;
+      var startIndex = (month() + signTime[0] + Math.floor(signTime[1] / 5)) % N;
       
-      let reordered = [];
-      for (let i = 0; i < 5; i++) {
+      var reordered = [];
+      for (var i = 0; i < 5; i++) {
         reordered.push(formattedHeadlines[(startIndex + i) % N]);
       }
       
@@ -443,35 +443,35 @@ class BondSign {
       headlineStr = "NO HEADLINES FOUND   ***   PLEASE STAND BY   ***   BOND CLOCK TICKER TEST";
     }
 
-    let matrixHeight = strokeScale * 5.5;
-    let bulbSpacing = 4;
+    var matrixHeight = strokeScale * 5.5;
+    var bulbSpacing = 4;
     
-    let cols = Math.floor(windowWidth / bulbSpacing);
-    let rows = Math.floor(matrixHeight / bulbSpacing);
-    let startY = zipLineY - matrixHeight / 2;
+    var cols = Math.floor(windowWidth / bulbSpacing);
+    var rows = Math.floor(matrixHeight / bulbSpacing);
+    var startY = zipLineY - matrixHeight / 2;
     
     // Scale font by 2x. 5x7 font becomes 10x14 bulbs.
-    let scale = 2;
-    let charWidthBulbs = 5 * scale;
-    let charHeightBulbs = 7 * scale;
-    let charSpacing = 1 * scale; // spacing between chars
-    let colsPerChar = charWidthBulbs + charSpacing;
-    let totalStringCols = headlineStr.length * colsPerChar;
+    var scale = 2;
+    var charWidthBulbs = 5 * scale;
+    var charHeightBulbs = 7 * scale;
+    var charSpacing = 1 * scale; // spacing between chars
+    var colsPerChar = charWidthBulbs + charSpacing;
+    var totalStringCols = headlineStr.length * colsPerChar;
     
     // Automatically center the 14-bulb-high text within the available rows
-    let verticalOffset = Math.floor((rows - charHeightBulbs) / 2);
+    var verticalOffset = Math.floor((rows - charHeightBulbs) / 2);
     
     // Move at 2.0 columns per frame. Because scale is 2, moving by exactly 2 columns perfectly preserves the "blocky" macro-pixel shapes without squishing them!
-    let columnsPerFrame = 2.0; 
-    let scrollDistance = cols + totalStringCols;
+    var columnsPerFrame = 2.0; 
+    var scrollDistance = cols + totalStringCols;
     
     // Calculate global scroll offset in bulb columns and loop it infinitely.
     // We add `cols` to the elapsed columns so that on step 0, the first word is already touching the left edge of the screen.
-    let elapsedColumns = Math.floor(this.step * columnsPerFrame) + cols;
-    let globalOffsetCols = cols - (elapsedColumns % scrollDistance);
+    var elapsedColumns = Math.floor(this.step * columnsPerFrame) + cols;
+    var globalOffsetCols = cols - (elapsedColumns % scrollDistance);
     
     // Create an offscreen buffer for the static bulbs to save thousands of circle calls per frame
-    let matrixVersion = 2; // Bump version to force redraw on hot-reload
+    var matrixVersion = 2; // Bump version to force redraw on hot-reload
     if (typeof window.bondMatrixPg === 'undefined' || window.bondMatrixPgExpectedWidth !== windowWidth || window.bondMatrixPgExpectedHeight !== matrixHeight || window.bondMatrixPgVersion !== matrixVersion) {
       if (typeof window.bondMatrixPg !== 'undefined') window.bondMatrixPg.remove();
       window.bondMatrixPg = createGraphics(windowWidth, matrixHeight);
@@ -483,10 +483,10 @@ class BondSign {
       window.bondMatrixPg.noStroke();
       
       // Draw a wider static matrix (from row 3 to rows-3) that doesn't need refreshing
-      for (let i = 0; i < cols; i++) {
-        for (let j = 3; j < rows - 3; j++) {
-          let px = Math.floor(i * bulbSpacing);
-          let py = Math.floor(j * bulbSpacing);
+      for (var i = 0; i < cols; i++) {
+        for (var j = 3; j < rows - 3; j++) {
+          var px = Math.floor(i * bulbSpacing);
+          var py = Math.floor(j * bulbSpacing);
           
           // Bake the "permanently ON" horizontal borders directly into the static background image
           if (j === 4 || j === rows - 5) {
@@ -501,37 +501,37 @@ class BondSign {
     }
     
     strokeWeight(0);
-    let onBulbs = [];
+    var onBulbs = [];
     
-    for (let i = 0; i < cols; i++) {
+    for (var i = 0; i < cols; i++) {
       // Map physical screen column `i` to the string's logical column
-      let stringCol = i - globalOffsetCols;
-      let charIndex = Math.floor(stringCol / colsPerChar);
-      let colWithinChar = stringCol % colsPerChar;
+      var stringCol = i - globalOffsetCols;
+      var charIndex = Math.floor(stringCol / colsPerChar);
+      var colWithinChar = stringCol % colsPerChar;
       
-      let charData = null;
+      var charData = null;
       
       if (charIndex >= 0 && charIndex < headlineStr.length) {
-        let char = headlineStr[charIndex].toUpperCase();
+        var char = headlineStr[charIndex].toUpperCase();
         charData = BITMAP_FONT_5x7[char] || BITMAP_FONT_5x7[' '];
       }
       
       // Skip the top 8 and bottom 8 rows of bulbs entirely to shrink matrix
-      for (let j = 8; j < rows - 8; j++) {
-        let px = Math.floor(i * bulbSpacing);
-        let py = Math.floor(j * bulbSpacing);
-        let cx = px + bulbSpacing / 2;
-        let cy = py + bulbSpacing / 2;
+      for (var j = 8; j < rows - 8; j++) {
+        var px = Math.floor(i * bulbSpacing);
+        var py = Math.floor(j * bulbSpacing);
+        var cx = px + bulbSpacing / 2;
+        var cy = py + bulbSpacing / 2;
         
-        let isBulbOn = false;
+        var isBulbOn = false;
         
         // Map the physical matrix rows back to the 5x7 font using the dynamic vertical centering
         if (charData && colWithinChar < charWidthBulbs && j >= verticalOffset && j < verticalOffset + charHeightBulbs) {
-          let fontCol = Math.floor(colWithinChar / scale);
-          let fontRow = Math.floor((j - verticalOffset) / scale);
+          var fontCol = Math.floor(colWithinChar / scale);
+          var fontRow = Math.floor((j - verticalOffset) / scale);
           
           if (fontCol >= 0 && fontCol < 5 && fontRow >= 0 && fontRow < 7) {
-            let colBits = charData[fontCol];
+            var colBits = charData[fontCol];
             isBulbOn = (colBits & (1 << fontRow)) !== 0;
           }
         }
@@ -554,8 +554,8 @@ class BondSign {
     fill(255, 230, 150);
     noStroke();
     drawingContext.beginPath();
-    let bulbRadius = bulbSpacing * 0.35;
-    for (let bulb of onBulbs) {
+    var bulbRadius = bulbSpacing * 0.35;
+    for (var bulb of onBulbs) {
       drawingContext.moveTo(bulb.cx + bulbRadius, startY + bulb.cy);
       drawingContext.arc(bulb.cx, startY + bulb.cy, bulbRadius, 0, Math.PI * 2);
     }
@@ -576,14 +576,14 @@ class BondSign {
     circle(circleX, circleY, clockRadius * 2);
     
     // Digital Time (Top Half)
-    let hr = signTime[0];
-    let mn = signTime[1];
-    let sc = signTime[2];
-    let ampm = hr >= 12 ? "PM" : "AM";
-    let hr12 = hr % 12;
+    var hr = signTime[0];
+    var mn = signTime[1];
+    var sc = signTime[2];
+    var ampm = hr >= 12 ? "PM" : "AM";
+    var hr12 = hr % 12;
     if (hr12 === 0) hr12 = 12;
-    let mnStr = mn < 10 ? "0" + mn : mn;
-    let timeStr = `${hr12}:${mnStr}`;
+    var mnStr = mn < 10 ? "0" + mn : mn;
+    var timeStr = `${hr12}:${mnStr}`;
     
     // LED Glow effect
     drawingContext.shadowBlur = 0; // Disabled for performance
@@ -596,7 +596,7 @@ class BondSign {
     
     // Draw centered time (bumped size up slightly since seconds are removed)
     textSize(clockRadius * 0.45);
-    let timeStrWidth = textWidth(timeStr);
+    var timeStrWidth = textWidth(timeStr);
     text(timeStr, circleX, circleY - clockRadius * 0.40);
     
     // Draw AM/PM right-justified under the time
@@ -605,7 +605,7 @@ class BondSign {
     text(ampm, circleX + timeStrWidth / 2, circleY - clockRadius * 0.20);
     
     // 5-second toggle for the bottom half
-    let showNationwide = Math.floor(signTime[2] / 5) % 2 === 0;
+    var showNationwide = Math.floor(signTime[2] / 5) % 2 === 0;
 
     if (!showNationwide) {
       // Bottom Half Text
@@ -621,11 +621,11 @@ class BondSign {
       text("BUY AT", circleX, circleY + clockRadius * 0.65);
     } else {
       // Neon USA Map Image
-      let usY = circleY + clockRadius * 0.45 - windowHeight * 0.01; // Dropped down by 1% of screen height
-      let w = clockRadius * 1.96875; // Reduced by 25% from previous size
+      var usY = circleY + clockRadius * 0.45 - windowHeight * 0.01; // Dropped down by 1% of screen height
+      var w = clockRadius * 1.96875; // Reduced by 25% from previous size
       
       // Calculate height dynamically to preserve aspect ratio, with a fallback
-      let h = clockRadius * 0.7; 
+      var h = clockRadius * 0.7; 
       if (typeof ContinentalUSAImage !== 'undefined' && ContinentalUSAImage.width > 0) {
         h = (ContinentalUSAImage.height / ContinentalUSAImage.width) * w;
       }

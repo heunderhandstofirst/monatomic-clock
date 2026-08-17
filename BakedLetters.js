@@ -31,6 +31,7 @@ function twistLetter(ledder, WW16, ledColor) {
   }
   var LetImg = createImage(lG.width, lG.height);
   LetImg.copy(lG, 0, 0, lG.width, lG.height, 0, 0, lG.width, lG.height);
+  lG.remove();
   return LetImg;
 }
 
@@ -110,50 +111,52 @@ function createHelmsSpeckle() {
     img.mask(Hlm);
     HelmsSpeckleImages[k] = img;
   }
+  Hlm.remove();
+  yB.remove();
 }
 
 function generateNeonFrames() {
-    let Wwh = [13, 8];
-    let WW = min(windowHeight * (Wwh[0] / Wwh[1]), windowWidth) * 0.97;
-    let txtSize = WW * 0.0585;
+    var Wwh = [13, 8];
+    var WW = min(windowHeight * (Wwh[0] / Wwh[1]), windowWidth) * 0.97;
+    var txtSize = WW * 0.0585;
     
     // Create buffers large enough to not clip the massive shadow blur
-    let bufW = WW * 0.8;
-    let bufH = txtSize * 15; 
+    var bufW = WW * 0.8;
+    var bufH = txtSize * 15; 
     
-    for (let o = 0; o < 2; o++) {
-        let isOlympic = (o === 0);
-        let neonTxt = isOlympic ? "OLYMPIC BREAD" : "DAILY AT YOUR DOOR";
+    for (var o = 0; o < 2; o++) {
+        var isOlympic = (o === 0);
+        var neonTxt = isOlympic ? "OLYMPIC BREAD" : "DAILY AT YOUR DOOR";
         
-        let wideGlowStr   = isOlympic ? 'rgba(0, 150, 255, 0.8)' : 'rgba(255, 69, 0, 0.8)';
-        let strongGlowStr = isOlympic ? 'rgba(0, 150, 255, 1)' : 'rgba(255, 69, 0, 1)';
-        let innerGlowStr  = isOlympic ? 'rgba(100, 200, 255, 1)' : 'rgba(255, 150, 100, 1)';
-        let strokeStr     = isOlympic ? 'rgba(0, 150, 255, 0.9)' : 'rgba(255, 69, 0, 0.9)';
+        var wideGlowStr   = isOlympic ? 'rgba(0, 150, 255, 0.8)' : 'rgba(255, 69, 0, 0.8)';
+        var strongGlowStr = isOlympic ? 'rgba(0, 150, 255, 1)' : 'rgba(255, 69, 0, 1)';
+        var innerGlowStr  = isOlympic ? 'rgba(100, 200, 255, 1)' : 'rgba(255, 150, 100, 1)';
+        var strokeStr     = isOlympic ? 'rgba(0, 150, 255, 0.9)' : 'rgba(255, 69, 0, 0.9)';
         
-        for (let frame = 0; frame < 4; frame++) {
-            let pg = createGraphics(bufW, bufH);
+        for (var frame = 0; frame < 4; frame++) {
+            var pg = createGraphics(bufW, bufH);
             pg.textFont("Arial Narrow");
             pg.textSize(txtSize);
             pg.textAlign(CENTER, CENTER);
             pg.translate(bufW / 2, bufH / 2); 
             
             // Randomize the glow intensity slightly to create the flicker
-            let flicker = random(0.65, 1.0);
+            var flicker = random(0.65, 1.0);
             
             pg.drawingContext.shadowBlur = 195 * flicker;
             pg.drawingContext.shadowColor = wideGlowStr;
             pg.fill(isOlympic ? color(0, 150, 255) : color(255, 69, 0));
             pg.noStroke();
-            for (let i = 0; i < 4; i++) pg.text(neonTxt, 0, 0);
+            for (var i = 0; i < 4; i++) pg.text(neonTxt, 0, 0);
             
             pg.drawingContext.shadowBlur = 104 * flicker;
             pg.drawingContext.shadowColor = strongGlowStr;
-            for (let i = 0; i < 4; i++) pg.text(neonTxt, 0, 0);
+            for (var i = 0; i < 4; i++) pg.text(neonTxt, 0, 0);
             
             pg.drawingContext.shadowBlur = 39 * flicker;
             pg.drawingContext.shadowColor = innerGlowStr;
             pg.fill(isOlympic ? color(150, 200, 255) : color(255, 150, 100));
-            for (let i = 0; i < 3; i++) pg.text(neonTxt, 0, 0);
+            for (var i = 0; i < 3; i++) pg.text(neonTxt, 0, 0);
             
             pg.drawingContext.shadowBlur = 13; // Core stays relatively sharp
             pg.drawingContext.shadowColor = innerGlowStr;

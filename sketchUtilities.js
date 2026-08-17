@@ -13,7 +13,7 @@ function newRectOverlay(unitSize, xCount, yCount,digitScalar) {
     var scaledUnit=unitSize*digitScalar
     var scaledX=xCount/digitScalar
     var scaledY=yCount/digitScalar
-    var  yAxis, xAxis
+    var yAxis, xAxis
     for (var i=-(scaledX)/2;i<(scaledX+1)/2;i++){
       yAxis = scaledUnit*((scaledY)/2)  
       xAxis = scaledUnit*i
@@ -37,19 +37,19 @@ function newRectOverlay(unitSize, xCount, yCount,digitScalar) {
   }
 
   function prismaticSky(psWidth,psHeight, nudge){
-    let ctx = drawingContext;
-    let thisPct = 360 * (Date.now() % 60000 / 60000);
+    var ctx = drawingContext;
+    var thisPct = 360 * (Date.now() % 60000 / 60000);
     
-    let yStart = -nudge;
-    let yEnd = psHeight + nudge;
-    let grad = ctx.createLinearGradient(0, yStart, 0, yEnd);
+    var yStart = -nudge;
+    var yEnd = psHeight + nudge;
+    var grad = ctx.createLinearGradient(0, yStart, 0, yEnd);
     
     // Add multiple color stops to correctly interpolate through the HSL spectrum smoothly
-    let numStops = 10;
-    for (let j = 0; j <= numStops; j++) {
-      let t = j / numStops;
-      let i = yStart + t * (yEnd - yStart);
-      let bgColor = (thisPct + i / 25) % 360;
+    var numStops = 10;
+    for (var j = 0; j <= numStops; j++) {
+      var t = j / numStops;
+      var i = yStart + t * (yEnd - yStart);
+      var bgColor = (thisPct + i / 25) % 360;
       if (bgColor < 0) bgColor += 360;
       grad.addColorStop(t, `hsla(${bgColor}, 95%, 20%, 1)`);
     }
@@ -58,7 +58,7 @@ function newRectOverlay(unitSize, xCount, yCount,digitScalar) {
     ctx.fillRect(-nudge, yStart, psWidth + nudge * 2, yEnd - yStart);
   }
 
-let zipperGraphics;
+var zipperGraphics;
 
 function drawZipperText(textStr, xOffset, y, size) {
   if (!zipperGraphics) {
@@ -77,16 +77,16 @@ function drawZipperText(textStr, xOffset, y, size) {
   
   zipperGraphics.loadPixels();
   
-  let step = Math.max(2, Math.floor(size / 8)); 
+  var step = Math.max(2, Math.floor(size / 8)); 
   
   push();
   noStroke();
   translate(0, y - size * 0.2);
   
-  for (let py = 0; py < zipperGraphics.height; py += step) {
-    for (let px = 0; px < zipperGraphics.width; px += step) {
-      let index = (px + py * zipperGraphics.width) * 4;
-      let r = zipperGraphics.pixels[index];
+  for (var py = 0; py < zipperGraphics.height; py += step) {
+    for (var px = 0; px < zipperGraphics.width; px += step) {
+      var index = (px + py * zipperGraphics.width) * 4;
+      var r = zipperGraphics.pixels[index];
       if (r > 128) {
         fill(255, 200, 50, 255); 
         circle(px, py, step * 0.8);

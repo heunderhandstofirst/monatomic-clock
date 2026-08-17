@@ -137,15 +137,15 @@ class BakerySign {
     pg.scale(0.47);
     
     // Draw the rings
-    let r = unit * 0.9; // radius
-    let sw = unit * 0.15; // stroke weight
+    var r = unit * 0.9; // radius
+    var sw = unit * 0.15; // stroke weight
     pg.noFill();
     pg.strokeWeight(sw);
     
     // Centers of the rings
-    let cx = [-unit * 1.1, 0, unit * 1.1, -unit * 0.55, unit * 0.55];
-    let cy = [0, 0, 0, unit * 0.45, unit * 0.45];
-    let colors = [
+    var cx = [-unit * 1.1, 0, unit * 1.1, -unit * 0.55, unit * 0.55];
+    var cy = [0, 0, 0, unit * 0.45, unit * 0.45];
+    var colors = [
       color(0, 129, 200),   // Blue
       color(0, 0, 0),       // Black
       color(238, 51, 78),   // Red
@@ -154,7 +154,7 @@ class BakerySign {
     ];
 
     // Draw the base rings
-    for (let i = 0; i < 5; i++) {
+    for (var i = 0; i < 5; i++) {
         pg.stroke(colors[i]);
         pg.ellipse(cx[i], cy[i], r, r);
     }
@@ -218,7 +218,7 @@ class BakerySign {
     this.unit=this.WW/this.Wwh[0]
     
     // --- CACHE STATIC BACKGROUND ELEMENTS ---
-    let pgVersion = "1_olympic_" + this.showOlympicRings;
+    var pgVersion = "1_olympic_" + this.showOlympicRings;
     if (typeof window.bakeryPg === 'undefined' || window.bakeryPgExpectedWidth !== windowWidth || window.bakeryPgExpectedHeight !== windowHeight || window.bakeryPgVersion !== pgVersion) {
       if (typeof window.bakeryPg !== 'undefined') window.bakeryPg.remove();
       window.bakeryPg = createGraphics(windowWidth, windowHeight);
@@ -290,13 +290,13 @@ class BakerySign {
     fill(255, 215, 0);
     textSize(this.WW / 20);
     
-    let minNum = signTime[1];
-    let minRoman = "";
+    var minNum = signTime[1];
+    var minRoman = "";
     if (minNum === 0) {
       minRoman = "00";
     } else {
-      let rVals = {L:50, XL:40, X:10, IX:9, V:5, IV:4, I:1};
-      for (let k in rVals) {
+      var rVals = {L:50, XL:40, X:10, IX:9, V:5, IV:4, I:1};
+      for (var k in rVals) {
         while (minNum >= rVals[k]) {
           minRoman += k;
           minNum -= rVals[k];
@@ -479,14 +479,14 @@ function displayYellowHelm( BigHelm, unit, xxx, yyy) {
   var ImgX=unit*-5.1
   var ImgY=unit*-1.93
 
-  let bw = (windowWidth / 2) * (1 / 0.8) * 0.95;
-  let bh = (windowHeight / 4) * (1 / 0.8) * 0.95;
+  var bw = (windowWidth / 2) * (1 / 0.8) * 0.95;
+  var bh = (windowHeight / 4) * (1 / 0.8) * 0.95;
   image(yBack0, ImgX, ImgY, bw, bh);
   image(BigHelm, ImgX, ImgY, bw, bh);
 
   // 6-second alternator
-  let isOlympic = int(Date.now() / 6000) % 2 === 0;
-  let WW = unit * 13;
+  var isOlympic = int(Date.now() / 6000) % 2 === 0;
+  var WW = unit * 13;
   
   // Position text perfectly underneath the HELM'S word
   push();
@@ -497,7 +497,7 @@ function displayYellowHelm( BigHelm, unit, xxx, yyy) {
       displayYellowHelm.lastFlicker = -1;
   }
   
-  let whichFrame = int(random(3));
+  var whichFrame = int(random(3));
   if (whichFrame >= displayYellowHelm.lastFlicker && displayYellowHelm.lastFlicker !== -1) {
       whichFrame++;
   }
@@ -505,7 +505,7 @@ function displayYellowHelm( BigHelm, unit, xxx, yyy) {
   whichFrame = min(max(0, whichFrame), 3);
   
   // Select the correct frame array
-  let activeFrames = isOlympic ? OlympicNeonFrames : DailyNeonFrames;
+  var activeFrames = isOlympic ? OlympicNeonFrames : DailyNeonFrames;
   
   // Draw the pre-rendered frame
   if (activeFrames && activeFrames.length > 0) {

@@ -19,17 +19,17 @@ class UnionOysterHouse {
       this.brickWidth * this.BRKcolums,
       this.brickHeight * this.BRKrows
     );
-    for (let y = 0; y < this.BRKrows; y++) {
+    for (var y = 0; y < this.BRKrows; y++) {
       const offset = (0 * windowWidth) / 24 + (this.brickWidth / 2) * (y % 2);
-      for (let x = 0; x < this.BRKcolums; x++) {
+      for (var x = 0; x < this.BRKcolums; x++) {
         this.brickCanvas.fill(UnionOysterHouse.whatColor());
         if (y < 3) this.brickCanvas.fill("black");
 
-        let stackCycle = x % 20;
+        var stackCycle = x % 20;
         var stackCol = stackCycle > 8 && stackCycle < 12;
-        let stackRow = y <= 12;
+        var stackRow = y <= 12;
         if (!stackRow) stackCol = true;
-        let halfSize = false;
+        var halfSize = false;
         if (stackCycle === 8 || stackCycle === 11) halfSize = true;
 
         if (stackRow && halfSize) {
@@ -164,7 +164,7 @@ class UnionOysterHouse {
       "rgba(229, 34, 68, 0)"
     ]);
 
-    for (let i = neonGlowWidth; i > 0; i -= neonGlowWidth * 0.05) {
+    for (var i = neonGlowWidth; i > 0; i -= neonGlowWidth * 0.05) {
       const color = neonGlowScale(i / neonGlowWidth);
       ctx.lineWidth = i;
       ctx.strokeStyle = color.css();
@@ -183,7 +183,7 @@ class UnionOysterHouse {
 
     // Make the neon tube
     const neonTubeWidth = 3;
-    for (let i = neonTubeWidth; i > 0; i -= neonTubeWidth * 0.05) {
+    for (var i = neonTubeWidth; i > 0; i -= neonTubeWidth * 0.05) {
       const color = neonTubeScale(i / neonTubeWidth);
       ctx.lineWidth = i;
       ctx.strokeStyle = color.css();

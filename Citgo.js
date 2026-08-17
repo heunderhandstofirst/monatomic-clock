@@ -32,8 +32,8 @@ class CitgoSign2 {
       // Pre-render the neon line to optimize performance
       this.maxStroke = this.whiteBlink[0][1];
       this.lineLen = this.rectDim * 0.99 - this.unit * 0.1;
-      let gw = ceil(this.lineLen + this.maxStroke + 2);
-      let gh = ceil(this.maxStroke * 2 + 2);
+      var gw = ceil(this.lineLen + this.maxStroke + 2);
+      var gh = ceil(this.maxStroke * 2 + 2);
       this.lineGraphics = createGraphics(gw, gh);
       this.lineGraphics.translate(this.maxStroke / 2 + 1, this.maxStroke + 1);
       for (var t = 0; t < this.NeonDim; t++) {

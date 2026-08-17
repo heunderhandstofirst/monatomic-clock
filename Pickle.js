@@ -1,8 +1,9 @@
 /* eslint-disable no-undef, no-unused, no-unused-vars */
-function initPickleData() {
-  var WH = 0.9 * windowHeight;
+function initPickleData(signWH) {
+  var WH = signWH || (0.9 * windowHeight);
   var NumFloors = 50;
-  var Gwide = WH / 3;
+  var towerRadius = WH * Math.sqrt(0.15 * 0.15 + 0.15 * 0.15);
+  var Gwide = 2 * towerRadius;
   var Ghite = windowHeight * 0.85;
   var GherkinY = windowHeight / 2.0;
   var GY = [];

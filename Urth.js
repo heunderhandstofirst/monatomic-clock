@@ -443,6 +443,7 @@ function createURTHsign(WW, WH) {
   var LetImg = createImage(urthG.width, urthG.height);
   var uGW = [urthG.width, urthG.height];
   LetImg.copy(urthG, 0, 0, uGW[0], uGW[1], 0, 0, uGW[0], uGW[1]);
+  urthG.remove();
 
   return LetImg;
 }

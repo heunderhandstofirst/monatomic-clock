@@ -6,7 +6,10 @@ class LondonSign {
     this.step = 0;
     this.newColorX = initializeColorX();
     this.newColorA = initializeColorA();
-    this.PickleData = initPickleData();
+    var tempWwh = [3, 5];
+    var tempWW = min(windowHeight * (tempWwh[0] / tempWwh[1]), windowWidth) * 0.97;
+    var tempWH = (tempWW * tempWwh[1]) / tempWwh[0];
+    this.PickleData = initPickleData(tempWH);
     // this.CircCent = 0.15;
    
     this.Tower0 = initialize0HS(0);
@@ -59,7 +62,7 @@ class LondonSign {
     if (this.lastWH !== this.WH || this.lastWW !== this.WW) {
       this.lastWH = this.WH;
       this.lastWW = this.WW;
-      this.PickleData = initPickleData();
+      this.PickleData = initPickleData(this.WH);
       if (this.Tower0) { this.Tower0.remove(); this.Tower1.remove(); this.Tower2.remove(); this.Tower3.remove(); }
       this.Tower0 = initialize0HS(0);
       this.Tower1 = initialize0HS(1);

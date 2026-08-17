@@ -190,7 +190,7 @@ class verticalWhiteLinesIgnore {
   }
 
   draw() {
-    for (let i = 0; i < this.bulbs.length; i++) {
+    for (var i = 0; i < this.bulbs.length; i++) {
       this.bulbs[i].update();
       this.bulbs[i].draw();
     }
@@ -227,7 +227,7 @@ class LightFixture {
   }
 
   draw() {
-    for (let i = 0; i < this.bulbs.length; i++) {
+    for (var i = 0; i < this.bulbs.length; i++) {
       this.bulbs[i].update();
       this.bulbs[i].draw();
     }
@@ -252,13 +252,13 @@ class ParabolicLights {
     translate(this.x, this.y);
     noFill();
     strokeWeight(this.width / 60);
-    for (let i = 0; i < 5; i++) {
-      let offset = (this.time + i * 1.5) % 7.5;
-      let alpha = map(offset, 0, 7.5, 255, 0);
+    for (var i = 0; i < 5; i++) {
+      var offset = (this.time + i * 1.5) % 7.5;
+      var alpha = map(offset, 0, 7.5, 255, 0);
       stroke(255, 200, 50, alpha); // Golden/yellow neon lights
       
-      let w = this.width * (0.3 + offset * 0.1);
-      let h = this.height * (0.6 + offset * 0.1);
+      var w = this.width * (0.3 + offset * 0.1);
+      var h = this.height * (0.6 + offset * 0.1);
       
       // Left sweep
       arc(-this.width*0.2, 0, w, h, PI, TWO_PI - QUARTER_PI);

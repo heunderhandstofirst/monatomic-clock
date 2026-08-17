@@ -63,7 +63,7 @@ class SchweppesSign {
     var Xstart = MidX - (this.totalLineCount / 2) * SingleLineWidth;
     
     for (var drawLineLoop = 0 ; drawLineLoop<this.totalLineCount;drawLineLoop++){  // LOOP THROUGH THE 104 VERTICAL LINES
-      let ModeLineCombo =0
+      var ModeLineCombo =0
       if (LeftRiteCollapseMode == 0) ModeLineCombo=drawLineLoop/this.totalLineCount
       if (LeftRiteCollapseMode == 1) ModeLineCombo=(this.totalLineCount-drawLineLoop)/this.totalLineCount
       if (LeftRiteCollapseMode == 2) ModeLineCombo=2*((this.totalLineCount/2)-abs(drawLineLoop-(this.totalLineCount/2)))/this.totalLineCount

@@ -7,12 +7,12 @@ class StomatolSign {
     this.brushHeadBulbs = [];
     
     // 3 strings of lights along the 7 segments of the tube (Density: 50 per 100 AR)
-    let bulbCounts = [124, 124, 8, 8, 45, 9, 9];
-    for (let comp = 0; comp < 7; comp++) {
-      let count = bulbCounts[comp];
-      for (let i = 0; i < count; i++) {
-        for (let s = 0; s < 3; s++) {
-          let t = Math.max(0, Math.min(1, (i + (Math.random() * 0.1 - 0.05)) / Math.max(1, count - 1)));
+    var bulbCounts = [124, 124, 8, 8, 45, 9, 9];
+    for (var comp = 0; comp < 7; comp++) {
+      var count = bulbCounts[comp];
+      for (var i = 0; i < count; i++) {
+        for (var s = 0; s < 3; s++) {
+          var t = Math.max(0, Math.min(1, (i + (Math.random() * 0.1 - 0.05)) / Math.max(1, count - 1)));
           this.tubeBulbs.push({ 
             comp: comp, stringIdx: s, t: t, rRatio: 0.003,
             yJitter: (Math.random() * 0.2 - 0.1),
@@ -25,20 +25,20 @@ class StomatolSign {
     // Triangle fill (vertical columns of lights)
     this.triangleBulbs = [];
     this.rectBulbs = [];
-    let d = 2.0; // spacing in AR units (50 lights per 100 AR)
-    let numCols = Math.floor(15 / d) + 1; // triangleWidth in AR units is 15
-    for (let c = -1; c < numCols - 1; c++) { // Dropped the far left column (c = numCols - 1)
-      let x_AR = -c * d;
+    var d = 2.0; // spacing in AR units (50 lights per 100 AR)
+    var numCols = Math.floor(15 / d) + 1; // triangleWidth in AR units is 15
+    for (var c = -1; c < numCols - 1; c++) { // Dropped the far left column (c = numCols - 1)
+      var x_AR = -c * d;
       // Maintain max height of 74 for columns added to the right of the base (x_AR > 0)
-      let h = x_AR > 0 ? 74 : 74 * (1 - Math.abs(x_AR) / 15);
-      let numLights = Math.floor(h / d) + 1;
+      var h = x_AR > 0 ? 74 : 74 * (1 - Math.abs(x_AR) / 15);
+      var numLights = Math.floor(h / d) + 1;
       
       if (c >= 1) {
         numLights += 4; // Add 2 lights to top and 2 to bottom to extend closer to the edge
       }
-      let startY = -(numLights - 1) * d / 2;
-      for (let i = 0; i < numLights; i++) {
-        let y_AR = startY + i * d;
+      var startY = -(numLights - 1) * d / 2;
+      for (var i = 0; i < numLights; i++) {
+        var y_AR = startY + i * d;
         this.triangleBulbs.push({
           x_AR: x_AR + (Math.random() * 0.2 - 0.1) * d,
           y_AR: y_AR + (Math.random() * 0.2 - 0.1) * d,
@@ -49,13 +49,13 @@ class StomatolSign {
     }
 
     // Rectangle fill (continuing the same grid to the left)
-    for (let c = numCols - 1; c <= 11; c++) { // Columns 7, 8, 9, 10, 11
-      let x_AR = -c * d;
-      let h = 22; // height of the rectangle
-      let numLights = Math.floor(h / d); // Dropped the +1 so they sit comfortably inside the edge
-      let startY = -(numLights - 1) * d / 2;
-      for (let i = 0; i < numLights; i++) {
-        let y_AR = startY + i * d;
+    for (var c = numCols - 1; c <= 11; c++) { // Columns 7, 8, 9, 10, 11
+      var x_AR = -c * d;
+      var h = 22; // height of the rectangle
+      var numLights = Math.floor(h / d); // Dropped the +1 so they sit comfortably inside the edge
+      var startY = -(numLights - 1) * d / 2;
+      for (var i = 0; i < numLights; i++) {
+        var y_AR = startY + i * d;
         this.rectBulbs.push({
           x_AR: x_AR + (Math.random() * 0.2 - 0.1) * d,
           y_AR: y_AR + (Math.random() * 0.2 - 0.1) * d,
@@ -66,10 +66,10 @@ class StomatolSign {
     }
     
     // Brush handle (Length 222 AR, 3 strings at 50/100AR = 111 lights per string)
-    for (let s = 0; s < 3; s++) {
-      let offsetFactor = s === 0 ? -0.25 : (s === 1 ? 0 : 0.25);
-      for (let i = 0; i < 111; i++) {
-        let t = i / 110;
+    for (var s = 0; s < 3; s++) {
+      var offsetFactor = s === 0 ? -0.25 : (s === 1 ? 0 : 0.25);
+      for (var i = 0; i < 111; i++) {
+        var t = i / 110;
         this.brushHandleBulbs.push({
           t: t + (Math.random() * 0.005 - 0.0025), // slight jitter
           offsetFactor: offsetFactor + (Math.random() * 0.05 - 0.025), // slight vertical jitter
@@ -80,10 +80,10 @@ class StomatolSign {
     }
     
     // Brush head (Length 94 AR, 3 strings at 50/100AR = 47 lights per string)
-    for (let s = 0; s < 3; s++) {
-      let offsetFactor = s === 0 ? -0.25 : (s === 1 ? 0 : 0.25);
-      for (let i = 0; i < 47; i++) {
-        let t = i / 46;
+    for (var s = 0; s < 3; s++) {
+      var offsetFactor = s === 0 ? -0.25 : (s === 1 ? 0 : 0.25);
+      for (var i = 0; i < 47; i++) {
+        var t = i / 46;
         this.brushHeadBulbs.push({
           t: t + (Math.random() * 0.005 - 0.0025), // slight jitter
           offsetFactor: offsetFactor + (Math.random() * 0.05 - 0.025), // slight vertical jitter
@@ -95,12 +95,12 @@ class StomatolSign {
     
     // Brush bristles (14 distinct "coffin" shapes)
     this.bristleBulbs = [];
-    let numBristles = 14;
-    let bristleSpacingT = 1.0 / numBristles;
-    for (let i = 0; i < numBristles; i++) {
-      let tCenter = (i + 0.5) * bristleSpacingT; // position along the head
+    var numBristles = 14;
+    var bristleSpacingT = 1.0 / numBristles;
+    for (var i = 0; i < numBristles; i++) {
+      var tCenter = (i + 0.5) * bristleSpacingT; // position along the head
       
-      let H, widestY, baseW, maxW, topW;
+      var H, widestY, baseW, maxW, topW;
       
       if (i === 13) {
         // Big Shape (Far Left)
@@ -113,22 +113,22 @@ class StomatolSign {
         H = 15; widestY = 6; baseW = 3; maxW = 5.5; topW = 0;
       }
       
-      let d = 2.0; // Density
-      let baseOffset = 3.0; // Lift off the brush head backbone slightly
+      var d = 2.0; // Density
+      var baseOffset = 3.0; // Lift off the brush head backbone slightly
       
-      for (let y = 0; y <= H; y += d) {
-        let currentW = 0;
+      for (var y = 0; y <= H; y += d) {
+        var currentW = 0;
         if (y < widestY) {
           currentW = baseW + (maxW - baseW) * (y / widestY);
         } else {
           currentW = maxW + (topW - maxW) * ((y - widestY) / (H - widestY));
         }
         
-        let numLights = Math.max(1, Math.round(currentW / d));
-        let startX = -(numLights - 1) * d / 2;
+        var numLights = Math.max(1, Math.round(currentW / d));
+        var startX = -(numLights - 1) * d / 2;
         
-        for (let l = 0; l < numLights; l++) {
-          let x = startX + l * d;
+        for (var l = 0; l < numLights; l++) {
+          var x = startX + l * d;
           this.bristleBulbs.push({
             t: tCenter,
             xOffset: x + (Math.random() * 0.4 - 0.2), // Tangent offset
@@ -142,9 +142,9 @@ class StomatolSign {
     
     // Toothpaste straight line bulbs (Length ~70 AR)
     this.tpStraightBulbs = [];
-    for (let s = 0; s < 3; s++) {
-      let offsetFactor = s === 0 ? -0.25 : (s === 1 ? 0 : 0.25);
-      for (let i = 0; i < 35; i++) {
+    for (var s = 0; s < 3; s++) {
+      var offsetFactor = s === 0 ? -0.25 : (s === 1 ? 0 : 0.25);
+      for (var i = 0; i < 35; i++) {
         this.tpStraightBulbs.push({
           t: i / 34,
           offsetFactor: offsetFactor + (Math.random() * 0.05 - 0.025),
@@ -155,9 +155,9 @@ class StomatolSign {
     
     // Toothpaste curved bulbs (Length ~130 AR)
     this.tpCurveBulbs = [];
-    for (let s = 0; s < 3; s++) {
-      let offsetFactor = s === 0 ? -0.25 : (s === 1 ? 0 : 0.25);
-      for (let i = 0; i < 65; i++) {
+    for (var s = 0; s < 3; s++) {
+      var offsetFactor = s === 0 ? -0.25 : (s === 1 ? 0 : 0.25);
+      for (var i = 0; i < 65; i++) {
         this.tpCurveBulbs.push({
           t: i / 64,
           offsetFactor: offsetFactor + (Math.random() * 0.05 - 0.025),
@@ -170,10 +170,10 @@ class StomatolSign {
   render(signTime) {
     prismaticSky(width, height, 10);
     
-    let AR = 388 / 216;
-    let maxWidth = width * 0.98;
-    let maxHeight = height * 0.98;
-    let rectWidth, rectHeight;
+    var AR = 388 / 216;
+    var maxWidth = width * 0.98;
+    var maxHeight = height * 0.98;
+    var rectWidth, rectHeight;
     
     if (maxWidth / maxHeight > AR) {
       rectHeight = maxHeight;
@@ -183,59 +183,59 @@ class StomatolSign {
       rectHeight = rectWidth / AR;
     }
     
-    let centerY = height * 0.35;
+    var centerY = height * 0.35;
     
     // Calculate tube coordinates
-    let innerWidth = rectWidth * (247 / 388);
-    let innerHeight = rectHeight * (74 / 216);
-    let borderThickness = rectWidth * (6 / 388);
+    var innerWidth = rectWidth * (247 / 388);
+    var innerHeight = rectHeight * (74 / 216);
+    var borderThickness = rectWidth * (6 / 388);
     
-    let leftX = width / 2 - innerWidth / 2;
-    let rightX = width / 2 + innerWidth / 2;
-    let topY = centerY - innerHeight / 2;
-    let bottomY = centerY + innerHeight / 2;
+    var leftX = width / 2 - innerWidth / 2;
+    var rightX = width / 2 + innerWidth / 2;
+    var topY = centerY - innerHeight / 2;
+    var bottomY = centerY + innerHeight / 2;
     
-    let lineLength = rectHeight * (90 / 216);
-    let lineShift = rectWidth * (31 / 388);
-    let lineX = rightX + lineShift;
-    let lineTopY = centerY - lineLength / 2;
-    let lineBottomY = centerY + lineLength / 2;
-    let horizontalLen = rectWidth * (17 / 388);
-    let triangleWidth = rectWidth * (15 / 388);
-    let tipRectWidth = rectWidth * (17 / 388);
-    let tipRectHeight = rectHeight * (22 / 216);
+    var lineLength = rectHeight * (90 / 216);
+    var lineShift = rectWidth * (31 / 388);
+    var lineX = rightX + lineShift;
+    var lineTopY = centerY - lineLength / 2;
+    var lineBottomY = centerY + lineLength / 2;
+    var horizontalLen = rectWidth * (17 / 388);
+    var triangleWidth = rectWidth * (15 / 388);
+    var tipRectWidth = rectWidth * (17 / 388);
+    var tipRectHeight = rectHeight * (22 / 216);
     
     // Brush coordinates
-    let brushStart1X = lineX;
-    let brushStart1Y = (height * 0.4) + rectHeight * (80 / 216);  
+    var brushStart1X = lineX;
+    var brushStart1Y = (height * 0.4) + rectHeight * (80 / 216);  
     
-    let brushLen1 = rectWidth * (222 / 388);
-    let angle1 = 6 * Math.PI / 180;
-    let brushDx1 = brushLen1 * Math.cos(angle1);
-    let brushEnd1X = brushStart1X - brushDx1;
-    let brushEnd1Y = brushStart1Y + brushLen1 * Math.sin(angle1);
+    var brushLen1 = rectWidth * (222 / 388);
+    var angle1 = 6 * Math.PI / 180;
+    var brushDx1 = brushLen1 * Math.cos(angle1);
+    var brushEnd1X = brushStart1X - brushDx1;
+    var brushEnd1Y = brushStart1Y + brushLen1 * Math.sin(angle1);
     
-    let brushLen2 = rectWidth * (94 / 388);
-    let angle2 = 5 * Math.PI / 180;
-    let brushDx2 = brushLen2 * Math.cos(angle2);
-    let brushEnd2X = brushEnd1X - brushDx2;
-    let brushEnd2Y = brushEnd1Y - brushLen2 * Math.sin(angle2);
+    var brushLen2 = rectWidth * (94 / 388);
+    var angle2 = 5 * Math.PI / 180;
+    var brushDx2 = brushLen2 * Math.cos(angle2);
+    var brushEnd2X = brushEnd1X - brushDx2;
+    var brushEnd2Y = brushEnd1Y - brushLen2 * Math.sin(angle2);
     
     // Draw stomatol red image in the center if loaded
-    let sTime = signTime[2] % 30; // current second, looped every 30 seconds
-    let smoothSecond = sTime + (new Date().getMilliseconds() / 1000.0);
+    var sTime = signTime[2] % 30; // current second, looped every 30 seconds
+    var smoothSecond = sTime + (new Date().getMilliseconds() / 1000.0);
     
-    let isTubeOn = sTime >= 2;
-    let isBrushOn = sTime >= 20;
-    let tpFlowProgress = constrain((smoothSecond - 20) / 5.0, 0, 1.0);
+    var isTubeOn = sTime >= 2;
+    var isBrushOn = sTime >= 20;
+    var tpFlowProgress = constrain((smoothSecond - 20) / 5.0, 0, 1.0);
     
-    let imgToDraw = undefined;
+    var imgToDraw = undefined;
     
     if (typeof stomatolCycleImages !== 'undefined' && stomatolCycleImages.length === 9) {
       if (sTime < 4) {
         imgToDraw = stomatolCycleImages[0];
       } else if (sTime < 20) {
-        let idx = Math.floor((sTime - 4) / 2) + 1;
+        var idx = Math.floor((sTime - 4) / 2) + 1;
         imgToDraw = stomatolCycleImages[idx];
       } else {
         imgToDraw = stomatolCycleImages[8];
@@ -249,7 +249,7 @@ class StomatolSign {
     noStroke();
     
     // Main flat roof
-    let roofTopY = bottomY + height * 0.05;
+    var roofTopY = bottomY + height * 0.05;
     beginShape();
     vertex(0, height); // Bottom left
     vertex(0, roofTopY); // Top left, just below tube
@@ -268,9 +268,9 @@ class StomatolSign {
     // Support scaffolding (vertical bars)
     fill(20, 20, 20); // Dark, almost black grey
     noStroke();
-    let barWidth = (borderThickness * 1.5) * 0.125; // Reduced thickness again by 50%
-    let scaffoldY = topY;
-    let scaffoldH = height - topY; // Extends off the bottom of the screen
+    var barWidth = (borderThickness * 1.5) * 0.125; // Reduced thickness again by 50%
+    var scaffoldY = topY;
+    var scaffoldH = height - topY; // Extends off the bottom of the screen
     
     // Bar 1: LHS vertical edge
     rect(leftX - barWidth / 2, scaffoldY, barWidth, scaffoldH);
@@ -278,53 +278,53 @@ class StomatolSign {
     rect(lineX - barWidth / 2, scaffoldY, barWidth, scaffoldH);
     
     // Calculate letter positions for 'A' and first 'T'
-    let textCenterX = (width / 2) + (width * 0.031);
-    let letterW = (innerWidth * 1.05) / 8;
+    var textCenterX = (width / 2) + (width * 0.031);
+    var letterW = (innerWidth * 1.05) / 8;
     
     // Bar 3: Behind 'A' (1/2 letter width right of center)
-    let aX = textCenterX + (letterW * 0.5);
+    var aX = textCenterX + (letterW * 0.5);
     rect(aX - barWidth / 2, scaffoldY, barWidth, scaffoldH);
     
     // Bar 4: Behind first 'T' (2.5 letter widths left of center)
-    let tX = textCenterX - (letterW * 2.5);
+    var tX = textCenterX - (letterW * 2.5);
     rect(tX - barWidth / 2, scaffoldY, barWidth, scaffoldH);
     
     // Horizontal Scaffolding
-    let imgTopY = centerY - (innerHeight * 0.55) / 2;
-    let imgH = innerHeight * 0.55;
+    var imgTopY = centerY - (innerHeight * 0.55) / 2;
+    var imgH = innerHeight * 0.55;
     
     // 10% below top of letters
-    let horizY1 = imgTopY + imgH * 0.1;
+    var horizY1 = imgTopY + imgH * 0.1;
     rect(leftX, horizY1 - barWidth / 2, lineX - leftX, barWidth);
     
     // Bar 5: Vertical scaffold left of brush
-    let newVertX = brushEnd2X - (width * 0.05);
+    var newVertX = brushEnd2X - (width * 0.05);
     
     // 90% below top of letters (middle horizontal scaffold)
-    let horizY2 = imgTopY + imgH * 0.9;
+    var horizY2 = imgTopY + imgH * 0.9;
     rect(newVertX, horizY2 - barWidth / 2, lineX - newVertX, barWidth);
     
     // Draw Bar 5 vertical
     rect(newVertX - barWidth / 2, horizY2, barWidth, height - horizY2);
     
     // Horizontal scaffold below brush
-    let horizY3 = brushEnd2Y + (height * 0.01);
+    var horizY3 = brushEnd2Y + (height * 0.01);
     rect(newVertX, horizY3 - barWidth / 2, lineX - newVertX, barWidth);
     
     // Horizontal scaffold below tube body
-    let horizY_tube = bottomY + (height * 0.02);
+    var horizY_tube = bottomY + (height * 0.02);
     rect(newVertX, horizY_tube, lineX - newVertX, barWidth);
 
     // Diagonal Cross-Bracing
     stroke(20, 20, 20);
     strokeWeight(barWidth);
     
-    let scaffoldXs = [leftX, aX, tX, lineX];
+    var scaffoldXs = [leftX, aX, tX, lineX];
     
-    for (let i = 0; i < scaffoldXs.length; i++) {
-      let X = scaffoldXs[i];
-      let roof_X = X + width * 0.03; // angled slightly to the right
-      let roof_Y = bottomY + height * 0.05; // exact top of the flat roof
+    for (var i = 0; i < scaffoldXs.length; i++) {
+      var X = scaffoldXs[i];
+      var roof_X = X + width * 0.03; // angled slightly to the right
+      var roof_Y = bottomY + height * 0.05; // exact top of the flat roof
       
       // Line from top of vertical scaffold
       line(X, topY, roof_X, roof_Y);
@@ -382,30 +382,30 @@ class StomatolSign {
     endShape();
     
     // Toothpaste Geometry
-    let tp_hd_dx = brushEnd2X - brushEnd1X;
-    let tp_hd_dy = brushEnd2Y - brushEnd1Y;
-    let tp_hd_len = Math.sqrt(tp_hd_dx*tp_hd_dx + tp_hd_dy*tp_hd_dy);
-    let tp_nx = -tp_hd_dy / tp_hd_len;
-    let tp_ny = tp_hd_dx / tp_hd_len;
+    var tp_hd_dx = brushEnd2X - brushEnd1X;
+    var tp_hd_dy = brushEnd2Y - brushEnd1Y;
+    var tp_hd_len = Math.sqrt(tp_hd_dx*tp_hd_dx + tp_hd_dy*tp_hd_dy);
+    var tp_nx = -tp_hd_dy / tp_hd_len;
+    var tp_ny = tp_hd_dx / tp_hd_len;
 
-    let tpOffset = 24 * (rectWidth / 388); // Height above brush backbone (rests on the 22-height tall bristles)
+    var tpOffset = 24 * (rectWidth / 388); // Height above brush backbone (rests on the 22-height tall bristles)
     
     // Start at the 4th bristle (t=0.75) so the straight line begins flattening out there
-    let tpStartX = lerp(brushEnd1X, brushEnd2X, 0.75) + tp_nx * tpOffset;
-    let tpStartY = lerp(brushEnd1Y, brushEnd2Y, 0.75) + tp_ny * tpOffset;
-    let tpEndX = brushEnd1X + tp_nx * tpOffset;
-    let tpEndY = brushEnd1Y + tp_ny * tpOffset;
+    var tpStartX = lerp(brushEnd1X, brushEnd2X, 0.75) + tp_nx * tpOffset;
+    var tpStartY = lerp(brushEnd1Y, brushEnd2Y, 0.75) + tp_ny * tpOffset;
+    var tpEndX = brushEnd1X + tp_nx * tpOffset;
+    var tpEndY = brushEnd1Y + tp_ny * tpOffset;
     
-    let tpStartP0X = leftX - triangleWidth - tipRectWidth / 2;
-    let tpStartP0Y = centerY;
+    var tpStartP0X = leftX - triangleWidth - tipRectWidth / 2;
+    var tpStartP0Y = centerY;
     
     // Minimal leftward push from the tube opening
-    let ctrl1X = tpStartP0X - rectWidth * (15 / 388);
-    let ctrl1Y = tpStartP0Y;
+    var ctrl1X = tpStartP0X - rectWidth * (15 / 388);
+    var ctrl1Y = tpStartP0Y;
     
     // Curve gently grazes the 1st bristle before landing at the 4th bristle
-    let ctrl2X = tpStartX + tp_hd_dx * 0.35;
-    let ctrl2Y = tpStartY + tp_hd_dy * 0.35;
+    var ctrl2X = tpStartX + tp_hd_dx * 0.35;
+    var ctrl2Y = tpStartY + tp_hd_dy * 0.35;
     
     // Draw Toothpaste Outline
     stroke(0);
@@ -418,10 +418,10 @@ class StomatolSign {
     endShape();
     
     // ==== DRAW BULBS ====
-    let bulbColor = color(255, 50, 0); // Red glow
+    var bulbColor = color(255, 50, 0); // Red glow
     
     // Helper function to draw a bulb
-    let drawBulb = (x, y, rRatio, wRatio = 1, hRatio = 1, isOn = true, bColor = bulbColor) => {
+    var drawBulb = (x, y, rRatio, wRatio = 1, hRatio = 1, isOn = true, bColor = bulbColor) => {
       if (isOn) {
         drawingContext.shadowBlur = 15;
         drawingContext.shadowColor = bColor;
@@ -434,18 +434,18 @@ class StomatolSign {
       }
       strokeWeight(1);
       
-      let w = width * rRatio * wRatio;
-      let h = width * rRatio * hRatio;
+      var w = width * rRatio * wRatio;
+      var h = width * rRatio * hRatio;
       ellipse(x, y, w, h);
     };
 
-    let rLeft = leftX - triangleWidth - tipRectWidth / 2;
-    let rRight = leftX - triangleWidth + tipRectWidth / 2;
-    let rTop = centerY - tipRectHeight / 2;
-    let rBottom = centerY + tipRectHeight / 2;
+    var rLeft = leftX - triangleWidth - tipRectWidth / 2;
+    var rRight = leftX - triangleWidth + tipRectWidth / 2;
+    var rTop = centerY - tipRectHeight / 2;
+    var rBottom = centerY + tipRectHeight / 2;
 
     // Tube Bulbs
-    let segments = [
+    var segments = [
       { x1: leftX, y1: topY, x2: rightX, y2: topY }, // 0
       { x1: rightX, y1: bottomY, x2: leftX, y2: bottomY }, // 1
       { x1: rightX, y1: topY, x2: lineX - horizontalLen, y2: lineTopY }, // 2
@@ -455,18 +455,18 @@ class StomatolSign {
       { x1: lineX, y1: lineBottomY, x2: lineX - horizontalLen, y2: lineBottomY } // 6
     ];
 
-    for (let b of this.tubeBulbs) {
-      let seg = segments[b.comp];
-      let cx = lerp(seg.x1, seg.x2, b.t);
-      let cy = lerp(seg.y1, seg.y2, b.t);
+    for (var b of this.tubeBulbs) {
+      var seg = segments[b.comp];
+      var cx = lerp(seg.x1, seg.x2, b.t);
+      var cy = lerp(seg.y1, seg.y2, b.t);
       
-      let dx = seg.x2 - seg.x1;
-      let dy = seg.y2 - seg.y1;
-      let len = Math.sqrt(dx*dx + dy*dy);
-      let nx = -dy / len;
-      let ny = dx / len;
+      var dx = seg.x2 - seg.x1;
+      var dy = seg.y2 - seg.y1;
+      var len = Math.sqrt(dx*dx + dy*dy);
+      var nx = -dy / len;
+      var ny = dx / len;
       
-      let offsetFactor;
+      var offsetFactor;
       if (b.stringIdx === 0) offsetFactor = -0.25;
       else if (b.stringIdx === 1) offsetFactor = 0;
       else offsetFactor = 0.25;
@@ -480,62 +480,62 @@ class StomatolSign {
     }
     
     // Triangle Bulbs (vertical columns)
-    for (let b of this.triangleBulbs) {
-      let cx = leftX + b.x_AR * (rectWidth / 388);
-      let cy = centerY + b.y_AR * (rectHeight / 216);
+    for (var b of this.triangleBulbs) {
+      var cx = leftX + b.x_AR * (rectWidth / 388);
+      var cy = centerY + b.y_AR * (rectHeight / 216);
       drawBulb(cx, cy, b.rRatio, b.wRatio || 1, b.hRatio || 1, isTubeOn);
     }
     
     // Rectangle Bulbs (vertical columns)
-    for (let b of this.rectBulbs) {
-      let cx = leftX + b.x_AR * (rectWidth / 388);
-      let cy = centerY + b.y_AR * (rectHeight / 216);
+    for (var b of this.rectBulbs) {
+      var cx = leftX + b.x_AR * (rectWidth / 388);
+      var cy = centerY + b.y_AR * (rectHeight / 216);
       drawBulb(cx, cy, b.rRatio, b.wRatio || 1, b.hRatio || 1, isTubeOn);
     }
     
     // Brush Handle Bulbs
-    let h_dx = brushEnd1X - brushStart1X;
-    let h_dy = brushEnd1Y - brushStart1Y;
-    let h_len = Math.sqrt(h_dx*h_dx + h_dy*h_dy);
-    let h_nx = -h_dy / h_len;
-    let h_ny = h_dx / h_len;
+    var h_dx = brushEnd1X - brushStart1X;
+    var h_dy = brushEnd1Y - brushStart1Y;
+    var h_len = Math.sqrt(h_dx*h_dx + h_dy*h_dy);
+    var h_nx = -h_dy / h_len;
+    var h_ny = h_dx / h_len;
     
-    let brushBulbColor = color(255, 215, 0); // bright gold
+    var brushBulbColor = color(255, 215, 0); // bright gold
     
-    for (let b of this.brushHandleBulbs) {
-      let cx = lerp(brushStart1X, brushEnd1X, b.t);
-      let cy = lerp(brushStart1Y, brushEnd1Y, b.t);
+    for (var b of this.brushHandleBulbs) {
+      var cx = lerp(brushStart1X, brushEnd1X, b.t);
+      var cy = lerp(brushStart1Y, brushEnd1Y, b.t);
       cx += h_nx * (borderThickness * b.offsetFactor);
       cy += h_ny * (borderThickness * b.offsetFactor);
       drawBulb(cx, cy, b.rRatio, b.wRatio || 1, b.hRatio || 1, isBrushOn, brushBulbColor);
     }
     
     // Brush Head Bulbs
-    let hd_dx = brushEnd2X - brushEnd1X;
-    let hd_dy = brushEnd2Y - brushEnd1Y;
-    let hd_len = Math.sqrt(hd_dx*hd_dx + hd_dy*hd_dy);
-    let hd_nx = -hd_dy / hd_len;
-    let hd_ny = hd_dx / hd_len;
+    var hd_dx = brushEnd2X - brushEnd1X;
+    var hd_dy = brushEnd2Y - brushEnd1Y;
+    var hd_len = Math.sqrt(hd_dx*hd_dx + hd_dy*hd_dy);
+    var hd_nx = -hd_dy / hd_len;
+    var hd_ny = hd_dx / hd_len;
     
-    for (let b of this.brushHeadBulbs) {
-      let cx = lerp(brushEnd1X, brushEnd2X, b.t);
-      let cy = lerp(brushEnd1Y, brushEnd2Y, b.t);
+    for (var b of this.brushHeadBulbs) {
+      var cx = lerp(brushEnd1X, brushEnd2X, b.t);
+      var cy = lerp(brushEnd1Y, brushEnd2Y, b.t);
       cx += hd_nx * (borderThickness * b.offsetFactor);
       cy += hd_ny * (borderThickness * b.offsetFactor);
       drawBulb(cx, cy, b.rRatio, b.wRatio || 1, b.hRatio || 1, isBrushOn, brushBulbColor);
     }
     
     // Brush Bristle Bulbs
-    let bristle_nx = -hd_dy / hd_len;
-    let bristle_ny = hd_dx / hd_len;
-    let bristle_tx = hd_dx / hd_len;
-    let bristle_ty = hd_dy / hd_len;
+    var bristle_nx = -hd_dy / hd_len;
+    var bristle_ny = hd_dx / hd_len;
+    var bristle_tx = hd_dx / hd_len;
+    var bristle_ty = hd_dy / hd_len;
     
-    for (let b of this.bristleBulbs) {
-      let cx = lerp(brushEnd1X, brushEnd2X, b.t);
-      let cy = lerp(brushEnd1Y, brushEnd2Y, b.t);
+    for (var b of this.bristleBulbs) {
+      var cx = lerp(brushEnd1X, brushEnd2X, b.t);
+      var cy = lerp(brushEnd1Y, brushEnd2Y, b.t);
       
-      let scaleFactor = rectWidth / 388;
+      var scaleFactor = rectWidth / 388;
       
       cx += bristle_tx * b.xOffset * scaleFactor;
       cy += bristle_ty * b.xOffset * scaleFactor;
@@ -547,39 +547,39 @@ class StomatolSign {
     }
     
     // Toothpaste Curved Bulbs
-    for (let b of this.tpCurveBulbs) {
-      let t = b.t;
-      let cx = bezierPoint(tpStartP0X, ctrl1X, ctrl2X, tpStartX, t);
-      let cy = bezierPoint(tpStartP0Y, ctrl1Y, ctrl2Y, tpStartY, t);
+    for (var b of this.tpCurveBulbs) {
+      var t = b.t;
+      var cx = bezierPoint(tpStartP0X, ctrl1X, ctrl2X, tpStartX, t);
+      var cy = bezierPoint(tpStartP0Y, ctrl1Y, ctrl2Y, tpStartY, t);
       
-      let tx = bezierTangent(tpStartP0X, ctrl1X, ctrl2X, tpStartX, t);
-      let ty = bezierTangent(tpStartP0Y, ctrl1Y, ctrl2Y, tpStartY, t);
-      let tlen = Math.sqrt(tx*tx + ty*ty);
+      var tx = bezierTangent(tpStartP0X, ctrl1X, ctrl2X, tpStartX, t);
+      var ty = bezierTangent(tpStartP0Y, ctrl1Y, ctrl2Y, tpStartY, t);
+      var tlen = Math.sqrt(tx*tx + ty*ty);
       
-      let c_nx = -ty / tlen;
-      let c_ny = tx / tlen;
+      var c_nx = -ty / tlen;
+      var c_ny = tx / tlen;
       
       cx += c_nx * (borderThickness * b.offsetFactor);
       cy += c_ny * (borderThickness * b.offsetFactor);
       
-      let isTpOn = tpFlowProgress >= (0.65 * t);
+      var isTpOn = tpFlowProgress >= (0.65 * t);
       drawBulb(cx, cy, b.rRatio, b.wRatio || 1, b.hRatio || 1, isTpOn);
     }
     
     // Toothpaste Straight Bulbs
-    let tp_s_dx = tpEndX - tpStartX;
-    let tp_s_dy = tpEndY - tpStartY;
-    let tp_s_len = Math.sqrt(tp_s_dx*tp_s_dx + tp_s_dy*tp_s_dy);
-    let tp_snx = -tp_s_dy / tp_s_len;
-    let tp_sny = tp_s_dx / tp_s_len;
+    var tp_s_dx = tpEndX - tpStartX;
+    var tp_s_dy = tpEndY - tpStartY;
+    var tp_s_len = Math.sqrt(tp_s_dx*tp_s_dx + tp_s_dy*tp_s_dy);
+    var tp_snx = -tp_s_dy / tp_s_len;
+    var tp_sny = tp_s_dx / tp_s_len;
     
-    for (let b of this.tpStraightBulbs) {
-      let cx = lerp(tpStartX, tpEndX, b.t);
-      let cy = lerp(tpStartY, tpEndY, b.t);
+    for (var b of this.tpStraightBulbs) {
+      var cx = lerp(tpStartX, tpEndX, b.t);
+      var cy = lerp(tpStartY, tpEndY, b.t);
       cx += tp_snx * (borderThickness * b.offsetFactor);
       cy += tp_sny * (borderThickness * b.offsetFactor);
       
-      let isTpOn = tpFlowProgress >= (0.65 + 0.35 * b.t);
+      var isTpOn = tpFlowProgress >= (0.65 + 0.35 * b.t);
       drawBulb(cx, cy, b.rRatio, b.wRatio || 1, b.hRatio || 1, isTpOn);
     }
     

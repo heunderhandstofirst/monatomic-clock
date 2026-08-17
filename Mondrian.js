@@ -49,7 +49,7 @@ class MondrianRectangle {
       }
     }
 
-      let extraText=["Mondrian","time: " + signTime]
+      var extraText=["Mondrian","time: " + signTime]
       if (1 === 2) printStats(xxx, yyy, this.unit,2,3.5, extraText)
   }
 }

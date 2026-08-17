@@ -16,6 +16,7 @@ class FarmaciaSign {
     var flickerGreenCross = 200 + random(50);
     var flickerWhiteCross = 220 + random(34);
 
+    strokeCap(ROUND);
     for (var n = 0; n < 3; n++) {
       strokeWeight(this.D / (70 + n * 150));
       
