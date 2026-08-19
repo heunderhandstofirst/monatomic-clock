@@ -169,6 +169,7 @@ function drawTowerBackground(towerEdgeCOS, towerEdgeAngle,xMID,tColor, towerRadi
   var ViewAngles=[135, 315]
   var leftBoxRightBox=[0,0]
   push()
+  stroke(255)
   strokeWeight(windowWidth/1200)
   for (i=0;i<4;i++){
     var L0=xMID+towerEdgeCOS[i][0]*towerRadius
