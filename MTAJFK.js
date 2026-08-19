@@ -1,7 +1,7 @@
 /* eslint-disable no-undef, no-unused, no-unused-vars */
 class MTAsubwayJFK {
   constructor() {
-    this.Bleeker= loadImage("images/Bleeker3.png")
+    this.Bleeker= loadImage("images/MTA/Bleeker3.png")
     this.Shea= loadImage("images/MTA/Shea.png")
     this.Chambers= loadImage("images/MTA/Chambers.png")
     this.step = 0;

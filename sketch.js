@@ -358,17 +358,22 @@ function draw() {
   if (window.isFilmMode) {
     var elapsed = millis() - window.filmModeStartTime;
     var numSigns = Object.keys(SignClasses).length;
-    WhichSign = Math.floor(elapsed / 5625) % numSigns;
+    WhichSign = Math.floor(elapsed / 5000) % numSigns;
   } else if (window.isDemoMode) {
     var elapsed = millis() - window.demoModeStartTime;
     var numSigns = Object.keys(SignClasses).length;
     WhichSign = Math.floor(elapsed / 10000) % numSigns; // 10s each
   } else if (window.isCarriageBarnMode) {
     var elapsed = millis() - window.carriageBarnStartTime;
-    const carriageBarnSigns = [0, 1, 2, 3, 5, 7, 8, 9, 10, 11, 12, 14, 16, 18, 19, 22, 23, 24, 26, 27, 29, 30, 31, 32];
-    const durationPerSign = 6000; // 6s each
+    const carriageBarnSigns = [1, 2, 3, 7, 8, 10, 12, 16, 18, 23, 24, 27, 29, 30];
+    const durationPerSign = 5000; // 5s each
     WhichSign = carriageBarnSigns[Math.floor(elapsed / durationPerSign) % carriageBarnSigns.length];
   }
+
+  if (window.debugSignIndex !== null) {
+    WhichSign = window.debugSignIndex;
+  }
+  
   // WhichSign = 32; // Temporarily set for design
   SwitchSign = WhichSign !== currentSignIndex;
   if (SwitchSign) {
@@ -529,6 +534,9 @@ window.filmModeStartTime = 0;
 window.isCarriageBarnMode = false;
 window.carriageBarnStartTime = 0;
 
+window.debugSignIndex = null;
+window.debugNumberBuffer = "";
+
 function keyPressed() {
   // Ctrl + J to toggle Demo Mode
   if (keyIsDown(CONTROL) && (key === 'j' || key === 'J')) {
@@ -551,7 +559,7 @@ function keyPressed() {
       window.isDemoMode = false;
       window.isCarriageBarnMode = false;
       window.filmModeStartTime = millis();
-      console.log("Film Mode ON: Showing each complication for 5.625s");
+      console.log("Film Mode ON: Showing each complication for 5s");
     } else {
       console.log("Film Mode OFF");
     }
@@ -565,10 +573,35 @@ function keyPressed() {
       window.isDemoMode = false;
       window.isFilmMode = false;
       window.carriageBarnStartTime = millis();
-      console.log("Carriage Barn Mode ON: Showing selected complications for 180s");
+      console.log("Carriage Barn Mode ON: Showing selected complications for 5s each");
     } else {
       console.log("Carriage Barn Mode OFF");
     }
     return false; // Prevent default browser behavior
+  }
+
+  // ESCAPE key or Ctrl + Q to reset debug complication mode
+  if (keyCode === ESCAPE || (keyIsDown(CONTROL) && (key === 'q' || key === 'Q'))) {
+    window.debugSignIndex = null;
+    window.debugNumberBuffer = "";
+    console.log("Debug Mode OFF: Returning to standard operation");
+    return false; // Prevent default browser behavior
+  }
+  
+  // Ctrl + Number to select a specific complication (0-32)
+  if (keyIsDown(CONTROL) && key >= '0' && key <= '9') {
+    window.debugNumberBuffer += key;
+    var val = parseInt(window.debugNumberBuffer, 10);
+    if (val >= 0 && val <= 32) {
+      window.debugSignIndex = val;
+      console.log("Debug Mode ON: Showing complication " + val);
+    }
+    return false; // Prevent default browser behavior
+  }
+}
+
+function keyReleased() {
+  if (keyCode === CONTROL) {
+    window.debugNumberBuffer = ""; // Reset buffer when Ctrl is released
   }
 }
