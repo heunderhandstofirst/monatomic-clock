@@ -25,8 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('generative-bg');
     const ctx = canvas.getContext('2d');
     
-    var width, height;
-    var time = 0;
+    let width, height;
+    let time = 0;
 
     function resize() {
         width = canvas.width = window.innerWidth;
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const particles = [];
     const numParticles = 40;
 
-    for (var i = 0; i < numParticles; i++) {
+    for (let i = 0; i < numParticles; i++) {
         particles.push({
             x: Math.random() * width,
             y: Math.random() * height,
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fill();
 
             // Draw connections (Spatial Geometry)
-            for (var j = index + 1; j < numParticles; j++) {
+            for (let j = index + 1; j < numParticles; j++) {
                 const p2 = particles[j];
                 const dx = p.x - p2.x;
                 const dy = p.y - p2.y;
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const images = carousel.querySelectorAll('.carousel-img');
         if (images.length <= 1) return;
         
-        var currentIndex = 0;
+        let currentIndex = 0;
         setInterval(() => {
             images[currentIndex].classList.remove('active');
             currentIndex = (currentIndex + 1) % images.length;
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const allStudioImgs = [p1, p4, p3, p5, p2, p6, p8, p7];
         
         const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-        const BB = 3000; // 3 seconds
+        const BB = 4000; // 4 seconds
 
         async function runStudioSequence() {
             while (true) {

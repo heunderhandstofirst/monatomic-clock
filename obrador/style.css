@@ -472,6 +472,7 @@ img.carousel-img.active {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    text-transform: uppercase;
 }
 
 .work-info h4 span {
@@ -500,6 +501,14 @@ img.carousel-img.active {
 .work-focus {
     color: var(--text-secondary);
     font-size: 0.95rem;
+}
+
+.work-size {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-top: 1rem;
+    font-weight: 400;
 }
 
 /* Competencies Section */
