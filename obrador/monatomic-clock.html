@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monatomic Clock — Where Space Meets Time | David A. Molloy</title>
+    <meta name="description" content="A comprehensive explanation of the Monatomic Clock: a generative digital timepiece by David A. Molloy measuring time through vintage neon, kinetic signs, and personal cartography.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="clock-explanation-page">
+    <canvas id="generative-bg"></canvas>
+    
+    <!-- Fixed Top Header with Navigation & Live Clock Banner -->
+    <header class="top-sticky-header">
+        <nav class="main-nav">
+            <div class="nav-content">
+                <div class="logo-group">
+                    <a href="index.html" class="logo" title="Back to Obrador Portfolio">
+                        <img src="Signature.png" alt="David A. Molloy" class="nav-signature" />
+                    </a>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Obrador Studio</a>
+                    <a href="#inspiration">Inspiration</a>
+                    <a href="#comparison">Artifacts</a>
+                    <a href="#modes">Modes</a>
+                    <a href="#layers">Architecture</a>
+                    <a href="#complications">Schedule</a>
+                    <a href="#film">Film</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Blocked Out Experience The Live Clock Banner (Always Visible on Scroll) -->
+        <div class="live-clock-banner">
+            <div class="live-clock-banner-inner">
+                <div class="live-clock-info">
+                    <span class="live-clock-tag">
+                        <span class="pulse-indicator"></span> REAL-TIME TIMEPIECE
+                    </span>
+                    <h4 class="live-clock-title">Experience the Clock Live</h4>
+                    <p class="live-clock-desc">Operating continuously with non-repeating algorithmic palettes, live solar/temporal triggers, and synchronous complications.</p>
+                </div>
+                <div class="live-clock-action">
+                    <a href="https://www.monatomicclock.com" target="_blank" rel="noopener noreferrer" class="btn btn-primary banner-btn">
+                        <span class="pulse-indicator"></span> Launch Live Clock ↗
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="explanation-main">
+        <!-- Hero Section matching Obrador layout & sizing -->
+        <header id="hero" class="section hero-section">
+            <div class="hero-content fade-in-up">
+                <h2>
+                    <span class="hero-pre-title">THE MONATOMIC CLOCK</span><br>
+                    <span class="hero-specialty">WHERE SPACE MEETS TIME</span>
+                </h2>
+            </div>
+            <a href="#intro" class="scroll-indicator">
+                <div class="mouse">
+                    <div class="wheel"></div>
+                </div>
+            </a>
+        </header>
+
+        <!-- Introductory Statement (Lead text removed) -->
+        <section id="intro" class="section">
+            <div class="container">
+                <div class="statement-content">
+                    <div class="statement-text">
+                        <div class="statement-body fade-in">
+                            <p>The <strong>Monatomic Clock</strong> is a generative digital timepiece named after the noble, single-atom gases that give neon lighting its electric glow. Translating iconic luminous architecture into a living light sculpture, the clock continuously measures the passage of hours through the visual language of vintage neon, kinetic signs, and roadside typography.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Inspiration & Personal Cartography -->
+        <section id="inspiration" class="section inspiration-section">
+            <div class="container">
+                <div class="inspiration-box fade-in">
+                    <h3 class="section-title">Inspiration & Personal Cartography</h3>
+                    <div class="inspiration-text">
+                        <p class="lead-quote">
+                            "The Monatomic Clock serves as an autobiographical map."
+                        </p>
+                        <p>The Core Clock journals the arc of the artist's life by charting childhood neighborhoods, university years, travels and residencies abroad, and returning to the United States to raise a family.</p>
+                        <p>Interspersed throughout, the hidden complications commemorate the specific people, milestones, and turning points that define that journey. Each luminous sign acts as an anchor in memory, pulling both artist and viewer back to pivotal places and moments in time.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visual Complications Comparison Showcase (2 Panels: Real World next to Clock) - Above Modes -->
+        <section id="comparison" class="section comparison-section">
+            <div class="container">
+                <div class="comparison-header fade-in">
+                    <h3 class="section-title">Visual Complication Artifacts</h3>
+                    <div class="comparison-meta-bar">
+                        <div class="comparison-title-wrap">
+                            <span class="comparison-counter" id="comp-counter">01 / 38</span>
+                            <span class="comparison-loc-title" id="comp-title">Ampelmann Crosswalk</span>
+                            <span class="comparison-loc-sub" id="comp-loc">• Berlin, Germany</span>
+                        </div>
+                        <div class="comparison-controls">
+                            <button class="comp-nav-btn" id="comp-prev" aria-label="Previous Artifact" title="Previous Artifact">←</button>
+                            <button class="comp-nav-btn" id="comp-play-pause" aria-label="Pause Auto Cycle" title="Pause / Play">⏸</button>
+                            <button class="comp-nav-btn" id="comp-next" aria-label="Next Artifact" title="Next Artifact">→</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dual-panel-container fade-in">
+                    <!-- Panel 1: Generative Clock Complication -->
+                    <div class="artifact-panel clock-artwork-panel">
+                        <div class="panel-image-stage">
+                            <img id="comp-clock-img" src="ClockPhotos/Ampelmann.png" alt="Generative Clock Complication" class="artifact-img" />
+                        </div>
+                        <div class="panel-bottom-label clock-label">
+                            <span class="pulse-indicator"></span> Generative Clock Complication
+                        </div>
+                    </div>
+
+                    <!-- Panel 2: Real-World Physical Image -->
+                    <div class="artifact-panel physical-photo-panel">
+                        <div class="panel-image-stage" id="physical-image-stage">
+                            <img id="comp-phys-img" src="ClockPhotos/PhysicalImages/Ampelmann.png" alt="Physical Real-World Artifact" class="artifact-img" />
+                            <!-- Container for London dual images -->
+                            <div id="london-phys-container" class="london-dual-grid" style="display: none;">
+                                <div class="london-sub-item">
+                                    <img src="ClockPhotos/PhysicalImages/OXO.jpg" alt="OXO Tower, London" class="artifact-img" />
+                                    <span class="london-caption">OXO Tower</span>
+                                </div>
+                                <div class="london-sub-item">
+                                    <img src="ClockPhotos/PhysicalImages/Gherkin.jpg" alt="The Gherkin, London" class="artifact-img" />
+                                    <span class="london-caption">The Gherkin</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-bottom-label physical-label">
+                            Physical Real-World Inspiration
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modes of Engagement -->
+        <section id="modes" class="section">
+            <div class="container">
+                <h3 class="section-title fade-in">Modes of Engagement</h3>
+                <div class="modes-grid">
+                    <div class="mode-card fade-in">
+                        <h4>For the Visual Enthusiast</h4>
+                        <p>A vibrant celebration of neon aesthetics, saturated color theory, and dynamic digital light evolving through generative palettes.</p>
+                    </div>
+
+                    <div class="mode-card fade-in stagger-1">
+                        <h4>For the Horologist</h4>
+                        <p>A functional, living timepiece operating on twelve structured 5-minute visual movements that methodically cycle through each hour.</p>
+                    </div>
+
+                    <div class="mode-card fade-in stagger-2">
+                        <h4>For the Traveler</h4>
+                        <p>An illuminated cartography featuring overlaid location complications—from London’s OXO Tower and Boston’s Citgo sign to classic California beacons like Bakersfield’s Padre Hotel, Culver City’s Helms Bakery, and the Malibu Pier.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How the Clock Tells Time / Synchronous Layers -->
+        <section id="layers" class="section layers-section">
+            <div class="container">
+                <h3 class="section-title fade-in">How the Clock Tells Time</h3>
+                <p class="section-subtitle fade-in">The clock operates on two synchronous layers of custom logic:</p>
+                
+                <div class="layers-container">
+                    <div class="layer-card fade-in">
+                        <div class="layer-header">
+                            <span class="layer-badge">LAYER 1</span>
+                            <h4>The Core Clock</h4>
+                            <span class="layer-meta">12 Main Movements • 5-Minute Cycles</span>
+                        </div>
+                        <div class="layer-body">
+                            <p>The engine that anchors real time. Every hour is divided into twelve distinct 5-minute movements. As time advances, the clock cycles through an architectural sequence of imagery, providing subtle horological markers rather than traditional numbers.</p>
+                            <p>Dynamic, evolving palettes ensure the display rarely repeats the exact same aesthetic twice.</p>
+                        </div>
+                    </div>
+
+                    <div class="layer-card fade-in stagger-1">
+                        <div class="layer-header">
+                            <span class="layer-badge accent-badge">LAYER 2</span>
+                            <h4>The Hidden Details</h4>
+                            <span class="layer-meta">25 Location Complications • Easter Eggs</span>
+                        </div>
+                        <div class="layer-body">
+                            <p>Layered over the main timekeeping engine are twenty-five visual complications. These Easter eggs are triggered by physical coordinates, specific calendar dates, or controlled chance.</p>
+                            <p>When activated, they superimpose unique graphic emblems and geographic designs onto the face before dissolving back into the core movement.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Schedule of Complications (Boxed Sections, direct tables) -->
+        <section id="complications" class="section schedule-section">
+            <div class="container">
+                <h3 class="section-title fade-in">Schedule of Complications</h3>
+
+                <!-- Box 1: 5-Minute Hourly Movements -->
+                <div class="schedule-box fade-in">
+                    <div class="schedule-box-header">
+                        <div>
+                            <h4>5-Minute Hourly Movements</h4>
+                            <span class="schedule-box-meta">12 Core Architectural Movements • Cycles Every Hour</span>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="complications-table">
+                            <thead>
+                                <tr>
+                                    <th>Complication Name</th>
+                                    <th>Location</th>
+                                    <th>Display Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="comp-name">GRAND CENTRAL STATION</td>
+                                    <td class="comp-loc">NEW YORK</td>
+                                    <td class="comp-time">:00 – :05 (every hour)</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">CITGO</td>
+                                    <td class="comp-loc">KENMORE SQUARE, MA</td>
+                                    <td class="comp-time">:05 – :10 (every hour)</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">BOND CLOTHES</td>
+                                    <td class="comp-loc">TIMES SQUARE, NY</td>
+                                    <td class="comp-time">:10 – :15 (every hour)</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">SCHWEPPES</td>
+                                    <td class="comp-loc">MADRID, SPAIN</td>
+                                    <td class="comp-time">:15 – :20 (every hour)</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">MARTINI SIGN</td>
+                                    <td class="comp-loc">FLORENCE, ITALY</td>
+                                    <td class="comp-time">:20 – :25 (every hour)</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">OXO GHERKIN THE EYE</td>
+                                    <td class="comp-loc">LONDON, ENGLAND</td>
+                                    <td class="comp-time">:25 – :30 (every hour)</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">DIM SUM</td>
+                                    <td class="comp-loc">HONG KONG</td>
+                                    <td class="comp-time">:30 – :35 (every hour)</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">HI-HO MOTEL</td>
+                                    <td class="comp-loc">FAIRFIELD, CT</td>
+                                    <td class="comp-time">:35 – :40 (every hour)</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">HELM'S BAKERY</td>
+                                    <td class="comp-loc">CULVER CITY, CA</td>
+                                    <td class="comp-time">:40 – :45 (every hour)</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">PADRE HOTEL</td>
+                                    <td class="comp-loc">BAKERSFIELD, CA</td>
+                                    <td class="comp-time">:45 – :50 (every hour)</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">BEST WESTERN</td>
+                                    <td class="comp-loc">LONG BEACH, CA</td>
+                                    <td class="comp-time">:50 – :55 (every hour)</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">TEST PATTERN</td>
+                                    <td class="comp-loc">KENNEDY SPACE CENTER</td>
+                                    <td class="comp-time">:55 – :60 (every hour)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Box 2: Easter Egg Complications -->
+                <div class="schedule-box fade-in stagger-1">
+                    <div class="schedule-box-header easter-box-header">
+                        <div>
+                            <h4>Easter Egg Complications</h4>
+                            <span class="schedule-box-meta">25 Location Complications • 6x Per Day for 1 Minute</span>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="complications-table">
+                            <thead>
+                                <tr>
+                                    <th>Complication Name</th>
+                                    <th>Location</th>
+                                    <th>Display Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="comp-name">HEINZ KETCHUP</td>
+                                    <td class="comp-loc">PITTSBURGH, PA</td>
+                                    <td class="comp-time"><span class="time-tag">[4:57]</span> <span class="time-tag">[7:57]</span> <span class="time-tag">[11:57]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">UNION OYSTER HOUSE</td>
+                                    <td class="comp-loc">BOSTON, MA</td>
+                                    <td class="comp-time"><span class="time-tag">[11:13]</span> <span class="time-tag">[2:13]</span> <span class="time-tag">[6:13]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">URTH CAFFE</td>
+                                    <td class="comp-loc">LOS ANGELES, CA</td>
+                                    <td class="comp-time"><span class="time-tag">[6:06]</span> <span class="time-tag">[9:06]</span> <span class="time-tag">[1:06]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">MCSORLEYS</td>
+                                    <td class="comp-loc">GREENWICH VILLAGE, NY</td>
+                                    <td class="comp-time"><span class="time-tag">[6:54]</span> <span class="time-tag">[9:54]</span> <span class="time-tag">[1:54]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">FARMACIA</td>
+                                    <td class="comp-loc">ROME, ITALY</td>
+                                    <td class="comp-time"><span class="time-tag">[10:34]</span> <span class="time-tag">[1:34]</span> <span class="time-tag">[5:34]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">HERCULES FLOOR</td>
+                                    <td class="comp-loc">MALIBU, CA</td>
+                                    <td class="comp-time"><span class="time-tag">[5:17]</span> <span class="time-tag">[8:17]</span> <span class="time-tag">[12:17]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">LINCOLN HARDWARE</td>
+                                    <td class="comp-loc">SANTA MONICA, CA</td>
+                                    <td class="comp-time"><span class="time-tag">[10:31]</span> <span class="time-tag">[1:31]</span> <span class="time-tag">[5:31]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">256 FARBEN - GERHARD RICHTER</td>
+                                    <td class="comp-loc">MOMASF, SAN FRANCISCO, CA</td>
+                                    <td class="comp-time"><span class="time-tag">[8:10]</span> <span class="time-tag">[11:10]</span> <span class="time-tag">[3:10]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">RABBIT EARS MOTEL</td>
+                                    <td class="comp-loc">STEAMBOAT SPRINGS, CO</td>
+                                    <td class="comp-time"><span class="time-tag">[7:03]</span> <span class="time-tag">[10:03]</span> <span class="time-tag">[2:03]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">TUCSON CACTUS</td>
+                                    <td class="comp-loc">TUCSON, AZ</td>
+                                    <td class="comp-time"><span class="time-tag">[3:05]</span> <span class="time-tag">[6:05]</span> <span class="time-tag">[10:05]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">MANHATTAN BRIDGE</td>
+                                    <td class="comp-loc">EAST RIVER, NY</td>
+                                    <td class="comp-time"><span class="time-tag">[9:18]</span> <span class="time-tag">[12:18]</span> <span class="time-tag">[4:18]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">BRITEX FABRICS</td>
+                                    <td class="comp-loc">SAN FRANCISCO, CA</td>
+                                    <td class="comp-time"><span class="time-tag">[7:29]</span> <span class="time-tag">[10:29]</span> <span class="time-tag">[2:29]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">NYC MTA</td>
+                                    <td class="comp-loc">NEW YORK, NY</td>
+                                    <td class="comp-time"><span class="time-tag">[12:04]</span> <span class="time-tag">[3:04]</span> <span class="time-tag">[7:04]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">LEONARD'S DONUTS</td>
+                                    <td class="comp-loc">HONOLULU, HI</td>
+                                    <td class="comp-time"><span class="time-tag">[6:11]</span> <span class="time-tag">[9:11]</span> <span class="time-tag">[1:11]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">WHITE STAG</td>
+                                    <td class="comp-loc">PORTLAND, OR</td>
+                                    <td class="comp-time"><span class="time-tag">[7:25]</span> <span class="time-tag">[10:25]</span> <span class="time-tag">[2:25]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">MALIBU PIER</td>
+                                    <td class="comp-loc">MALIBU, CA</td>
+                                    <td class="comp-time"><span class="time-tag">[8:28]</span> <span class="time-tag">[11:28]</span> <span class="time-tag">[3:28]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">DOMINO SUGAR</td>
+                                    <td class="comp-loc">BALTIMORE, MD</td>
+                                    <td class="comp-time"><span class="time-tag">[5:08]</span> <span class="time-tag">[8:08]</span> <span class="time-tag">[12:08]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">COLGATE CLOCK</td>
+                                    <td class="comp-loc">JERSEY CITY, NJ</td>
+                                    <td class="comp-time"><span class="time-tag">[1:09]</span> <span class="time-tag">[4:09]</span> <span class="time-tag">[8:09]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">STOMATOL TOOTHPASTE</td>
+                                    <td class="comp-loc">STOCKHOLM, SWEDEN</td>
+                                    <td class="comp-time"><span class="time-tag">[3:11]</span> <span class="time-tag">[6:11]</span> <span class="time-tag">[10:11]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">THERMOMETER</td>
+                                    <td class="comp-loc">COPENHAGEN, DENMARK</td>
+                                    <td class="comp-time"><span class="time-tag">[6:32]</span> <span class="time-tag">[9:32]</span> <span class="time-tag">[1:32]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">AMPELMANN CROSSWALK</td>
+                                    <td class="comp-loc">BERLIN, GERMANY</td>
+                                    <td class="comp-time"><span class="time-tag">[8:26]</span> <span class="time-tag">[11:26]</span> <span class="time-tag">[3:26]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">SKIPPING GIRL VINEGAR</td>
+                                    <td class="comp-loc">MELBOURNE, AUSTRALIA</td>
+                                    <td class="comp-time"><span class="time-tag">[1:32]</span> <span class="time-tag">[4:32]</span> <span class="time-tag">[8:32]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">SAM THE RECORD MAN</td>
+                                    <td class="comp-loc">TORONTO, CANADA</td>
+                                    <td class="comp-time"><span class="time-tag">[2:26]</span> <span class="time-tag">[5:26]</span> <span class="time-tag">[9:26]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">THE MOULIN ROUGE</td>
+                                    <td class="comp-loc">PARIS, FRANCE</td>
+                                    <td class="comp-time"><span class="time-tag">[1:34]</span> <span class="time-tag">[4:34]</span> <span class="time-tag">[8:34]</span> AM/PM</td>
+                                </tr>
+                                <tr>
+                                    <td class="comp-name">PYRAMIDS</td>
+                                    <td class="comp-loc">LUXOR, EGYPT</td>
+                                    <td class="comp-time"><span class="time-tag">[4:23]</span> <span class="time-tag">[7:23]</span> <span class="time-tag">[11:23]</span> AM/PM</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Monatomic Clock Film Section -->
+        <section id="film" class="section film-section">
+            <div class="container">
+                <div class="film-card fade-in">
+                    <div class="film-info">
+                        <span class="film-tag">DOCUMENTARY / SHORT FILM</span>
+                        <h3 class="film-title">The Monatomic Clock Film</h3>
+                        <p class="film-desc">Watch the short film exploring the artistic philosophy, architectural inspiration, and generative mechanics behind the Monatomic Clock.</p>
+                    </div>
+                    <div class="film-action">
+                        <a href="https://youtu.be/29B5BLhVOTw?si=hYMmrDW4Q_MgpQ5h" target="_blank" rel="noopener noreferrer" class="btn btn-primary film-btn">
+                            <span class="play-icon">▶</span> Watch on YouTube ↗
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <a href="index.html">
+                    <img src="Signature.png" alt="David A. Molloy" class="footer-signature" />
+                </a>
+            </div>
+            <div class="footer-society">
+                THE BUTLER LANE SOCIETY<br>
+                <div class="tooltip-container">
+                    <span class="info-trigger">[INFO]</span>
+                    <div class="tooltip-content">
+                        <h4>THE BUTLER LANE SOCIETY<br>Mission Statement</h4>
+                        <p>The Butler Lane Society, a non-profit organization, is dedicated to uniting generations through education, entertainment, and motivation. The BLS promotes the appreciation of classic film, fine arts, and sports. The BLS supports education programs, travel, museum visits, film screenings, and watching and attending sporting events as means of fostering this connection.</p>
+                        <p>BLS believes:</p>
+                        <ul>
+                            <li>Film has the power to bridge cultural and generational gaps by portraying the human experience.</li>
+                            <li>Discussing the finer points of sport allows everyone to share their viewpoints, informed or otherwise, while enjoying the pleasure and pain of getting emotional about something over which one has no control.</li>
+                            <li>Fine art's beauty, creative expression, aesthetic allure, and intellectual depth transcend time, offering a uniquely meaningful experience to all.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-contact">
+                <a href="mailto:butlerlanesociety@gmail.com">butlerlanesociety@gmail.com</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

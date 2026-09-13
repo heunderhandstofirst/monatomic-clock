@@ -11,10 +11,10 @@
     --font-display: 'Space Grotesk', sans-serif;
     --font-body: 'Inter', sans-serif;
     
-    --spacing-sm: 1rem;
-    --spacing-md: 2.5rem;
-    --spacing-lg: 5rem;
-    --spacing-xl: 10rem;
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1.75rem;
+    --spacing-lg: 3rem;
+    --spacing-xl: 4.5rem;
 }
 
 * {
@@ -758,3 +758,886 @@ footer {
         left: 50%;
     }
 }
+
+/* ==========================================================================
+   Monatomic Clock Fuller Explanation Page Styles
+   ========================================================================== */
+
+/* Move logo and hero up higher on explanation page */
+.clock-explanation-page .hero-section {
+    min-height: auto;
+    padding-top: 80px;
+    padding-bottom: 0.5rem;
+}
+
+.clock-explanation-page .hero-signature {
+    width: 480px;
+    max-width: 80vw;
+    margin: 0 auto 0.75rem auto;
+}
+
+.clock-explanation-page .hero-content h2 {
+    font-size: clamp(0.95rem, 1.8vw, 1.25rem);
+    line-height: 1.4;
+}
+
+.clock-explanation-page .hero-specialty {
+    padding: 0 2rem;
+    margin-top: 0.25rem;
+}
+
+.clock-explanation-page .scroll-indicator {
+    display: none;
+}
+
+/* Move description up so it is visible on initial page load */
+.clock-explanation-page #intro.section {
+    padding-top: 0.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.clock-explanation-page .statement-content {
+    gap: 1.25rem;
+}
+
+.clock-explanation-page .statement-text {
+    max-width: 1080px;
+    margin: 0 auto;
+}
+
+.clock-explanation-page .statement-body p {
+    font-size: 1.08rem;
+    line-height: 1.7;
+    margin-bottom: 0;
+}
+
+/* Tighten spacing between description and Modes of Engagement */
+.clock-explanation-page #modes.section {
+    padding-top: 1.5rem;
+    padding-bottom: 1.75rem;
+}
+
+/* Tighten spacing between Modes of Engagement and How the Clock Tells Time */
+.clock-explanation-page #layers.section {
+    padding-top: 1.75rem;
+    padding-bottom: 2rem;
+}
+
+/* Tighten remaining sections */
+.clock-explanation-page #inspiration.section {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.clock-explanation-page .complication-gallery-section {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.clock-explanation-page #complications.section {
+    padding-top: 2rem;
+    padding-bottom: 3.5rem;
+}
+
+.clock-explanation-page .section-title {
+    margin-bottom: 1.5rem;
+}
+
+.clock-explanation-page .mode-card {
+    padding: 1.6rem 1.6rem;
+}
+
+.clock-explanation-page .mode-card h4 {
+    font-size: 1.15rem;
+    margin-bottom: 0.6rem;
+}
+
+.clock-explanation-page .layer-card {
+    padding: 1.8rem;
+}
+
+.clock-explanation-page .inspiration-box {
+    padding: 2rem 2.2rem;
+}
+
+.clock-explanation-page .schedule-box {
+    margin-bottom: 2rem;
+}
+
+/* Fixed Top Header & Live Clock Banner on Monatomic Clock page */
+.clock-explanation-page .top-sticky-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    background: rgba(10, 10, 12, 0.94);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.clock-explanation-page .top-sticky-header .main-nav {
+    position: relative;
+    top: auto;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 0.65rem 0;
+}
+
+/* Blocked-Out Experience The Live Clock Banner */
+.live-clock-banner {
+    background: rgba(18, 18, 22, 0.98);
+    border-bottom: 1px solid rgba(207, 92, 54, 0.35);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    padding: 0.65rem 0;
+}
+
+.live-clock-banner-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.live-clock-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.live-clock-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-display);
+    font-size: 0.68rem;
+    letter-spacing: 1.5px;
+    color: var(--accent-hover);
+    font-weight: 600;
+    background: rgba(207, 92, 54, 0.15);
+    border: 1px solid rgba(207, 92, 54, 0.35);
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+    white-space: nowrap;
+}
+
+.live-clock-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    white-space: nowrap;
+}
+
+.live-clock-desc {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    margin: 0;
+    flex: 1;
+    min-width: 260px;
+}
+
+.banner-btn {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.clock-explanation-page .nav-signature {
+    height: 48px;
+    width: auto;
+}
+
+.clock-explanation-page .hero-section {
+    padding-top: 180px;
+}
+
+.clock-explanation-page .hero-content h2 {
+    font-size: 1rem;
+    line-height: 1.3;
+}
+
+.clock-explanation-page .hero-pre-title {
+    font-size: clamp(2.6rem, 6vw, 4.5rem);
+    letter-spacing: 6px;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: inline-block;
+    margin-bottom: 1.25rem;
+    line-height: 1.15;
+}
+
+.clock-explanation-page .hero-specialty {
+    font-size: clamp(1.35rem, 2.8vw, 2.1rem);
+    letter-spacing: 5px;
+    color: var(--accent-color);
+    font-weight: 500;
+    padding: 0;
+}
+
+.clock-explanation-page .hero-specialty::before,
+.clock-explanation-page .hero-specialty::after {
+    display: none;
+    content: '';
+}
+
+.clock-explanation-page section {
+    scroll-margin-top: 140px;
+}
+
+/* Reusable Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.8rem 1.8rem;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: var(--accent-color);
+    color: #fff;
+    border: 1px solid var(--accent-color);
+    box-shadow: 0 4px 15px rgba(207, 92, 54, 0.3);
+}
+
+.btn-primary:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
+    box-shadow: 0 6px 22px rgba(207, 92, 54, 0.5);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: var(--surface-light);
+    color: var(--text-primary);
+    border: 1px solid var(--grid-color);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.pulse-indicator {
+    width: 8px;
+    height: 8px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #fff;
+}
+
+/* Modes of Engagement Grid (Clean, no numbers) */
+.modes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.mode-card {
+    background: var(--surface-color);
+    border: 1px solid var(--grid-color);
+    border-radius: 6px;
+    padding: 2.2rem 2rem;
+    position: relative;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mode-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(207, 92, 54, 0.4);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+}
+
+.mode-card h4 {
+    font-size: 1.25rem;
+    margin-bottom: 0.9rem;
+    color: var(--text-primary);
+    font-family: var(--font-display);
+}
+
+.mode-card p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+/* System Architecture Layers */
+.layers-section {
+    background: rgba(18, 18, 21, 0.5);
+    border-top: 1px solid var(--grid-color);
+    border-bottom: 1px solid var(--grid-color);
+}
+
+.section-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    margin-top: -1rem;
+    margin-bottom: 1.75rem;
+}
+
+.layers-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.layer-card {
+    background: var(--surface-light);
+    border: 1px solid var(--grid-color);
+    border-radius: 6px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.layer-header {
+    border-bottom: 1px solid var(--grid-color);
+    padding-bottom: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.layer-badge {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    font-weight: 600;
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.25rem 0.65rem;
+    border-radius: 3px;
+    margin-bottom: 0.75rem;
+}
+
+.layer-badge.accent-badge {
+    color: var(--accent-color);
+    background: rgba(207, 92, 54, 0.15);
+    border: 1px solid rgba(207, 92, 54, 0.3);
+}
+
+.layer-header h4 {
+    font-size: 1.4rem;
+    margin-bottom: 0.3rem;
+    color: var(--text-primary);
+}
+
+.layer-meta {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-family: var(--font-display);
+}
+
+.layer-body p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.layer-body p:last-child {
+    margin-bottom: 0;
+}
+
+/* Inspiration & Cartography */
+.inspiration-box {
+    background: var(--surface-color);
+    border: 1px solid var(--grid-color);
+    border-radius: 6px;
+    padding: 2.25rem;
+    border-left: 3px solid var(--accent-color);
+}
+
+.lead-quote {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 1.25rem;
+    line-height: 1.4;
+}
+
+.inspiration-text p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.75;
+    margin-bottom: 0.85rem;
+}
+
+.inspiration-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* Real vs. Clock 2-Panel Comparison Carousel */
+.comparison-section {
+    padding-top: 2rem;
+    padding-bottom: 2.5rem;
+}
+
+.comparison-header {
+    margin-bottom: 1.5rem;
+}
+
+.comparison-meta-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--surface-light);
+    border: 1px solid var(--grid-color);
+    border-radius: 6px;
+    padding: 0.85rem 1.25rem;
+    margin-top: -0.75rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.comparison-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.comparison-counter {
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+    color: var(--accent-hover);
+    background: rgba(207, 92, 54, 0.15);
+    border: 1px solid rgba(207, 92, 54, 0.35);
+    padding: 0.2rem 0.55rem;
+    border-radius: 3px;
+}
+
+.comparison-loc-title {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.comparison-loc-sub {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+.comparison-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.comp-nav-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--grid-color);
+    color: var(--text-primary);
+    width: 34px;
+    height: 34px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.25s ease;
+}
+
+.comp-nav-btn:hover {
+    background: var(--accent-color);
+    color: #fff;
+    border-color: var(--accent-color);
+    transform: translateY(-1px);
+}
+
+.dual-panel-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.artifact-panel {
+    background: var(--surface-color);
+    border: 1px solid var(--grid-color);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    transition: border-color 0.3s ease;
+}
+
+.artifact-panel:hover {
+    border-color: rgba(207, 92, 54, 0.35);
+}
+
+.panel-bottom-label {
+    padding: 0.9rem 1.25rem;
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    border-top: 1px solid var(--grid-color);
+}
+
+.panel-bottom-label.clock-label {
+    color: var(--accent-hover);
+}
+
+.panel-bottom-label.physical-label {
+    color: var(--text-secondary);
+}
+
+.panel-image-stage {
+    height: 440px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: radial-gradient(circle at center, rgba(30, 30, 38, 0.6) 0%, rgba(10, 10, 12, 0.95) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.artifact-img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 4px;
+    transition: opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.6));
+}
+
+.london-dual-grid {
+    display: flex;
+    gap: 1.25rem;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.london-sub-item {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.london-sub-item img {
+    max-width: 100%;
+    max-height: calc(100% - 28px);
+    object-fit: contain;
+    border-radius: 4px;
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.6));
+}
+
+.london-caption {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 0.4rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+@media (max-width: 850px) {
+    .dual-panel-container {
+        grid-template-columns: 1fr;
+    }
+
+    .panel-image-stage {
+        height: 340px;
+    }
+}
+
+/* Boxed Schedule Sections & Tables */
+.schedule-box {
+    background: var(--surface-color);
+    border: 1px solid var(--grid-color);
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.schedule-box-header {
+    background: var(--surface-light);
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--grid-color);
+}
+
+.schedule-box-header h4 {
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.schedule-box-meta {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    color: var(--accent-color);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.easter-box-header .schedule-box-meta {
+    color: var(--accent-hover);
+}
+
+.table-wrapper {
+    background: var(--surface-color);
+    overflow-x: auto;
+}
+
+.complications-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.complications-table th {
+    background: rgba(255, 255, 255, 0.02);
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-secondary);
+    padding: 1.1rem 1.8rem;
+    border-bottom: 1px solid var(--grid-color);
+}
+
+.complications-table td {
+    padding: 1rem 1.8rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    color: var(--text-secondary);
+    vertical-align: middle;
+}
+
+.complications-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.complications-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.complications-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.comp-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--text-primary) !important;
+    letter-spacing: 0.5px;
+    width: 35%;
+}
+
+.comp-loc {
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+    width: 35%;
+}
+
+.comp-time {
+    font-family: var(--font-display);
+    color: var(--text-primary) !important;
+    font-size: 0.85rem;
+    width: 30%;
+}
+
+.time-tag {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    margin-right: 0.25rem;
+    font-size: 0.82rem;
+    color: var(--accent-hover);
+}
+
+/* Work Link Buttons in Obrador Portfolio index.html */
+.work-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.work-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 0.45rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.work-link-btn-primary {
+    background: rgba(207, 92, 54, 0.15);
+    color: var(--accent-color);
+    border: 1px solid rgba(207, 92, 54, 0.4);
+}
+
+.work-link-btn-primary:hover {
+    background: var(--accent-color);
+    color: #fff;
+    box-shadow: 0 0 12px rgba(207, 92, 54, 0.4);
+}
+
+.work-link-btn-secondary {
+    background: var(--surface-light);
+    color: var(--text-secondary);
+    border: 1px solid var(--grid-color);
+}
+
+.work-link-btn-secondary:hover {
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Monatomic Clock Film Section */
+.film-section {
+    padding-top: 1rem;
+    padding-bottom: 3.5rem;
+}
+
+.film-card {
+    background: var(--surface-color);
+    border: 1px solid var(--grid-color);
+    border-left: 3px solid var(--accent-color);
+    border-radius: 8px;
+    padding: 2.25rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.film-info {
+    flex: 1;
+    min-width: 280px;
+}
+
+.film-tag {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    color: var(--accent-color);
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+
+.film-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.film-desc {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.film-action {
+    flex-shrink: 0;
+}
+
+.film-btn {
+    padding: 0.85rem 1.8rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.play-icon {
+    font-size: 0.85rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    .layers-container {
+        grid-template-columns: 1fr;
+    }
+
+    .live-clock-banner-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+    }
+
+    .live-clock-desc {
+        display: none;
+    }
+
+    .banner-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .film-card {
+        padding: 1.75rem 1.5rem;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .film-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .clock-explanation-page .hero-section {
+        padding-top: 190px;
+    }
+
+    .clock-explanation-page section {
+        scroll-margin-top: 160px;
+    }
+}
+
+

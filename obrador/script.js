@@ -169,5 +169,371 @@ document.addEventListener('DOMContentLoaded', () => {
         runStudioSequence();
     }
 
+    // 5. Monatomic Clock: 2-Panel Artifact Comparison Carousel (Real vs. Clock - 3s Cycle)
+    const compSection = document.getElementById('comparison');
+    if (compSection) {
+        const artifacts = [
+            {
+                name: "Ampelmann Crosswalk",
+                loc: "Berlin, Germany",
+                clockImg: "ClockPhotos/Ampelmann.png",
+                physImg: "ClockPhotos/PhysicalImages/Ampelmann.png"
+            },
+            {
+                name: "Best Western",
+                loc: "Long Beach, CA",
+                clockImg: "ClockPhotos/BestWestern.png",
+                physImg: "ClockPhotos/PhysicalImages/BestWestern.jpg"
+            },
+            {
+                name: "Bond Clothes",
+                loc: "Times Square, New York, NY",
+                clockImg: "ClockPhotos/Bond.png",
+                physImg: "ClockPhotos/PhysicalImages/Bond.jpg"
+            },
+            {
+                name: "Britex Fabrics",
+                loc: "San Francisco, CA",
+                clockImg: "ClockPhotos/Britex.png",
+                physImg: "ClockPhotos/PhysicalImages/Britex.png"
+            },
+            {
+                name: "Citgo Sign",
+                loc: "Kenmore Square, Boston, MA",
+                clockImg: "ClockPhotos/Citgo.png",
+                physImg: "ClockPhotos/PhysicalImages/Citgo.jpg"
+            },
+            {
+                name: "Colgate Clock",
+                loc: "Jersey City, NJ",
+                clockImg: "ClockPhotos/Colgate.png",
+                physImg: "ClockPhotos/PhysicalImages/Colgate.png"
+            },
+            {
+                name: "Domino Sugar",
+                loc: "Baltimore, MD",
+                clockImg: "ClockPhotos/Domino.png",
+                physImg: "ClockPhotos/PhysicalImages/Domino.png"
+            },
+            {
+                name: "256 Farben - Gerhard Richter",
+                loc: "SFMOMA, San Francisco, CA",
+                clockImg: "ClockPhotos/256 Farben - Gerhard Richter.png",
+                physImg: "ClockPhotos/PhysicalImages/256 Farben - Gerhard Richter.png"
+            },
+            {
+                name: "Farmacia",
+                loc: "Rome, Italy",
+                clockImg: "ClockPhotos/Farmacia.png",
+                physImg: "ClockPhotos/PhysicalImages/Farmacia.png"
+            },
+            {
+                name: "Grand Central Terminal",
+                loc: "New York, NY",
+                clockImg: "ClockPhotos/GrandCentral.png",
+                physImg: "ClockPhotos/PhysicalImages/GrandCentral.jpg"
+            },
+            {
+                name: "Heinz Ketchup",
+                loc: "Pittsburgh, PA",
+                clockImg: "ClockPhotos/Heinz.png",
+                physImg: "ClockPhotos/PhysicalImages/Heinz.png"
+            },
+            {
+                name: "Helms Bakery",
+                loc: "Culver City, CA",
+                clockImg: "ClockPhotos/HelmsBakery.png",
+                physImg: "ClockPhotos/PhysicalImages/HelmsBakery.jpg"
+            },
+            {
+                name: "Hercules Floor",
+                loc: "Malibu, CA",
+                clockImg: "ClockPhotos/Hercules.png",
+                physImg: "ClockPhotos/PhysicalImages/Hercules.png"
+            },
+            {
+                name: "Hi-Ho Motel",
+                loc: "Fairfield, CT",
+                clockImg: "ClockPhotos/HiHo.png",
+                physImg: "ClockPhotos/PhysicalImages/HiHo.jpg"
+            },
+            {
+                name: "Dim Sum",
+                loc: "Hong Kong",
+                clockImg: "ClockPhotos/Dim Sum.png",
+                physImg: "ClockPhotos/PhysicalImages/Dim Sum.jpg"
+            },
+            {
+                name: "Leonard's Bakery",
+                loc: "Honolulu, HI",
+                clockImg: "ClockPhotos/Leonards.png",
+                physImg: "ClockPhotos/PhysicalImages/Leonards.jpg"
+            },
+            {
+                name: "Lincoln Hardware",
+                loc: "Santa Monica, CA",
+                clockImg: "ClockPhotos/Lincoln.png",
+                physImg: "ClockPhotos/PhysicalImages/Lincoln.jpg"
+            },
+            {
+                name: "OXO Tower & The Gherkin",
+                loc: "London, England",
+                clockImg: "ClockPhotos/London.png",
+                isLondon: true
+            },
+            {
+                name: "NYC MTA Mosaic",
+                loc: "New York, NY",
+                clockImg: "ClockPhotos/MTA.png",
+                physImg: "ClockPhotos/PhysicalImages/MTA.png"
+            },
+            {
+                name: "Malibu Pier",
+                loc: "Malibu, CA",
+                clockImg: "ClockPhotos/Malibu.png",
+                physImg: "ClockPhotos/PhysicalImages/Malibu.png"
+            },
+            {
+                name: "Manhattan Bridge",
+                loc: "East River, New York, NY",
+                clockImg: "ClockPhotos/ManhattanBridge.png",
+                physImg: "ClockPhotos/PhysicalImages/ManhattanBridge.png"
+            },
+            {
+                name: "Martini Sign",
+                loc: "Florence, Italy",
+                clockImg: "ClockPhotos/Martini.png",
+                physImg: "ClockPhotos/PhysicalImages/Martini.jpg"
+            },
+            {
+                name: "McSorley's Old Ale House",
+                loc: "Greenwich Village, New York, NY",
+                clockImg: "ClockPhotos/McSorleys.png",
+                physImg: "ClockPhotos/PhysicalImages/McSorleys.png"
+            },
+            {
+                name: "The Moulin Rouge",
+                loc: "Paris, France",
+                clockImg: "ClockPhotos/Moulin.png",
+                physImg: "ClockPhotos/PhysicalImages/Moulin.jpg"
+            },
+            {
+                name: "Padre Hotel",
+                loc: "Bakersfield, CA",
+                clockImg: "ClockPhotos/Padre.png",
+                physImg: "ClockPhotos/PhysicalImages/Padre.jpg"
+            },
+            {
+                name: "White Stag",
+                loc: "Portland, OR",
+                clockImg: "ClockPhotos/Portland.png",
+                physImg: "ClockPhotos/PhysicalImages/Portland.png"
+            },
+            {
+                name: "Pyramids & Columns",
+                loc: "Luxor, Egypt",
+                clockImg: "ClockPhotos/Pyramids.png",
+                physImg: "ClockPhotos/PhysicalImages/Pyramids.jpg"
+            },
+            {
+                name: "Rabbit Ears Motel",
+                loc: "Steamboat Springs, CO",
+                clockImg: "ClockPhotos/RabbitEars.png",
+                physImg: "ClockPhotos/PhysicalImages/RabbitEars.png"
+            },
+            {
+                name: "Sam The Record Man",
+                loc: "Toronto, Canada",
+                clockImg: "ClockPhotos/Sam.png",
+                physImg: "ClockPhotos/PhysicalImages/Sam.png"
+            },
+            {
+                name: "Schweppes",
+                loc: "Madrid, Spain",
+                clockImg: "ClockPhotos/Schweppes.png",
+                physImg: "ClockPhotos/PhysicalImages/Schweppes.jpg"
+            },
+            {
+                name: "Skipping Girl Vinegar",
+                loc: "Melbourne, Australia",
+                clockImg: "ClockPhotos/Skipper.png",
+                physImg: "ClockPhotos/PhysicalImages/Skipper.png"
+            },
+            {
+                name: "Stomatol Toothpaste",
+                loc: "Stockholm, Sweden",
+                clockImg: "ClockPhotos/Stomatol.png",
+                physImg: "ClockPhotos/PhysicalImages/Stomatol.png"
+            },
+            {
+                name: "SMPTE Test Pattern",
+                loc: "Kennedy Space Center, FL",
+                clockImg: "ClockPhotos/TestPattern.png",
+                physImg: "ClockPhotos/PhysicalImages/TestPattern.jpg"
+            },
+            {
+                name: "Richshuset Thermometer",
+                loc: "Copenhagen, Denmark",
+                clockImg: "ClockPhotos/Thermometer.png",
+                physImg: "ClockPhotos/PhysicalImages/Thermometer.png"
+            },
+            {
+                name: "Tucson Cactus",
+                loc: "Tucson, AZ",
+                clockImg: "ClockPhotos/Tucson.png",
+                physImg: "ClockPhotos/PhysicalImages/Tucson.png"
+            },
+            {
+                name: "Union Oyster House",
+                loc: "Boston, MA",
+                clockImg: "ClockPhotos/UnionOyster.png",
+                physImg: "ClockPhotos/PhysicalImages/UnionOyster.png"
+            },
+            {
+                name: "Urth Caffe",
+                loc: "Los Angeles, CA",
+                clockImg: "ClockPhotos/Urth.png",
+                physImg: "ClockPhotos/PhysicalImages/Urth.png"
+            },
+            {
+                name: "Wallauer's Paints",
+                loc: "White Plains, NY",
+                clockImg: "ClockPhotos/Wallauer.png",
+                physImg: "ClockPhotos/PhysicalImages/Wallauer.jpg"
+            }
+        ];
+
+        // Preload all images for seamless transitions
+        artifacts.forEach(item => {
+            const img1 = new Image();
+            img1.src = item.clockImg;
+            if (item.physImg) {
+                const img2 = new Image();
+                img2.src = item.physImg;
+            }
+        });
+        new Image().src = "ClockPhotos/PhysicalImages/OXO.jpg";
+        new Image().src = "ClockPhotos/PhysicalImages/Gherkin.jpg";
+
+        const counterEl = document.getElementById('comp-counter');
+        const titleEl = document.getElementById('comp-title');
+        const locEl = document.getElementById('comp-loc');
+        const clockImgEl = document.getElementById('comp-clock-img');
+        const physImgEl = document.getElementById('comp-phys-img');
+        const londonContainer = document.getElementById('london-phys-container');
+        const prevBtn = document.getElementById('comp-prev');
+        const nextBtn = document.getElementById('comp-next');
+        const playPauseBtn = document.getElementById('comp-play-pause');
+
+        let currentIdx = 0;
+        let isPlaying = true;
+        let timer = null;
+        const CYCLE_TIME = 5000; // 5 seconds
+
+        function renderArtifact(index) {
+            const item = artifacts[index];
+
+            // Gentle fade out
+            if (clockImgEl) clockImgEl.style.opacity = '0';
+            if (physImgEl) physImgEl.style.opacity = '0';
+            if (londonContainer) londonContainer.style.opacity = '0';
+
+            setTimeout(() => {
+                // Text info update
+                if (counterEl) {
+                    counterEl.textContent = `${(index + 1).toString().padStart(2, '0')} / ${artifacts.length.toString().padStart(2, '0')}`;
+                }
+                if (titleEl) titleEl.textContent = item.name;
+                if (locEl) locEl.textContent = `• ${item.loc}`;
+
+                if (clockImgEl) {
+                    clockImgEl.src = item.clockImg;
+                    clockImgEl.alt = `${item.name} Clock Complication`;
+                }
+
+                if (item.isLondon) {
+                    if (physImgEl) physImgEl.style.display = 'none';
+                    if (londonContainer) {
+                        londonContainer.style.display = 'flex';
+                    }
+                } else {
+                    if (londonContainer) londonContainer.style.display = 'none';
+                    if (physImgEl) {
+                        physImgEl.style.display = 'block';
+                        physImgEl.src = item.physImg;
+                        physImgEl.alt = `${item.name} Physical Photo`;
+                    }
+                }
+
+                // Gentle fade in
+                requestAnimationFrame(() => {
+                    if (clockImgEl) clockImgEl.style.opacity = '1';
+                    if (item.isLondon) {
+                        if (londonContainer) londonContainer.style.opacity = '1';
+                    } else {
+                        if (physImgEl) physImgEl.style.opacity = '1';
+                    }
+                });
+            }, 380);
+        }
+
+        function nextSlide() {
+            currentIdx = (currentIdx + 1) % artifacts.length;
+            renderArtifact(currentIdx);
+        }
+
+        function prevSlide() {
+            currentIdx = (currentIdx - 1 + artifacts.length) % artifacts.length;
+            renderArtifact(currentIdx);
+        }
+
+        function startTimer() {
+            if (timer) clearInterval(timer);
+            timer = setInterval(nextSlide, CYCLE_TIME);
+        }
+
+        function stopTimer() {
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+        }
+
+        function togglePlayPause() {
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                if (playPauseBtn) playPauseBtn.textContent = '⏸';
+                startTimer();
+            } else {
+                if (playPauseBtn) playPauseBtn.textContent = '▶';
+                stopTimer();
+            }
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                if (isPlaying) startTimer();
+            });
+        }
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                if (isPlaying) startTimer();
+            });
+        }
+
+        if (playPauseBtn) {
+            playPauseBtn.addEventListener('click', togglePlayPause);
+        }
+
+        // Initialize first slide and timer
+        renderArtifact(currentIdx);
+        startTimer();
+    }
+
     drawGenerativeBackground();
 });
+
+
