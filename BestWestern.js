@@ -240,22 +240,6 @@ function drawPointCircles(strt, end, radDim, pt1, pt2, lastOne, darkLight, LR) {
   }
 }
 
-// function drawGrid(tF) {
-//   if (tF) {
-//     stroke(0, 200, 200);
-//     for (j = 500; j > -1000; j = j - 50) {
-//       text(j, -500, j);
-//       line(-450, j, 1000, j);
-//     }
-//     for (j = 0; j < 1200; j = j + 50) {
-//       for (var k = -1; k < 2; k = k + 2) {
-//         text(j, k * j, 100);
-//         line(k * j, -1000, k * j, 1000);
-//       }
-//     }
-//   }
-// }
-
 function drawBestWesternText(Ocenter, WH, WW, BWtext) {
   pop();
   translate(Ocenter[0], WH * 0.875);

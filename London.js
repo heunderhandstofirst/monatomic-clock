@@ -147,6 +147,36 @@ function initializeColorX() {
 
 
 function floaters(signTime, PickleData, WH, step, iris) {
+  var isCB = window.isCarriageBarnMode;
+  var signElapsed = (typeof window.getVirtualSignElapsed === 'function') ? window.getVirtualSignElapsed() : null;
+
+  if (isCB && signElapsed !== null) {
+    // 30 second Carriage Barn sequence:
+    // 0s-15s: London Eye starts centered and moves offscreen right
+    // 15s-30s: Gherkin enters from offscreen left and moves right
+    if (signElapsed < 15000) {
+      var tEye = signElapsed / 15000;
+      var innerCir = windowHeight / 6;
+      var eyeWidth = 2.8 * innerCir;
+      var startEye = windowWidth / 2;
+      var endEye = windowWidth + eyeWidth * 0.8;
+      var eyeX = lerp(startEye, endEye, tEye);
+      
+      var eyeRotation = (step * PI) / 200;
+      createTheEye(eyeX, eyeRotation, iris);
+    } else {
+      var tGherkin = (signElapsed - 15000) / 15000;
+      var objWidth = PickleData.width;
+      var startGherkin = -1.01 * objWidth;
+      var endGherkin = (windowWidth / 2) - (objWidth / 2);
+      var gherkinX = lerp(startGherkin, endGherkin, tGherkin);
+      
+      var smoothAngle = ((signElapsed % 40000) / 40000) * TWO_PI;
+      drawPickle(PickleData, gherkinX, 0, smoothAngle);
+    }
+    return;
+  }
+
   var pct = (Date.now() % 60000) / 60000;
   
   if (signTime[1] % 2 === 1) {

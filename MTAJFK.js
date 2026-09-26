@@ -10,7 +10,7 @@ class MTAsubwayJFK {
     this.NEAR = displayFarWindow(1.5, 220,  "Near");
     this.LG1 = logo();
     this.logoX = logoLights();
-    this.logoN = (day()) % 3;
+    this.logoN = 1; // Forced to 1 for the 'A' train (Chambers St / Blue 'A' bullet)
   }
 
   createGirder2(subwayLine, speed){

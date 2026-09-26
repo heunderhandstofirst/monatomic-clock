@@ -107,19 +107,6 @@ function blueLetters(DIM, blueBox) {
     var bLL = lincolnL(blueBox, DIM, LTRS, letterBoxWidth, 11, s);
     var bNN = lincolnN(blueBox, DIM, LTRS, letterBoxWidth, 13, s);
   }
-  // connectYellowBlue(
-  //   bL,
-  //   bI,
-  //   bN,
-  //   bC,
-  //   bO,
-  //   bLL,
-  //   bNN,
-  //   blueBox,
-  //   DIM,
-  //   letterBoxWidth,
-  //   LTRS
-  // );
 
   push();
   stroke(0, 15 + random(40), 90 + random(40));

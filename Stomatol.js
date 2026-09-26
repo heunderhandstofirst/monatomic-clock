@@ -221,21 +221,27 @@ class StomatolSign {
     var brushEnd2X = brushEnd1X - brushDx2;
     var brushEnd2Y = brushEnd1Y - brushLen2 * Math.sin(angle2);
     
-    // Draw stomatol red image in the center if loaded
-    var sTime = signTime[2] % 30; // current second, looped every 30 seconds
-    var smoothSecond = sTime + (new Date().getMilliseconds() / 1000.0);
+    // Continuous smooth time calculation
+    var timeSec;
+    if (window.isCarriageBarnMode) {
+      var signElapsed = (typeof window.getVirtualSignElapsed === 'function') ? window.getVirtualSignElapsed() : null;
+      timeSec = (signElapsed !== null ? signElapsed : millis()) / 1000.0;
+    } else {
+      timeSec = (Date.now() % 30000) / 1000.0;
+    }
+    var sTime = timeSec % 30.0;
     
-    var isTubeOn = sTime >= 2;
-    var isBrushOn = sTime >= 20;
-    var tpFlowProgress = constrain((smoothSecond - 20) / 5.0, 0, 1.0);
+    var isTubeOn = sTime >= 2.0;
+    var isBrushOn = sTime >= 20.0;
+    var tpFlowProgress = constrain((sTime - 20.0) / 4.5, 0, 1.0);
     
     var imgToDraw = undefined;
     
     if (typeof stomatolCycleImages !== 'undefined' && stomatolCycleImages.length === 9) {
-      if (sTime < 4) {
+      if (sTime < 4.0) {
         imgToDraw = stomatolCycleImages[0];
-      } else if (sTime < 20) {
-        var idx = Math.floor((sTime - 4) / 2) + 1;
+      } else if (sTime < 20.0) {
+        var idx = Math.min(8, Math.floor((sTime - 4.0) / 2.0) + 1);
         imgToDraw = stomatolCycleImages[idx];
       } else {
         imgToDraw = stomatolCycleImages[8];
@@ -562,7 +568,7 @@ class StomatolSign {
       cx += c_nx * (borderThickness * b.offsetFactor);
       cy += c_ny * (borderThickness * b.offsetFactor);
       
-      var isTpOn = tpFlowProgress >= (0.65 * t);
+      var isTpOn = isBrushOn && tpFlowProgress > 0 && (tpFlowProgress >= 0.65 * t);
       drawBulb(cx, cy, b.rRatio, b.wRatio || 1, b.hRatio || 1, isTpOn);
     }
     
@@ -579,7 +585,7 @@ class StomatolSign {
       cx += tp_snx * (borderThickness * b.offsetFactor);
       cy += tp_sny * (borderThickness * b.offsetFactor);
       
-      var isTpOn = tpFlowProgress >= (0.65 + 0.35 * b.t);
+      var isTpOn = isBrushOn && tpFlowProgress > 0 && (tpFlowProgress >= (0.65 + 0.35 * b.t));
       drawBulb(cx, cy, b.rRatio, b.wRatio || 1, b.hRatio || 1, isTpOn);
     }
     

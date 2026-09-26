@@ -66,57 +66,8 @@ class AleSign {
     displayChain(this.chainWind, this.frame);
     displaySlats(this.slatsGrid, this.frame);
     displayDoor(this.door, this.frame, this.chainDoor, this.mat);
-    
-    // textSize(25)
-    // fill(255)
-    // strokeWeight(15)
-    // // line(-100,brickFacadeHeight,5000,brickFacadeHeight)
-    // stroke(200,200,0)
-    // // line(-100,this.McSbrickFacade.height,5000,this.McSbrickFacade.height)
-    // // text("x: "+xxx, 50,800)
-    // // text("y: "+yyy, 50,850)
-    // // text("brickFacadeH: "+brickFacadeHeight, 50,900)
-    // strokeWeight(10)
   }
 }
-
-function displayRRR( frame,McSign,LFT,xxx,yyy) {
-  var Y = getTop(frame, [.07 / 0.7, .06 / 0.7]);
-  var LRline = getLeftRite(frame, [.7, .8]);
-push()
-fill(111,111,0)
-  rect(LFT,Y[0],LRline[1],Y[1])
-  pop()
-  // image(McSign, LFT, chainLink[0]);
-  // image(chainWindow, LRline[1], chainLink[0]);
-}
-
-
-function displayMIC( frame,McSign,LFT,xxx,yyy) {
-  var chainLink = getTop(frame, [.07 / 0.7, .8 / 0.7]);
-  var LRline = getLeftRite(frame, [0.09, 0.59]);
-// push()
-// fill(111,111,0)
-//   rect(LRline[0],chainLink[0],LRline[1],chainLink[1])
-//   pop()
-  image(McSign, LFT, chainLink[0]);
-  // image(chainWindow, LRline[1], chainLink[0]);
-}
-
-
-function placeMcSsign(signOffset, newDim,  PCT, McSsigns) {
-  var topLine = PCT[1] - newDim[1];
-  push();
-  stroke(20);
-  strokeWeight(newDim[1] / 10);
-  noFill();
-  fill(200,0,0)
-  // rect(signOffset[0], topLine, newDim[0], newDim[1] * 1.01);
-  rect(signOffset[0], signOffset[1], newDim[0], newDim[1] /11);
-  
-  // line( -100, topLine + newDim[1] * 1.01, newDim[0] * 2,  topLine + newDim[1] * 1.01  );
-  pop();
- }
 
 function makeDoorMat(frame) {
   var matLR = getLeftRite(frame, [0.5, 0.585]);

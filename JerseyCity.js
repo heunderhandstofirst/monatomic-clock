@@ -441,18 +441,4 @@ class JerseyCity {
       if (5 === 5  / 2) printXY(xxx, yyy, this.unit, 0, Date.now(), printText1, printText2, printText3, printText4, printText5);
     }
   }
-  
-  function backGroundGrid(tf,unit){
-    if(tf){
-      for( var i=-30;i<20;i++){
-        text(i, unit*-3,unit*i)
-        line(-10000,unit*i,10000,unit*i)
-        text(i,unit*i,unit*-4)
-        line(unit*i,-10000,unit*i,1000)
-      }
-    }
-}
-  
-function drawBezier(points) {
-      bezier(points[0], points[1], points[2], points[3], points[4], points[5], points[6], points[7]);
-}
+

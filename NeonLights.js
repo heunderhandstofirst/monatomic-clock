@@ -110,37 +110,6 @@ function bulbShape(centerX, centerY, rx, ry, color, alphaFloor, alphaCeiling) {
   }
 }
 
-class WhiteStripeIgnore {
-  constructor(centerX, centerY, color, width, maxHeight) {
-    this.centerX = centerX;
-    this.centerY = centerY;
-    this.color = color;
-    this.rx = width / 2;
-    this.maxHeight = maxHeight;
-    this.ry = maxHeight * 0.5 + random(maxHeight);
-    this.alphaFloor = 0;
-    this.alphaCeiling = 1;
-    this.time = random(10000000);
-  }
-
-  update() {
-    this.ry = map(noise(this.time), 0, 1, 0, this.maxHeight);
-    this.time = this.time + 0.1;
-  }
-
-  draw() {
-    WhiteLines(
-      this.centerX,
-      this.centerY,
-      this.rx,
-      this.ry,
-      this.color,
-      this.alphaFloor,
-      this.alphaCeiling
-    );
-  }
-}
-
 class Bulb {
   constructor(centerX, centerY, color, width, maxHeight) {
     this.centerX = centerX;
@@ -169,31 +138,6 @@ class Bulb {
       this.alphaFloor,
       this.alphaCeiling
     );
-  }
-}
-
-//this.lightfixture = new LightFixture(windowWidth, windowHeight);
-class verticalWhiteLinesIgnore {
-  constructor(step5, NumWLines, rectDim, rectStart) {
-    this.NumberOfLights = 8;
-
-    this.bulbs = [];
-    this.width = step5;
-    this.height = NumWLines;
-
-    for (var i = 0; i < this.NumberOfLights; i++) {
-      const x = ((i * 2 + 1) * this.width) / (this.NumberOfLights * 2);
-      const y = this.height * 0.7;
-      const color = [25, 25, 40]; //this.LightColors[i];
-      this.bulbs.push(new WhiteStripe(x, y, color, width, this.height));
-    }
-  }
-
-  draw() {
-    for (var i = 0; i < this.bulbs.length; i++) {
-      this.bulbs[i].update();
-      this.bulbs[i].draw();
-    }
   }
 }
 

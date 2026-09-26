@@ -2,15 +2,15 @@ class AmpelmannSign {
   constructor() {
     this.name = "AMPELMANN";
     
-    // Load the ORIGINAL solid SVG containing both characters
-    this.ampelmannFull = loadImage("images/Berlin/Ampelmann_Green.svg");
-    this.ampelmannRedPng = loadImage("images/Berlin/Ampelmann_Red.png");
-    this.ampelmadchen = loadImage("images/Berlin/MaddieGreen.png");
-    this.curbImage = loadImage("images/Berlin/BerlinCurb.png");
-    this.bikeImage = loadImage("images/Berlin/BerlinBike.png");
+    // Use preloaded assets if available, fallback to loading
+    this.ampelmannFull = (typeof ampelmannGreenSvg !== 'undefined' && ampelmannGreenSvg) ? ampelmannGreenSvg : loadImage("images/Berlin/Ampelmann_Green.svg");
+    this.ampelmannRedPng = (typeof ampelmannRedPng !== 'undefined' && ampelmannRedPng) ? ampelmannRedPng : loadImage("images/Berlin/Ampelmann_Red.png");
+    this.ampelmadchen = (typeof ampelmadchenPng !== 'undefined' && ampelmadchenPng) ? ampelmadchenPng : loadImage("images/Berlin/MaddieGreen.png");
+    this.curbImage = (typeof berlinCurbPng !== 'undefined' && berlinCurbPng) ? berlinCurbPng : loadImage("images/Berlin/BerlinCurb.png");
+    this.bikeImage = (typeof berlinBikePng !== 'undefined' && berlinBikePng) ? berlinBikePng : loadImage("images/Berlin/BerlinBike.png");
     
     // Load Berlin Clock Times data
-    this.clockTimesRaw = loadStrings("images/Berlin/BerlinClockTimes.csv");
+    this.clockTimesRaw = (typeof berlinClockTimesCsv !== 'undefined' && berlinClockTimesCsv) ? berlinClockTimesCsv : loadStrings("images/Berlin/BerlinClockTimes.csv");
     this.clockDataParsed = false;
     this.clockPanelsData = []; // Array of { north: [], south: [] } for panels 1-24
     
@@ -180,6 +180,7 @@ class AmpelmannSign {
       vertex(xTopLeft, yTop);
       endShape(CLOSE);
     }
+    pop();
   }
 
   drawTexturedCurbs() {

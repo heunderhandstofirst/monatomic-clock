@@ -200,3 +200,4 @@ function getXends(GY2, GherkinY, Gwide, Ghite, NewGX) {
   }
   return GPS2;
 }
+

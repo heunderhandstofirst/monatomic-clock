@@ -45,29 +45,13 @@ class BunnySign {
       earSignDots(5, 7, 17.5, 4.25, 20.5, this.units[0], this.lhs, this.top);
     }
     bunnyNeon(tu, X1, Y1, dot, SW, colr) {
-      // var xxx = 5 + round((20 * mouseX) / windowWidth, 1);
-      // var yyy = 5 + round((20 * mouseY) / windowHeight, 1);
-      // var ttt = -24;     if (ttt > 0) {      X1[ttt] = xxx;      Y1[ttt] = yyy;    }
-      // // var ttt = -2;
-      // if (ttt > 0) {
-      //   X1[ttt] = xxx;
-      //   Y1[ttt] = yyy;
-      // }
-      // bx = 16.5;  // by = 11.1;
-      // X1.push(bx, bx, bx, bx);
-      // Y1.push(by, by, by, by);
-  
-      // stroke(kULR());
       strokeWeight(tu / SW);
       noFill();
   
       push();
       beginShape();
       for (var n = 0; n < X1.length; n++) {
-        if (colr === false)  stroke(kULR());
-        // } else {
-        // stroke(colr);
-        // }
+        if (colr === false) stroke(kULR());
         curveVertex(tu * X1[n], tu * Y1[n]);
       }
       endShape();

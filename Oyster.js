@@ -303,5 +303,6 @@ class UnionOysterHouse {
         endShape();
       }
     }
+    pop();
   }
 }

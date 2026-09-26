@@ -86,12 +86,30 @@ function miniCD(leftBorder, StartY, Yhite, BotWide, WW7, milsec, signTime) {
   rect(StartX, StartY, Xwide, Yhite);
   translate(midCD, StartY + 0.5 * Yhite);
   stroke(120);
-  if (milsec[0] !== minute()) {
-    milsec[0] = minute();
-    milsec[1] = millis();
+  var countNumber;
+  var arcPCT;
+
+  if (window.isCarriageBarnMode) {
+    var cdElapsed = typeof window.getVirtualSignElapsed === 'function' ? window.getVirtualSignElapsed() : 0;
+    if (cdElapsed === null) cdElapsed = 0;
+    if (cdElapsed < 18000) {
+      countNumber = 5;
+      arcPCT = 0;
+    } else {
+      var countdownElapsed = cdElapsed - 18000;
+      var currentSec = Math.floor(countdownElapsed / 1000);
+      countNumber = Math.max(1, 5 - currentSec);
+      arcPCT = (countdownElapsed % 1000) / 1000;
+    }
+  } else {
+    if (milsec[0] !== minute()) {
+      milsec[0] = minute();
+      milsec[1] = millis();
+    }
+    milsec[2] = millis() - milsec[1];
+    arcPCT = milsec[2] / 60000;
+    countNumber = 5 - (signTime[1] % 5);
   }
-  milsec[2] = millis() - milsec[1];
-  var arcPCT = milsec[2] / 60000;
 
   fill(120 + 20 * random());
   var ppp = 2 * PI * arcPCT;
@@ -109,7 +127,7 @@ function miniCD(leftBorder, StartY, Yhite, BotWide, WW7, milsec, signTime) {
   textSize(Xwide / 2);
   textAlign(CENTER);
   fill(50);
-  text(5 - (signTime[1] % 5), 0, Xwide / 7);
+  text(countNumber, 0, Xwide / 7);
   stroke(1);
   fill(0);
   strokeWeight((Xwide * random()) / 100);

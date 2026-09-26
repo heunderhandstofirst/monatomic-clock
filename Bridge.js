@@ -21,7 +21,6 @@ class ManhattanBridge {
     for (var spl = 0; spl < 2; spl++) {
       if (spl === 1) span2(this.s, this.Ocenter, yyy);
       push();
-      push();
       translate([-windowWidth * 0.2, windowWidth * 0.1][spl], 0);
       scale([0.75, 1.33][spl]);
       
@@ -150,7 +149,6 @@ class ManhattanBridge {
         triShape(tt1, [j - s, 2.5], this.s, 0, this.HueBridge52[8]);
 
         tt1 = [t * -1.1666, t * 2.33];
-        push()
         if (t === 1) {
           ///   THESE are the 2 sets of boxed trianges in teh middlle of 3
           triShape(tt1, [j - s, 2.5], this.s, 0, this.HueBridge52[9]);
@@ -410,9 +408,8 @@ class ManhattanBridge {
         }
         pop();
       }
-      // }
+      pop();
     }
-    pop();
     var printText1=""
     translate(-this.s*30,0)
     if (5 === 5  / 2) printXY(xxx, yyy, this.s, 0, Date.now(), printText1);
@@ -423,20 +420,33 @@ function span2(sqsz, Ocenter, mse) {
   stroke(25);
   push();
 
-  var d = multArray(Ocenter[0], [0.0, 1.53]);
-  var spanWidth = multArray(sqsz, [10.465, 14.12]);
+  // Column saddle positions from Far Right (background) to Far Left (foreground)
+  var localCols = [10.5, 4.5, -4.5, -10.5];
+  
+  // Left Tower (spl = 0): scale 0.75, translate(-0.2*W, 0), translate(Ocenter[0], Ocenter[1] - 35*sqsz)
+  var scaleL = 0.75;
+  var transXL = -windowWidth * 0.2 + scaleL * Ocenter[0];
+  var transYL = scaleL * (Ocenter[1] - 35 * sqsz);
+  
+  // Right Tower (spl = 1): scale 1.33, translate(0.1*W, 0), translate(Ocenter[0], Ocenter[1] - 35*sqsz)
+  var scaleR = 1.33;
+  var transXR = windowWidth * 0.1 + scaleR * Ocenter[0];
+  var transYR = scaleR * (Ocenter[1] - 35 * sqsz);
+
+  // Exact saddle top Y (cable anchors at tower tops)
+  var topYL = transYL + scaleL * (1.0 * sqsz);
+  var topYR = transYR + scaleR * (1.0 * sqsz);
+  
+  // Exact roadway level at the tower piers
+  var roadYL = transYL + scaleL * (44.5 * sqsz);
+  var roadYR = transYR + scaleR * (44.5 * sqsz);
+
   var XL = [];
   var XR = [];
-
   for (var b = 0; b < 4; b++) {
-    var plsmns = [1, 0.43, -0.43, -1][b];
-    XL[b] = d[0] + plsmns * spanWidth[0];
-    XR[b] = d[1] + plsmns * spanWidth[1];
+    XL[b] = transXL + scaleL * (localCols[b] * sqsz);
+    XR[b] = transXR + scaleR * (localCols[b] * sqsz);
   }
-
-  const YR = sqsz * 66;
-  const YL = sqsz * 44.5;
-  var LR;
 
   strokeWeight(2);
   stroke(200);
@@ -446,12 +456,15 @@ function span2(sqsz, Ocenter, mse) {
   var topX = [[0], [1], [2], [3]];
   var topY = [[0], [1], [2], [3]];
   noFill();
-  for (var k = 0; k < 4; k++) {
-    LR = XL[k] + 0.45 * (XR[k] - XL[k]);
 
-    p0 = createVector(XR[k], YR);
-    p1 = createVector(LR, YL - sqsz * -5);
-    p2 = createVector(XL[k], YL);
+  // Roadway generation
+  for (var k = 0; k < 4; k++) {
+    var midX = XL[k] + 0.45 * (XR[k] - XL[k]);
+    var roadMidY = roadYL + 0.45 * (roadYR - roadYL);
+
+    var p0 = createVector(XR[k], roadYR);
+    var p1 = createVector(midX, roadMidY - sqsz * 1.5);
+    var p2 = createVector(XL[k], roadYL);
 
     for (var t = 0; t < 81; t++) {
       var x1 = lerp(p0.x, p1.x, t / 80);
@@ -467,53 +480,54 @@ function span2(sqsz, Ocenter, mse) {
   drawRoadWay(bigX, bigY);
   drawRailings(bigX, bigY, sqsz);
 
+  // Main suspension cables generation
+  var cableCtrlY = 0;
   for (k = 0; k < 4; k++) {
-    var topLR = XL[k] + 0.45 * (XR[k] - XL[k]);
+    var midX = XL[k] + 0.45 * (XR[k] - XL[k]);
+    var roadMidY = roadYL + 0.45 * (roadYR - roadYL);
+    var cableTargetY = roadMidY - 1.5 * sqsz;
+    var ctrlY = 2 * cableTargetY - 0.5 * (topYL + topYR);
+    cableCtrlY = ctrlY;
 
-    var topYR = sqsz * 8.1;
-    var topYL = sqsz;
-    var vvv = 96.7;
-    t0 = createVector(XR[k], topYR);
-    t1 = createVector(topLR, topYL - sqsz * -vvv);
-    t2 = createVector(XL[k], topYL);
+    var t0 = createVector(XR[k], topYR);
+    var t1 = createVector(midX, ctrlY);
+    var t2 = createVector(XL[k], topYL);
 
-    for (var t8 = 0; t8 < 4; t8++) {
-      for (t = 0; t < 81; t++) {
-        var tx1 = lerp(t0.x, t1.x, t / 80);
-        var ty1 = lerp(t0.y, t1.y, t / 80);
-        var tx2 = lerp(t1.x, t2.x, t / 80);
-        var ty2 = lerp(t1.y, t2.y, t / 80);
-        var x = lerp(tx1, tx2, t / 80);
-        var y = lerp(ty1, ty2, t / 80);
-        topX[k][t] = x;
-        topY[k][t] = y;
-      }
+    for (t = 0; t < 81; t++) {
+      var tx1 = lerp(t0.x, t1.x, t / 80);
+      var ty1 = lerp(t0.y, t1.y, t / 80);
+      var tx2 = lerp(t1.x, t2.x, t / 80);
+      var ty2 = lerp(t1.y, t2.y, t / 80);
+      var cx = lerp(tx1, tx2, t / 80);
+      var cy = lerp(ty1, ty2, t / 80);
+      topX[k][t] = cx;
+      topY[k][t] = cy;
     }
     drawCables(topX, topY, k, sqsz, bigX, bigY);
   }
+
+  // Walking figure along cable 3
   var ds1 = (Date.now() % 60000) / 1000;
   var ds3 = min(1, max(0, ds1) / 60);
+  var midX3 = XL[3] + 0.45 * (XR[3] - XL[3]);
 
-  v0 = createVector(XL[3], topYL);
-  v1 = createVector(topLR, topYL - sqsz * -vvv);
-  v2 = createVector(XR[3], topYR);
+  var v0 = createVector(XL[3], topYL);
+  var v1 = createVector(midX3, cableCtrlY);
+  var v2 = createVector(XR[3], topYR);
 
   var tx1 = lerp(v0.x, v1.x, ds3);
   var ty1 = lerp(v0.y, v1.y, ds3);
   var tx2 = lerp(v1.x, v2.x, ds3);
   var ty2 = lerp(v1.y, v2.y, ds3);
-  var x = lerp(tx1, tx2, ds3);
-  var y = lerp(ty1, ty2, ds3);
+  var fx = lerp(tx1, tx2, ds3);
+  var fy = lerp(ty1, ty2, ds3);
 
   push();
   strokeWeight(0);
   var fsColor = [255, 255, 0];
-  // fsColor = [255, 255, 255];
-  // fill(250, 250, 0);
   fill(fsColor);
-  // stroke(250, 250, 0);
   stroke(fsColor);
-  translate(x, y - sqsz);
+  translate(fx, fy - sqsz);
   ellipse(0, -2 * sqsz, sqsz);
   strokeWeight(windowWidth / 800);
 
@@ -614,17 +628,6 @@ function drawRoadWay(bigX, bigY) {
     );
   }
   pop();
-}
-
-function createStars() {
-  var radius = windowWidth / 200;
-  for (var t = 0; t < 10; t++) {
-    star[t] = createGraphics(radius, radius);
-    star[t].stroke(0, 200, 0);
-    star[t].fill(random(250), random(250), random(250));
-  }
-
-  return star;
 }
 
 function bridgeTriangle(bigX, bigY, k, t, alt, z) {

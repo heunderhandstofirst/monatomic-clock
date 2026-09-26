@@ -31,41 +31,60 @@ class UrthCafe {
     translate(this.Ocenter[0] / 1, this.Ocenter[1] / 1);
     translate(-this.WW * 0.25, 0); /// NOW MIDDLE/MIDDLE OF THE LEFT BOX
 
-    var tDims = [0.2, 0.1, 0.01, -0.05, 0.035, 0.25];
-    var towerYY = [-0.5, -0.4, -0.25, -0.15, 0.5, 0.65, 0.1, -0.325];
-    for (var k = 0; k < towerYY.length; k++) {
-      towerYY[k] = towerYY[k] * this.WH;
-      tDims[k] = this.WW * tDims[k];
+    var towerWidth = this.WW * 0.1;
+    var spireBase = this.WW * 0.01;
+    var spireTipY = -this.WH * 0.5;
+    var spireBallY = -this.WH * 0.325;
+    var capY = -this.WH * 0.25;
+    var capH = this.WH * 0.1;
+    var signTopY = -this.WH * 0.15;
+    var signHeight = this.WH * 0.65;
+    var sqW = capH;
+    var midW = 2 * capH;
+
+    ///////////// TOP CAP POINTER, BALL, RECTANGLES (Square, Rectangle, Square)
+    stroke(75);
+    strokeWeight(this.WH / 200);
+    fill(160, 225, 240);
+
+    // Pointer & Ball
+    triangle(-spireBase, capY, spireBase, capY, 0, spireTipY);
+    ellipse(0, spireBallY, 0.35 * -signTopY);
+
+    // 3 static cap rectangles: Square, Rectangle, Square (left to right, no movement)
+    // Left Square
+    rect(-midW / 2 - sqW, capY, sqW, capH);
+    // Middle Rectangle
+    rect(-midW / 2, capY, midW, capH);
+    // Right Square
+    rect(midW / 2, capY, sqW, capH);
+
+    // Centered UrthC photo in the middle rectangle (shrunk by 25%)
+    if (typeof urthCImage !== 'undefined' && urthCImage !== null) {
+      push();
+      imageMode(CENTER);
+      var imgRatio = urthCImage.width / urthCImage.height;
+      var imgH = capH * 0.675;
+      var imgW = imgH * imgRatio;
+      image(urthCImage, 0, capY + capH / 2, imgW, imgH);
+      pop();
     }
+    ///////////// TOP CAP POINTER, BALL, RECTANGLES
 
-    ///////////// TOP CAP POINTER, BALL, RECT
-    triangle(-tDims[2], towerYY[2], tDims[2], towerYY[2], 0, -towerYY[4]);
-    ellipse(0, towerYY[7], 0.35 * towerYY[3]);
-    rect(tDims[4], towerYY[3], -tDims[4] * 2, towerYY[3] * 1);
-    var topBotCapLine = 0;
-    ///////////// TOP CAP POINTER, BALL, RECT
-
-    for (k = 0; k < 8; k = k + 1) {
+    for (var k = 0; k < 8; k = k + 1) {
       if (this.thetaCOS[k + 1] < this.thetaCOS[k]) {
-        var rectW = (this.thetaCOS[k] - this.thetaCOS[k + 1]) * tDims[1];
-        rectW=max(1,rectW)
-        var leftBorder = this.thetaCOS[k + 1] * tDims[1];
+        var rectW = (this.thetaCOS[k] - this.thetaCOS[k + 1]) * towerWidth;
+        rectW = max(1, rectW);
+        var leftBorder = this.thetaCOS[k + 1] * towerWidth;
 
         if (k === 1 || k === 3 || k === 5 || k === 7) {
           var LetImg = this.USS[int(random(10))];
-
-          image(LetImg, leftBorder, towerYY[3], rectW, this.WH * 0.65);
+          image(LetImg, leftBorder, signTopY, rectW, signHeight);
         } else {
-          image(this.Ugrid, leftBorder, towerYY[3], 4 * max(rectW, 0.25), towerYY[5]);
+          image(this.Ugrid, leftBorder, signTopY, 4 * max(rectW, 0.25), signHeight);
         }
-
-        var tBCL = UrthCAP(this.WH, rectW, leftBorder, towerYY[2], towerYY[6]);
-        topBotCapLine = min(topBotCapLine[0], tBCL);
       }
-      line(topBotCapLine, towerYY[3], -topBotCapLine, towerYY[3]);
     }
-
-    // text(Date.now(),50,180)
 
     pop();
     translate(this.Ocenter[0], this.Ocenter[1] - this.WH / 2);
@@ -125,7 +144,7 @@ function urthClock(newW, newH) {
   urthBrick.strokeWeight(newH / 256);
   urthBrick.stroke(0);
   urthBrick.fill(250);
-  for (m = 0; m < 12; m++) {
+  for (var m = 0; m < 12; m++) {
     urthBrick.rotate(PI / 6);
     urthBrick.rect(-newW / 200, newH / 8, newH / 64, newH / 24);
   }
@@ -255,7 +274,7 @@ function hBricks(Xlen, newW, newH, q) {
   for (var grp = 0; grp < 3; grp++) {
     var Blen = (Xlen * 11.825) / 12.5;
     for (var c = 0; c < rowCt[grp]; c++) {
-      for (m = -1; m < bCT[grp] + (c % 2); m++) {
+      for (var m = -1; m < bCT[grp] + (c % 2); m++) {
         urthBrick.stroke(120 + random(50));
         urthBrick.fill(200, 15 + random(50), 0);
         if (random() < 0.2) urthBrick.fill(25 + random(25));
@@ -301,7 +320,7 @@ function vBricks(Xlen, newW, newH, q) {
   var Blen = (Xlen * 11.825) / 25;
   for (var c = 0; c < 2; c++) {
     var leftBrick = -6.25 * Xlen - (c * newW) / 36;
-    for (m = -1; m < 25 + c * 4; m++) {
+    for (var m = -1; m < 25 + c * 4; m++) {
       urthBrick.stroke(120 + random(50));
       urthBrick.fill(200, 15 + random(50), 0);
       if (random() < 0.2) urthBrick.fill(25 + random(25));
@@ -318,7 +337,7 @@ function vBricks(Xlen, newW, newH, q) {
 function arrows(Xlen, SqXY) {
   urthBrick.fill(200, 200, 0, 200);
   urthBrick.stroke(200, 200, 0, 200);
-  for (m = 0; m < 9; m++) {
+  for (var m = 0; m < 9; m++) {
     urthBrick.triangle(
       Xlen * (-4.5 + m),
       Xlen * -4.5,
@@ -390,19 +409,6 @@ function greenBoxes(Xlen, SqXY) {
     }
   }
   urthBrick.pop();
-}
-
-function UrthCAP(WH, rectW, leftBorder, t2, t6) {
-  stroke(75 + random(50));
-  strokeWeight(WH / 200);
-
-  var capWidth = rectW / 0.75;
-  var capBorder = leftBorder / 0.75;
-  var capHeight = t2;
-  fill(155 + random(10), 220 + random(10), 235 + random(20), 255);
-
-  rect(capBorder, capHeight, capWidth, t6);
-  return capBorder;
 }
 
 function createURTHgrid(newW, newH) {
@@ -489,7 +495,7 @@ function printAll(imageD, letter, WW, t1, t2, WH) {
       if (letter === "R") printR(imageD, ltrWH, WW); // LEFT VERTICAL  R
 
       // FULL RIGHT SIDE OF R
-      for (k = -1; k < 2; k += 2) {
+      for (var k = -1; k < 2; k += 2) {
         urthFont(imageD, j, WW, 0.4);
         printUtop(imageD, ltrWH, k * 0.895, -1);
         urthFont(imageD, j, WW, 0.6);
@@ -506,7 +512,7 @@ function printAll(imageD, letter, WW, t1, t2, WH) {
         imageD.beginShape();
         RRx = [+0.5, +0.5, +1.5, 1.95, 2.2, 2.2];
         RRy = [-0.0, -0.0, 0.55, 1.05, 1.2, 1.2, -0.05, 0, 0];
-        for (i = 0; i < 5; i++)
+        for (var i = 0; i < 5; i++)
           imageD.curveVertex(ltrWH[2] * RRx[i], ltrWH[3] * RRy[i]);
         imageD.endShape();
         //// END OF THE LOOP OF THE R

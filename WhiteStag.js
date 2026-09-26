@@ -75,12 +75,26 @@ class StagSign {
       image( OregonFoto, this.leftBorder, this.topBorder + this.WH / 6, this.WW,(this.WH * 14) / 18 );
       this.oldTOWN();
   
-      var whichStag = 4 + int((15 * (dn % 60000)) / 50000);
-      if (dn % 60000 > 50000) whichStag = 5 + int(random(18));
+      var whichStag;
+      var showRedNose = false;
+      var signElapsed = (typeof window.getVirtualSignElapsed === 'function') ? window.getVirtualSignElapsed() : null;
+
+      if (window.isCarriageBarnMode && signElapsed !== null) {
+        if (signElapsed < 9000) {
+          whichStag = 4 + int((15 * signElapsed) / 9000);
+        } else {
+          whichStag = 5 + int(random(18));
+          showRedNose = true;
+        }
+      } else {
+        whichStag = 4 + int((15 * (dn % 60000)) / 50000);
+        if (dn % 60000 > 50000) whichStag = 5 + int(random(18));
+        if (month() === this.blinkMonth) showRedNose = true;
+      }
   
       image( this.StagLinedImages[whichStag], this.leftBorder + this.WW / 2 - this.StagLinedImages[0].width * 0.4, this.unit*.5, this.stagDim[0], this.stagDim[1] );
 
-      if (month() === this.blinkMonth) this.redNose(xxx, yyy);
+      if (showRedNose) this.redNose(xxx, yyy);
       
       if (5 === 5  / 2) {
         push()
@@ -104,7 +118,7 @@ class StagSign {
       yB.background(0)
       for (var j = 0; j < 24; j++) {
         var yBcolor = 215 + random(50);
-        if (month() === blinkMonth) yBcolor = [0, 255, 0];
+        if (month() === blinkMonth && !window.isCarriageBarnMode) yBcolor = [0, 255, 0];
         if (j > k) yBcolor = 50;
         yB.stroke(yBcolor);
         yB.fill(yBcolor);

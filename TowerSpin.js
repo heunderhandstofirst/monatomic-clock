@@ -165,26 +165,6 @@ function altColorX(minBox,  lineStrkWt, newXcolor, minMinute, colorBlock) {
   pop();
 }
 
-function drawTowerBackground(towerEdgeCOS, towerEdgeAngle,xMID,tColor, towerRadius){
-  var ViewAngles=[135, 315]
-  var leftBoxRightBox=[0,0]
-  push()
-  stroke(255)
-  strokeWeight(windowWidth/1200)
-  for (i=0;i<4;i++){
-    var L0=xMID+towerEdgeCOS[i][0]*towerRadius
-    var L1=xMID+towerEdgeCOS[(i+1)%4][0]*towerRadius
-  
-    fill(getThisSideBackGround(i+1))
-  
-    if(towerEdgeAngle[i]<135 &&  towerEdgeAngle[i]>45)leftBoxRightBox[0]=i
-    if(towerEdgeAngle[i]<45 ||  towerEdgeAngle[i]>315)leftBoxRightBox[1]=i
-    if(towerEdgeAngle[i]<ViewAngles[0] || towerEdgeAngle[i]>ViewAngles[1]) rect(L0,-100,L1-L0,4000) 
-  }
-  pop()
-  return leftBoxRightBox
-}
-
 function getCenterBoxXY(pt0, pt1, d, muMu) {
   var diamondY = [(muMu[0] + muMu[1]) / 6, -(muMu[0] + muMu[1]) / 6];
   var rise = [pt0[1] - pt0[3], pt1[1] - pt1[3]];
@@ -242,6 +222,26 @@ function getMu(boxRadius, XXX) {
   return Mu;
 }
 
+function drawTowerBackground(towerEdgeCOS, towerEdgeAngle,xMID,tColor, towerRadius){
+  var ViewAngles=[135, 315]
+  var leftBoxRightBox=[0,0]
+  push()
+  stroke(255)
+  strokeWeight(windowWidth/1200)
+  for (i=0;i<4;i++){
+    var L0=xMID+towerEdgeCOS[i][0]*towerRadius
+    var L1=xMID+towerEdgeCOS[(i+1)%4][0]*towerRadius
+  
+    fill(getThisSideBackGround(i+1))
+  
+    if(towerEdgeAngle[i]<135 &&  towerEdgeAngle[i]>45)leftBoxRightBox[0]=i
+    if(towerEdgeAngle[i]<45 ||  towerEdgeAngle[i]>315)leftBoxRightBox[1]=i
+    if(towerEdgeAngle[i]<ViewAngles[0] || towerEdgeAngle[i]>ViewAngles[1]) rect(L0,-100,L1-L0,4000) 
+  }
+  pop()
+  return leftBoxRightBox
+}
+
 function getTowerOrder(towerEdgeAngle, towerEdgeCOS) {
   var maxCOS = -1000;
   var minABS = +1000;
@@ -265,6 +265,7 @@ function getTowerOrder(towerEdgeAngle, towerEdgeCOS) {
 
   return  order;
 }
+
 function xBoxEXES(  XboxAngles, boxRadius,  order, xMID) {
   var visibleLeftTowerAngle = [order[0], order[1]];
 
@@ -281,3 +282,5 @@ function xBoxEXES(  XboxAngles, boxRadius,  order, xMID) {
 
   return [XboxLeftLeft, XboxLeftRite, XboxRiteLeft, XboxRiteRite];
 }
+
+

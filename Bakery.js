@@ -327,14 +327,13 @@ function coloredARC(stepCount,  unit,xxx,yyy) {
   // DRAW THE ARC ///////////////////////////////////////////
   translate(unit*-10, unit*1);
   var arcSpeed = 5;
-    // Removed the legacy static yellow arc and masking logic
     for (var j = 0; j < arcSpeed * Warc * 0.75; j = j + 5) {
       Ydim[1] = Ydim[0];
       Ydim[0] = (-height / 3) * emblemTop(Warc, j / arcSpeed, 0.95, 0.75);
-      if (j > 1) {
-        ArcColor = (ArcColor +359) % 360
+      if (j > 0) {
+        ArcColor = (ArcColor + 359) % 360;
         stroke(color("hsla(" + ArcColor + ", 100%, 50%, 1)"));
-        line((j - 1) / arcSpeed, Ydim[1 + 1], j / arcSpeed, Ydim[0]);
+        line((j - 5) / arcSpeed, Ydim[1], j / arcSpeed, Ydim[0]);
       }
     }
   // FINISH THE ARC /////////////////////////

@@ -21,9 +21,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/P5/2.1.1/chroma.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.1/chroma.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Codystar&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Codystar&family=Inter:wght@400;500;600;700&family=Sancreek&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
     <meta
       name="viewport"
@@ -36,12 +35,23 @@
       content="black-translucent"
     />
     <style>
-      body {
+      html, body {
         height: 100%;
         width: 100%;
         margin: 0;
         padding: 0;
+        overflow: hidden;
+        background-color: #000;
         cursor: none;
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+      html::-webkit-scrollbar, body::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+      }
+      canvas {
+        display: block;
+        overflow: hidden;
       }
       iframe {
         display: none;
@@ -89,6 +99,11 @@
     <script src="Stomatol.js"></script>
     <script src="Cope.js"></script>
     <script src="Ampelmann.js"></script>
+    <script src="Skipper.js"></script>
+    <script src="Sam.js"></script>
+    <script src="Moulin.js"></script>
+    <script src="Cairo.js"></script>
+    <script src="Mumbai.js"></script>
     <script src="sketch.js"></script>
     <script src="sketchUtilities.js"></script>
   </body>
